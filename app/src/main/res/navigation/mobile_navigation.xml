@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.onopry.budgetapp.ui.home.HomeFragment"
+        android:name="com.onopry.budgetapp.ui.home.AnalyticsFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_analytics" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.onopry.budgetapp.ui.dashboard.DashboardFragment"
+        android:name="com.onopry.budgetapp.ui.dashboard.BudgetAndDebtsFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_budet_and_debts" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.onopry.budgetapp.ui.notifications.NotificationsFragment"
+        android:name="com.onopry.budgetapp.ui.notifications.TransactionsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_transactions" />
 </navigation>

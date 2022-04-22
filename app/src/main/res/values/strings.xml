@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">BudgetApp</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">Главная</string>
+    <string name="title_dashboard">Дашборд</string>
+    <string name="title_notifications">Уведомления</string>
+    <string name="title_more">Еще</string>
+    <string name="user_name">UserName</string>
+    <string name="user_mail">UserMail@mail.com</string>
+    <string name="more_title_settings">Настройки</string>
 </resources>

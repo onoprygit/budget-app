@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.ui.dashboard
+package com.onopry.budgetapp.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.onopry.budgetapp.databinding.FragmentDashboardBinding
+import com.onopry.budgetapp.databinding.FragmentAnalyticsBinding
 
-class DashboardFragment : Fragment() {
+class AnalyticsFragment : Fragment() {
 
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentAnalyticsBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(DashboardViewModel::class.java)
+        val homeViewModel =
+            ViewModelProvider(this).get(AnalyticsViewModel::class.java)
 
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentAnalyticsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textDashboard
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textHome
+        homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
