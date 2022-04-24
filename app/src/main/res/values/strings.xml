@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">BudgetApp</string>
-    <string name="title_home">Главная</string>
-    <string name="title_dashboard">Дашборд</string>
-    <string name="title_notifications">Уведомления</string>
+    <string name="title_analytics">Аналитика</string>
+    <string name="title_budget_and_debts">Бюджет и долги</string>
+    <string name="title_transactions">Транзакции</string>
+
     <string name="title_more">Еще</string>
     <string name="user_name">UserName</string>
     <string name="user_mail">UserMail@mail.com</string>
