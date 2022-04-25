@@ -11,13 +11,24 @@ import com.onopry.budgetapp.databinding.FragmentBudetAndDebtsBinding
 
 class BudgetAndDebtsFragment : Fragment() {
 
-    private var _binding: FragmentBudetAndDebtsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
+    private lateinit var binding: FragmentBudetAndDebtsBinding
     override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentBudetAndDebtsBinding.inflate(inflater, container, false)
+        binding.textBudgetAndDebts.text = """
+                Фрагмент:
+                Бюджет и долги
+            """.trimIndent()
+
+
+
+
+        return binding.root
+    }
+    /*    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,7 +36,7 @@ class BudgetAndDebtsFragment : Fragment() {
         val dashboardViewModel =
             ViewModelProvider(this).get(BudgetAndDebtsViewModel::class.java)
 
-        _binding = FragmentBudetAndDebtsBinding.inflate(inflater, container, false)
+        binding = FragmentBudetAndDebtsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textDashboard
@@ -33,10 +44,5 @@ class BudgetAndDebtsFragment : Fragment() {
             textView.text = it
         }
         return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    }*/
 }

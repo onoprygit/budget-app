@@ -7,14 +7,14 @@
         android:title="@string/title_analytics" />
 
     <item
-        android:id="@+id/budget_and_debts"
-        android:icon="@drawable/ic_budget_and_debts"
-        android:title="@string/title_budget_and_debts" />
-
-    <item
         android:id="@+id/navigation_transactions"
         android:icon="@drawable/ic_transactions"
         android:title="@string/title_transactions" />
+
+    <item
+        android:id="@+id/budget_and_debts"
+        android:icon="@drawable/ic_budget_and_debts"
+        android:title="@string/title_budget_and_debts" />
 
     <item
         android:id="@+id/navigation_more"

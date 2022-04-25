@@ -8,6 +8,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.onopry.budgetapp.databinding.ActivityMainBinding
+import com.onopry.budgetapp.ui.dashboard.BudgetAndDebtsFragment
+import com.onopry.budgetapp.ui.home.AnalyticsFragment
+import com.onopry.budgetapp.ui.notifications.TransactionsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +21,11 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val analyticsFragment = AnalyticsFragment()
+        val transactionsFragment = TransactionsFragment()
+        val budgetAndDebtsFragment = BudgetAndDebtsFragment()
+        val moreFragment = More
 
         val navView: BottomNavigationView = binding.navView
 
