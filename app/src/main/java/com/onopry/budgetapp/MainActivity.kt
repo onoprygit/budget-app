@@ -3,6 +3,7 @@ package com.onopry.budgetapp
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.onopry.budgetapp.databinding.ActivityMainBinding
 import com.onopry.budgetapp.ui.MoreFragment
 import com.onopry.budgetapp.ui.BudgetAndDebtsFragment
@@ -31,39 +32,30 @@ class MainActivity : AppCompatActivity() {
 
             when(it.itemId){
                 R.id.navigation_analytics -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.fragment_container, analyticsFragment)
-                        .commit()
+                    selectFragment(analyticsFragment)
                     true
                 }
                 R.id.navigation_transactions -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.fragment_container, transactionsFragment)
-                        .commit()
+                    selectFragment(transactionsFragment)
                     true
                 }
                 R.id.navigation_budget_and_debts -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.fragment_container, budgetAndDebtsFragment)
-                        .commit()
+                    selectFragment(budgetAndDebtsFragment)
                     true
                 }
                 R.id.navigation_more -> {
-                    supportFragmentManager
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.fragment_container, moreFragment)
-                        .commit()
+                    selectFragment(moreFragment)
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    private fun selectFragment(fragment: Fragment){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 }
