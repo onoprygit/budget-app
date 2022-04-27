@@ -3,14 +3,11 @@ package com.onopry.budgetapp
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.onopry.budgetapp.databinding.ActivityMainBinding
-import com.onopry.budgetapp.ui.dashboard.BudgetAndDebtsFragment
-import com.onopry.budgetapp.ui.home.AnalyticsFragment
-import com.onopry.budgetapp.ui.notifications.TransactionsFragment
+import com.onopry.budgetapp.ui.MoreFragment
+import com.onopry.budgetapp.ui.BudgetAndDebtsFragment
+import com.onopry.budgetapp.ui.AnalyticsFragment
+import com.onopry.budgetapp.ui.TransactionsFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,19 +22,48 @@ class MainActivity : AppCompatActivity() {
         val analyticsFragment = AnalyticsFragment()
         val transactionsFragment = TransactionsFragment()
         val budgetAndDebtsFragment = BudgetAndDebtsFragment()
-        val moreFragment = More
+        val moreFragment = MoreFragment()
 
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_analytics, R.id.budget_and_debts, R.id.navigation_transactions
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        // Навигация между фрагментами через нижнее меню
+        navView.setOnNavigationItemSelectedListener { it ->
+
+            when(it.itemId){
+                R.id.navigation_analytics -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.fragment_container, analyticsFragment)
+                        .commit()
+                    true
+                }
+                R.id.navigation_transactions -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.fragment_container, transactionsFragment)
+                        .commit()
+                    true
+                }
+                R.id.navigation_budget_and_debts -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.fragment_container, budgetAndDebtsFragment)
+                        .commit()
+                    true
+                }
+                R.id.navigation_more -> {
+                    supportFragmentManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.fragment_container, moreFragment)
+                        .commit()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }

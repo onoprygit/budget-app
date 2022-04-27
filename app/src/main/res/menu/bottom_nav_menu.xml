@@ -12,7 +12,7 @@
         android:title="@string/title_transactions" />
 
     <item
-        android:id="@+id/budget_and_debts"
+        android:id="@+id/navigation_budget_and_debts"
         android:icon="@drawable/ic_budget_and_debts"
         android:title="@string/title_budget_and_debts" />
 

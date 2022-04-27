@@ -17,7 +17,7 @@ class MoreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMoreBinding.inflate(inflater, container, false)
-        binding.userName.text = "TestFragment"
+        binding.moreTextSample.text = "Фрагмент Еще"
         return binding.root
     }
 }
