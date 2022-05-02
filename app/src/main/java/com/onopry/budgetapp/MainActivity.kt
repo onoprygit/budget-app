@@ -3,33 +3,50 @@ package com.onopry.budgetapp
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.fragment.app.Fragment
+import com.google.android.material.navigation.NavigationBarView
 import com.onopry.budgetapp.databinding.ActivityMainBinding
+import com.onopry.budgetapp.ui.MoreFragment
+import com.onopry.budgetapp.ui.BudgetAndDebtsFragment
+import com.onopry.budgetapp.ui.AnalyticsFragment
+import com.onopry.budgetapp.ui.TransactionsFragment
 
 class MainActivity : AppCompatActivity() {
 
+    // Инициализация переменных
     private lateinit var binding: ActivityMainBinding
+
+    private val analyticsFragment = AnalyticsFragment()
+    private val transactionsFragment = TransactionsFragment()
+    private val budgetAndDebtsFragment = BudgetAndDebtsFragment()
+    private val moreFragment = MoreFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
-            )
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        replaceFragment(analyticsFragment)
+
+        navView.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.navigation_analytics -> replaceFragment(analyticsFragment)
+                R.id.navigation_transactions -> replaceFragment(transactionsFragment)
+                R.id.navigation_budget_and_debts -> replaceFragment(budgetAndDebtsFragment)
+                R.id.navigation_more -> replaceFragment(moreFragment)
+            }
+            true
+        }
+
+    }
+
+    // Показываем фрагмент на экране
+    private fun replaceFragment(fragment: Fragment){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 }

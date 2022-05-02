@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_analytics">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.onopry.budgetapp.ui.home.AnalyticsFragment"
-        android:label="@string/title_home"
+        android:id="@+id/navigation_analytics"
+        android:name="com.onopry.budgetapp.ui.AnalyticsFragment"
+        android:label="@string/title_analytics"
         tools:layout="@layout/fragment_analytics" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.onopry.budgetapp.ui.dashboard.BudgetAndDebtsFragment"
-        android:label="@string/title_dashboard"
+        android:id="@+id/navigation_budget_and_debts"
+        android:name="com.onopry.budgetapp.ui.BudgetAndDebtsFragment"
+        android:label="@string/title_budget_and_debts"
         tools:layout="@layout/fragment_budet_and_debts" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.onopry.budgetapp.ui.notifications.TransactionsFragment"
-        android:label="@string/title_notifications"
+        android:id="@+id/navigation_transactions"
+        android:name="com.onopry.budgetapp.ui.TransactionsFragment"
+        android:label="@string/title_transactions"
         tools:layout="@layout/fragment_transactions" />
 </navigation>
