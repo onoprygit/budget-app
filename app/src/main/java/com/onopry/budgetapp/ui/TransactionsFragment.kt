@@ -5,8 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.onopry.budgetapp.R
+import com.onopry.budgetapp.dataStarage.TransactionDataStorage
 import com.onopry.budgetapp.databinding.FragmentTransactionsBinding
 
 class TransactionsFragment : Fragment() {
@@ -20,7 +25,27 @@ class TransactionsFragment : Fragment() {
     ): View {
         binding = FragmentTransactionsBinding.inflate(inflater, container, false)
 
+        val addingMoneyFragment = AddingMoneyFragment()
+
         binding.transTextSample.text = "Транзакции"
+
+
+        binding.fabTransaction.setOnClickListener {
+            Toast.makeText(context, "Click!", Toast.LENGTH_SHORT).show()
+            parentFragmentManager
+                .beginTransaction()
+                .addToBackStack(null)
+                .add(R.id.fragment_container, addingMoneyFragment)
+                .commit()
+        }
+
         return binding.root
+    }
+
+    companion object {
+        fun newInstance(): TransactionsFragment {
+            val fragment = TransactionsFragment()
+            return fragment
+        }
     }
 }

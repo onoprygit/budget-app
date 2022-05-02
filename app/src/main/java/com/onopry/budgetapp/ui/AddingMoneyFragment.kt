@@ -5,27 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.onopry.budgetapp.R
+import com.onopry.budgetapp.databinding.ActivityMainBinding.inflate
+import com.onopry.budgetapp.databinding.FragmentAddingMoneyBinding
 import com.onopry.budgetapp.databinding.FragmentMoreBinding
 
+class AddingMoneyFragment : Fragment() {
 
-class MoreFragment : Fragment() {
-
-    private lateinit var binding: FragmentMoreBinding
+    private lateinit var binding: FragmentAddingMoneyBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMoreBinding.inflate(inflater, container, false)
-        binding.moreTextSample.text = "Фрагмент Еще"
-        return binding.root
-    }
+        binding = FragmentAddingMoneyBinding.inflate(inflater, container, false)
 
-    companion object {
-        fun newInstance(): MoreFragment {
-            val fragment = MoreFragment()
-            return fragment
-        }
+
+
+        return binding.root
     }
 }

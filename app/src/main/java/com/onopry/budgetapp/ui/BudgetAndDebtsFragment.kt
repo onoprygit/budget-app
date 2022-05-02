@@ -20,4 +20,11 @@ class BudgetAndDebtsFragment : Fragment() {
         binding.textBudgetAndDebts.text = "Бюджет Фрагмент"
         return binding.root
     }
+
+    companion object {
+        fun newInstance(): BudgetAndDebtsFragment {
+            val fragment = BudgetAndDebtsFragment()
+            return fragment
+        }
+    }
 }
