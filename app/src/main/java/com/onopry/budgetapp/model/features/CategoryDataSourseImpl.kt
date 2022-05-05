@@ -1,49 +1,49 @@
-package com.onopry.budgetapp.data.features
+package com.onopry.budgetapp.model.features
 
 import com.onopry.budgetapp.R
-import com.onopry.budgetapp.data.dto.CategoriesDto
+import com.onopry.budgetapp.model.dto.CategoriesDto
 
 class CategoryDataSourseImpl: CategoriesDataSourse {
     override fun getCategoryes() = mutableListOf(
         CategoriesDto(
             category = "Авто",
-            iconSec = R.drawable.ic_ctegory_car
+            icon = R.drawable.ic_ctegory_car
         ),
         CategoriesDto(
             category = "Продукты",
-            iconSec = R.drawable.ic_category_eat
+            icon = R.drawable.ic_category_eat
         ),
         CategoriesDto(
             category = "Транпорт",
-            iconSec = R.drawable.ic_category_bus
+            icon = R.drawable.ic_category_bus
         ),
         CategoriesDto(
             category = "Кафе",
-            iconSec = R.drawable.ic_category_cafe
+            icon = R.drawable.ic_category_cafe
         ),
         CategoriesDto(
             category = "Одежда",
-            iconSec = R.drawable.ic_category_clothes
+            icon = R.drawable.ic_category_clothes
         ),
         CategoriesDto(
             category = "Дом",
-            iconSec = R.drawable.ic_category_house
+            icon = R.drawable.ic_category_house
         ),
         CategoriesDto(
             category = "Подарки",
-            iconSec = R.drawable.ic_category_gift
+            icon = R.drawable.ic_category_gift
         ),
         CategoriesDto(
             category = "Питомцы",
-            iconSec = R.drawable.ic_category_pets
+            icon = R.drawable.ic_category_pets
         ),
         CategoriesDto(
             category = "Развлечения",
-            iconSec = R.drawable.ic_category_fun
+            icon = R.drawable.ic_category_fun
         ),
         CategoriesDto(
             category = "Здоровье",
-            iconSec = R.drawable.ic_category_health
+            icon = R.drawable.ic_category_health
         )
     )
 

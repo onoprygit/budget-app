@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.data.features
+package com.onopry.budgetapp.model.features
 
 //sasdasd
 class CategoriesModel(

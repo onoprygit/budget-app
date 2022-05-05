@@ -28,18 +28,6 @@ class AddingMoneyFragment : Fragment() {
     ): View? {
         binding = FragmentAddingMoneyBinding.inflate(inflater, container, false)
 
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_list_item_1,
-            moneyList)
-        binding.listMoney.adapter = adapter
-
-        binding.addButton.setOnClickListener {
-            moneyList.add(
-                binding.editText.text.toString().toInt()
-            )
-            adapter.notifyDataSetChanged()
-        }
 
 
         return binding.root
