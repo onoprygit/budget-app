@@ -17,6 +17,11 @@ import com.onopry.budgetapp.databinding.FragmentTransactionsBinding
 class TransactionsFragment : Fragment() {
 
     private lateinit var binding: FragmentTransactionsBinding
+    private val categoryes = listOf(
+        "Медицина", "Транспорт", "Продукты",
+        "Развлечения", "Авто", "Дом",
+        "Кафе", "Хобби", "Прочее")
+    private val moneyList = mutableListOf<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,8 +31,13 @@ class TransactionsFragment : Fragment() {
         binding = FragmentTransactionsBinding.inflate(inflater, container, false)
 
         val addingMoneyFragment = AddingMoneyFragment()
-
+//        val blankFragment = BlankFragment()
         binding.transTextSample.text = "Транзакции"
+//        val bs = binding.root.findViewById<View>(R.layout.fragment_blank)
+//        BottomSheetBehavior.from(bs)
+
+
+
 
 
         binding.fabTransaction.setOnClickListener {
@@ -35,7 +45,7 @@ class TransactionsFragment : Fragment() {
             parentFragmentManager
                 .beginTransaction()
                 .addToBackStack(null)
-                .add(R.id.fragment_container, addingMoneyFragment)
+                .replace(R.id.fragment_container, addingMoneyFragment)
                 .commit()
         }
 
