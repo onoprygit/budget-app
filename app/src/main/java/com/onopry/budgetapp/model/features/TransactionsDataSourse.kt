@@ -1,7 +1,7 @@
 package com.onopry.budgetapp.model.features
 
-import com.onopry.budgetapp.model.Transactions
+import com.onopry.budgetapp.model.dto.TransactionsDto
 
 interface TransactionsDataSourse {
-    fun getTransactions(): MutableList<Transactions>
+    fun getTransactions(): MutableList<TransactionsDto>
 }

@@ -1,15 +1,11 @@
-package com.onopry.budgetapp
+package com.onopry.budgetapp.adapters
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.ItemTransactionBinding
-import com.onopry.budgetapp.model.Transactions
-import com.onopry.budgetapp.model.TransactionsService
-import com.onopry.budgetapp.model.features.CategoriesModel
-import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
 import com.onopry.budgetapp.model.features.TransactionsDataSourseImpl
 import com.onopry.budgetapp.model.features.TransactionsModel
 
