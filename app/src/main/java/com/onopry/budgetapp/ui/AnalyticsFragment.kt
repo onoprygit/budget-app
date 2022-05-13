@@ -22,7 +22,7 @@ class AnalyticsFragment : Fragment() {
     ): View {
         binding = FragmentAnalyticsBinding.inflate(inflater, container, false)
 
-        binding.textHome.text = "Фрагмент \"Аналитика\""
+        binding.textHome.text = "Фрагмент-хуент \"Аналитика\""
         binding.fabAnalytics.setOnClickListener { Toast.makeText(context, "Click!", Toast.LENGTH_SHORT).show() }
 
         return binding.root

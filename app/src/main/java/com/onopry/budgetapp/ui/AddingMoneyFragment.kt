@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.onopry.budgetapp.R
-import com.onopry.budgetapp.databinding.ActivityMainBinding.inflate
+import android.widget.Toast
+import com.onopry.budgetapp.CategoryBottomSheet
 import com.onopry.budgetapp.databinding.FragmentAddingMoneyBinding
-import com.onopry.budgetapp.databinding.FragmentMoreBinding
+
 
 class AddingMoneyFragment : Fragment() {
 
@@ -18,10 +18,14 @@ class AddingMoneyFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAddingMoneyBinding.inflate(inflater, container, false)
 
+        val categoryBottomSheet = CategoryBottomSheet()
 
+        binding.buttonSelectCategory.setOnClickListener {
+            categoryBottomSheet.show(parentFragmentManager, null)
+        }
 
         return binding.root
     }
