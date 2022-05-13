@@ -1,11 +1,10 @@
-package com.onopry.budgetapp.ui
+package com.onopry.budgetapp.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.onopry.budgetapp.CategoryBottomSheet
 import com.onopry.budgetapp.databinding.FragmentAddingMoneyBinding
 

@@ -1,19 +1,15 @@
 package com.onopry.budgetapp
 
 import android.os.Bundle
-import android.util.Log
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import com.google.android.material.navigation.NavigationBarView
 import com.onopry.budgetapp.databinding.ActivityMainBinding
-import com.onopry.budgetapp.ui.MoreFragment
-import com.onopry.budgetapp.ui.BudgetAndDebtsFragment
-import com.onopry.budgetapp.ui.AnalyticsFragment
-import com.onopry.budgetapp.ui.TransactionsFragment
+import com.onopry.budgetapp.screens.MoreFragment
+import com.onopry.budgetapp.screens.BudgetAndDebtsFragment
+import com.onopry.budgetapp.screens.AnalyticsFragment
+import com.onopry.budgetapp.screens.TransactionsFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainNavigator {
 
     // Инициализация переменных
     private lateinit var binding: ActivityMainBinding
@@ -35,21 +31,37 @@ class MainActivity : AppCompatActivity() {
         binding.navView.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.navigation_analytics -> {
-                    replaceFragment(analyticsFragment)
+                    showAnalyticsScreen()
                 }
                 R.id.navigation_transactions -> {
-                    replaceFragment(transactionsFragment)
+                    showTransactionsListScreen()
                 }
                 R.id.navigation_budget_and_debts -> {
-                    replaceFragment(budgetAndDebtsFragment)
+                    showBudgetAndDebtsScreen()
                 }
                 R.id.navigation_more -> {
-                    replaceFragment(moreFragment)
+                    showMoreScreen()
                 }
             }
             true
         }
 
+    }
+
+    override fun showAnalyticsScreen() {
+        replaceFragment(analyticsFragment)
+    }
+
+    override fun showTransactionsListScreen() {
+        replaceFragment(transactionsFragment)
+    }
+
+    override fun showBudgetAndDebtsScreen() {
+        replaceFragment(budgetAndDebtsFragment)
+    }
+
+    override fun showMoreScreen() {
+        replaceFragment(moreFragment)
     }
 
     // Показываем фрагмент на экране
