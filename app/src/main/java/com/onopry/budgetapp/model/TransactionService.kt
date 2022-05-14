@@ -35,7 +35,8 @@ class TransactionService {
     }
 
     /** @param id Идентификатор транзакции */
-    fun editTransaction(oldTransaction: TransactionsDto, id: Int, newAmount:Int, newCategory: CategoriesDto) {
+    fun editTransaction(oldTransaction: TransactionsDto, id: Int,
+                        newAmount:Int, newCategory: CategoriesDto) {
         val indexToEdit = transactionsList.indexOfFirst { it.id == oldTransaction.id }
         if (indexToEdit != -1) {
             with(transactionsList[indexToEdit]) {

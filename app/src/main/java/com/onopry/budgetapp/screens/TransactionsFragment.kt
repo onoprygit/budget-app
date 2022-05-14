@@ -7,9 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.onopry.budgetapp.App
 import com.onopry.budgetapp.adapters.TransactionsAdapter
 import com.onopry.budgetapp.R
+import com.onopry.budgetapp.adapters.TransactionActionListener
 import com.onopry.budgetapp.databinding.FragmentTransactionsBinding
+import com.onopry.budgetapp.model.TransactionService
+import com.onopry.budgetapp.model.TransactionsListener
+import com.onopry.budgetapp.model.dto.TransactionsDto
 import com.onopry.budgetapp.model.features.TransactionsDataSourseImpl
 import com.onopry.budgetapp.model.features.TransactionsModel
 import com.onopry.budgetapp.viewmodels.TransactionsViewModel
@@ -24,6 +29,9 @@ class TransactionsFragment : Fragment() {
     // TODO: Разобраться с делегатами
     private val viewModel: TransactionsViewModel by viewModels { startFactory() }
 
+    private val transactionService: TransactionService
+        get() = (context as App).transactionsService
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,11 +40,25 @@ class TransactionsFragment : Fragment() {
         binding = FragmentTransactionsBinding.inflate(inflater, container, false)
 
         val addingMoneyFragment = AddingMoneyFragment()
-        binding.transTextSample.text = "Транзакции asd"
 
 
         // RecyclerView инициализация всенр важного
-        adapter = TransactionsAdapter(TransactionsModel(TransactionsDataSourseImpl()).getTransactions())
+        transactionService.addListener(transactionsListener)
+
+        adapter = TransactionsAdapter(object : TransactionActionListener {
+            override fun onTransactionDelete(transaction: TransactionsDto) {
+                transactionService.deleteTransaction(transaction)
+            }
+
+            override fun onTransactionAdd(transaction: TransactionsDto) {
+                transactionService.addTransaction(transaction)
+            }
+
+            override fun onTransactionEdit(transaction: TransactionsDto) {
+
+            }
+
+        })
 
         binding.transactionRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.transactionRecycler.adapter = adapter
@@ -52,6 +74,15 @@ class TransactionsFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        transactionService.removeListener(transactionsListener)
+    }
+
+    private val transactionsListener: TransactionsListener = {
+        adapter.transactionList = it
     }
 
     companion object {

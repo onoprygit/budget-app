@@ -18,8 +18,8 @@ class CategoryChooseAdapter(
 
     override fun onBindViewHolder(holder: CategoryChooseViewHolder, position: Int) {
         with(holder.binding){
-            categoryText.text = categoryList[position].category
-            categoryImage.setImageResource(categoryList[position].icon)
+            transactionCategoryText.text = categoryList[position].category
+            transactionCategoryImage.setImageResource(categoryList[position].icon)
         }
     }
 
