@@ -5,19 +5,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.fragment.app.viewModels
-import com.onopry.budgetapp.CategoryBottomSheet
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+
+import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.FragmentAddingMoneyBinding
+import com.onopry.budgetapp.model.dto.CategoriesDto
+import com.onopry.budgetapp.model.dto.TransactionsDto
+import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodels.AddingMoneyViewModel
-import com.onopry.budgetapp.viewmodels.TransactionsViewModel
-import com.onopry.budgetapp.viewmodels.startFactory
 
 
-class AddingMoneyFragment : Fragment() {
 
-//    private val viewModel: AddingMoneyViewModel by viewModels { startFactory() }
+
+class AddingMoneyFragment() : Fragment() {
+
+    private val viewModel: AddingMoneyViewModel by viewModels { startFactory() }
 
     private lateinit var binding: FragmentAddingMoneyBinding
+    private lateinit var categoryBottomSheet:BottomSheetDialogFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,12 +35,43 @@ class AddingMoneyFragment : Fragment() {
     ): View {
         binding = FragmentAddingMoneyBinding.inflate(inflater, container, false)
 
-        val categoryBottomSheet = CategoryBottomSheet()
+        binding.addingMoneyCurrencyIc.setImageResource(R.drawable.ic_ruble)
 
-        binding.buttonSelectCategory.setOnClickListener {
-            categoryBottomSheet.show(parentFragmentManager, null)
+        //todo: сделать нормальную переиспользуемую передачу данных при попытке изменить транзакцию
+        if (savedInstanceState != null) {
+            val transaction = savedInstanceState.getSerializable("transactionTag") as TransactionsDto
+            binding.editText.setText(transaction.amount.toString())
+            binding.addingMoneyEmptyCategoryIc.setImageResource(transaction.category.icon)
+            binding.addingMoneyEmptyCategoryIc.tag = transaction.category
         }
 
+        // Categories chooser
+        categoryBottomSheet = CategoryBottomSheet{
+            binding.addingMoneyEmptyCategoryIc.setImageResource(it.icon)
+            binding.addingMoneyEmptyCategoryIc.tag = it
+            categoryBottomSheet.dismiss()
+            }
+
+        binding.buttonSelectCategory.setOnClickListener {
+            categoryBottomSheet.show(childFragmentManager, null)
+        }
+
+        binding.addButton.setOnClickListener {
+            //todo: Add validation money input
+            val category = binding.addingMoneyEmptyCategoryIc.tag as CategoriesDto
+            val money = binding.editText.text.toString().toInt()
+            viewModel.addTransaction(money, category)
+        }
+
+
         return binding.root
+    }
+
+    companion object {
+        fun newInstance(key:String, transaction: TransactionsDto): AddingMoneyFragment {
+            val fragment = AddingMoneyFragment()
+            fragment.arguments?.putSerializable(key, transaction)
+            return fragment
+        }
     }
 }

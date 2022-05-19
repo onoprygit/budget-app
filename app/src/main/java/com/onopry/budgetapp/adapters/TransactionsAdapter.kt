@@ -1,17 +1,13 @@
 package com.onopry.budgetapp.adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.ItemTransactionBinding
 import com.onopry.budgetapp.model.dto.TransactionsDto
-import com.onopry.budgetapp.model.features.TransactionsDataSourseImpl
-import com.onopry.budgetapp.model.features.TransactionsModel
 
 interface TransactionActionListener{
     fun onTransactionDelete(transaction: TransactionsDto)
@@ -28,13 +24,6 @@ class TransactionsAdapter(
             field = value
             notifyDataSetChanged()
         }
-
-//    var transactions: List<Transactions> = emptyList()
-//        set (newValue){
-//            field = newValue
-//            notifyDataSetChanged()
-//        }
-//    var transactions = TransactionsModel(TransactionsDataSourseImpl()).getTransactions()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -56,6 +45,8 @@ class TransactionsAdapter(
             transactionCategoryText.text = transaction.category.category
             transactionCategoryImage.setImageResource(transaction.category.icon)
             transactionDeleteImg.setImageResource(R.drawable.ic_delete_transaction)
+            transactionDate.text = transaction.date.toString()
+
                 if (transaction.amount > 0) {
                 transactionAmountMoney.text = "+" + transaction.amount.toString()
                 transactionAmountMoney.setTextColor(transactionAmountMoney.resources.getColor(R.color.green))
@@ -63,22 +54,10 @@ class TransactionsAdapter(
                 transactionAmountMoney.text = transaction.amount.toString()
                 transactionAmountMoney.setTextColor(transactionAmountMoney.resources.getColor(R.color.red))
             }
-
-//            transactionDeleteImg.setOnClickListener {
-//                deleteTransaction(position)
-//            }
-
         }
     }
 
     override fun getItemCount() = transactionList.size
-
-//    private fun deleteTransaction(position: Int){
-//        val pos = position
-//        transactionList.removeAt(pos)
-//        notifyItemRemoved(pos)
-//        notifyItemRangeChanged(pos, transactionList.size)
-//    }
 
     class CategoriesViewHolder(
         val binding: ItemTransactionBinding

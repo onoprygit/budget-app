@@ -1,10 +1,11 @@
-package com.onopry.budgetapp.viewmodels
+package com.onopry.budgetapp.utils
 
 import android.app.Application
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.onopry.budgetapp.App
+import com.onopry.budgetapp.viewmodels.*
 
 class ViewModelsFactory(
     private val app: App

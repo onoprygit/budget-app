@@ -5,11 +5,15 @@ import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.TransactionsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
+import java.time.LocalDate
 import java.util.*
 import kotlin.random.Random
 
 // Листенер отдает список транзакций, который будет обновлен после операций
 typealias TransactionsListener = (transactions: List<TransactionsDto>) -> Unit // TODO: разобраться поподробнее с typealias и как вообще этот слушатель работает
+//interface TransactionsListener{
+//    fun event(transactions: List<TransactionsDto>)
+//}
 
 class TransactionService {
 
@@ -21,9 +25,11 @@ class TransactionService {
             TransactionsDto(
                 id = UUID.randomUUID(),
                 amount = Random.nextInt(-10000,10000),
-                category = CATEGORIES[Random.nextInt(0,9)]
+                category = CATEGORIES[Random.nextInt(0,9)],
+                date = LocalDate.of(2022, Random.nextInt(1,4), Random.nextInt(1, 10))
             )}.toMutableList()
-    }
+        transactionsList.sortByDescending { it.date }
+        }
 
     fun getTransactionsList(): List<TransactionsDto> = transactionsList
 
@@ -69,6 +75,9 @@ class TransactionService {
 
     companion object {
         private val CATEGORIES = CategoriesModel(CategoryDataSourseImpl()).getCategories()
+//        private val DATES = listOf<GregorianCalendar>(
+//            ,
+//        )
     }
 
 }

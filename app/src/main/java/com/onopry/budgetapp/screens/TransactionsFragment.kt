@@ -20,20 +20,16 @@ import com.onopry.budgetapp.model.TransactionsListener
 import com.onopry.budgetapp.model.dto.TransactionsDto
 import com.onopry.budgetapp.model.features.TransactionsDataSourseImpl
 import com.onopry.budgetapp.model.features.TransactionsModel
+import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodels.TransactionsViewModel
-import com.onopry.budgetapp.viewmodels.startFactory
 
 class TransactionsFragment : Fragment() {
 
     private lateinit var binding: FragmentTransactionsBinding
-    //private val transList = TransactionsModel(TransactionsDataSourseImpl()).getTransactions()
     private lateinit var adapter: TransactionsAdapter
 
     // TODO: Разобраться с делегатами
     private val viewModel: TransactionsViewModel by viewModels { startFactory() }
-
-//    private val transactionService: TransactionService
-//        get() = ( as App).transactionsService
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,23 +38,16 @@ class TransactionsFragment : Fragment() {
     ): View {
         binding = FragmentTransactionsBinding.inflate(inflater, container, false)
 
-        // RecyclerView инициализация всенр важного
-
-        //transactionService.addListener(transactionsListener)
-
-
         adapter = TransactionsAdapter(object : TransactionActionListener {
             override fun onTransactionDelete(transaction: TransactionsDto) {
                 viewModel.deleteTransaction(transaction)
             }
-
             override fun onTransactionAdd(transaction: TransactionsDto) {
-//                viewModel.addTransaction(transaction)
                 Toast.makeText(requireContext(), "ADD", Toast.LENGTH_SHORT).show()
             }
-
             override fun onTransactionEdit(transaction: TransactionsDto) {
                 Toast.makeText(requireContext(), "EDIT", Toast.LENGTH_SHORT).show()
+                startEditFragment(AddingMoneyFragment.newInstance("transactionTag",transaction))
             }
         })
 
@@ -71,25 +60,11 @@ class TransactionsFragment : Fragment() {
         binding.transactionRecycler.adapter = adapter
 
         binding.fabTransaction.setOnClickListener {
-            val addingMoneyFragment = AddingMoneyFragment()
-            parentFragmentManager
-                .beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.fragment_container, addingMoneyFragment)
-                .commit()
+            startEditFragment(AddingMoneyFragment())
         }
 
         return binding.root
     }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        transactionService.removeListener(transactionsListener)
-//    }
-
-//    private val transactionsListener: TransactionsListener = {
-//        adapter.transactionList = it
-//    }
 
     companion object {
         fun newInstance(): TransactionsFragment {
@@ -97,4 +72,12 @@ class TransactionsFragment : Fragment() {
             return fragment
         }
     }
-}
+
+    fun startEditFragment(fragment: Fragment){
+        parentFragmentManager
+            .beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.fragment_container, fragment)
+            .commit()
+    }
+    }

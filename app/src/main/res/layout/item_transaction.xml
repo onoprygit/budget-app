@@ -36,6 +36,17 @@
         android:layout_marginStart="8dp"
         />
 
+    <TextView
+        android:id="@+id/transaction_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/transaction_category_text"
+        app:layout_constraintStart_toStartOf="@id/transaction_category_text"
+        tools:text="2018.18.18"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        />
+
     <ImageView
         android:id="@+id/transaction_category_image"
         android:layout_width="48dp"
