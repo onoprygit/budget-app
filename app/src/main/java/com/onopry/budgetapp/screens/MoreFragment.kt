@@ -5,11 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.onopry.budgetapp.databinding.FragmentMoreBinding
+import com.onopry.budgetapp.viewmodels.MoreViewModel
+import com.onopry.budgetapp.viewmodels.TransactionsViewModel
+import com.onopry.budgetapp.viewmodels.startFactory
 
 
 class MoreFragment : Fragment() {
 
+//    private val viewModel: MoreViewModel by viewModels { startFactory() }
     private lateinit var binding: FragmentMoreBinding
 
     override fun onCreateView(

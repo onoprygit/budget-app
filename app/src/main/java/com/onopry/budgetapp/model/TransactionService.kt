@@ -1,13 +1,12 @@
 package com.onopry.budgetapp.model
 
+import android.util.Log
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.TransactionsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
 import java.util.*
 import kotlin.random.Random
-
-
 
 // Листенер отдает список транзакций, который будет обновлен после операций
 typealias TransactionsListener = (transactions: List<TransactionsDto>) -> Unit // TODO: разобраться поподробнее с typealias и как вообще этот слушатель работает
@@ -26,6 +25,8 @@ class TransactionService {
             )}.toMutableList()
     }
 
+    fun getTransactionsList(): List<TransactionsDto> = transactionsList
+
     fun deleteTransaction(transaction: TransactionsDto) {
         val indexToDelete = transactionsList.indexOfFirst { it.id == transaction.id }
         if (indexToDelete != -1) {
@@ -36,14 +37,15 @@ class TransactionService {
 
     /** @param id Идентификатор транзакции */
     fun editTransaction(oldTransaction: TransactionsDto, id: Int,
-                        newAmount:Int, newCategory: CategoriesDto) {
+                        newAmount:Int, newCategory: CategoriesDto
+    ) {
         val indexToEdit = transactionsList.indexOfFirst { it.id == oldTransaction.id }
         if (indexToEdit != -1) {
             with(transactionsList[indexToEdit]) {
                 amount = newAmount
                 category = newCategory
+                notifyChanges()
             }
-            notifyChanges()
         }
     }
 
@@ -54,7 +56,10 @@ class TransactionService {
 
 
 
-    fun addListener(listener: TransactionsListener){ listeners.add(listener) }
+    fun addListener(listener: TransactionsListener){
+        listeners.add(listener)
+        listener.invoke(transactionsList)
+    }
 
     fun removeListener(listener: TransactionsListener){ listeners.remove(listener) }
 

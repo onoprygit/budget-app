@@ -1,6 +1,7 @@
 package com.onopry.budgetapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.onopry.budgetapp.databinding.ActivityMainBinding
@@ -27,6 +28,10 @@ class MainActivity : AppCompatActivity(), MainNavigator {
 
         currentFragment = analyticsFragment
         replaceFragment(currentFragment)
+//        supportFragmentManager
+//            .beginTransaction()
+//            .addToBackStack(null)
+//            .commit()
 
         binding.navView.setOnNavigationItemSelectedListener {
             when(it.itemId){
@@ -66,7 +71,6 @@ class MainActivity : AppCompatActivity(), MainNavigator {
 
     // Показываем фрагмент на экране
     private fun replaceFragment(fragment: Fragment){
-        // Log.d("TAG", "FRAGMENTS BACKSTACK: ${supportFragmentManager.backStackEntryCount}")
         if (supportFragmentManager.backStackEntryCount > 0)
             supportFragmentManager.popBackStack()
         supportFragmentManager

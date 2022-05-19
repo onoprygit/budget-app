@@ -1,5 +1,6 @@
 package com.onopry.budgetapp.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,11 +16,14 @@ class TransactionsViewModel(
     private val _transactions = MutableLiveData<List<TransactionsDto>>()
     val transactions: LiveData<List<TransactionsDto>> = _transactions
 
+    private val listener: TransactionsListener = {
+        _transactions.value = it
+    }
+
     init {
         loadTransactions()
     }
 
-    @Suppress("MemberVisibilityCanBePrivate")
     fun loadTransactions(){
         transactionService.addListener(listener)
     }
@@ -35,8 +39,6 @@ class TransactionsViewModel(
     fun editTransaction(transaction: TransactionsDto, id: Int, newAmount:Int, newCategory: CategoriesDto){
         transactionService.editTransaction(transaction, id, newAmount, newCategory)
     }
-
-    private val listener: TransactionsListener = { _transactions.value = it }
 
     override fun onCleared() {
         super.onCleared()

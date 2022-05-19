@@ -23,7 +23,7 @@ class TransactionsAdapter(
     private val actionListener: TransactionActionListener
 ): RecyclerView.Adapter<TransactionsAdapter.CategoriesViewHolder>(), View.OnClickListener
  {
-    var transactionList = emptyList<TransactionsDto>()
+    var transactionList: List<TransactionsDto> = emptyList()
         set(value){
             field = value
             notifyDataSetChanged()
@@ -40,8 +40,8 @@ class TransactionsAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemTransactionBinding.inflate(inflater, parent, false)
 
-        binding.transactionDeleteImg.setOnClickListener(this)
         binding.transactionEditImg.setOnClickListener(this)
+        binding.transactionDeleteImg.setOnClickListener(this)
 
         return CategoriesViewHolder(binding)
     }
@@ -87,7 +87,7 @@ class TransactionsAdapter(
      override fun onClick(v: View?) {
          val transaction = v?.tag as TransactionsDto
          when(v.id){
-             R.id.transaction_delete_img -> actionListener.onTransactionEdit(transaction)
+             R.id.transaction_delete_img -> actionListener.onTransactionDelete(transaction)
              R.id.transaction_edit_img -> actionListener.onTransactionEdit(transaction)
          }
      }
