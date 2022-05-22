@@ -1,12 +1,13 @@
 package com.onopry.budgetapp.model
 
-import android.util.Log
-import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.TransactionsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
+import com.onopry.budgetapp.utils.OperationIdNotFoundException
+import com.onopry.budgetapp.utils.OperationNotFoundException
 import java.time.LocalDate
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 // Листенер отдает список транзакций, который будет обновлен после операций
@@ -23,7 +24,7 @@ class TransactionService {
     init {
         transactionsList = (1..30).map {
             TransactionsDto(
-                id = UUID.randomUUID(),
+                id = UUID.randomUUID().toString(),
                 amount = Random.nextInt(-10000,10000),
                 category = CATEGORIES[Random.nextInt(0,9)],
                 date = LocalDate.of(2022, Random.nextInt(1,4), Random.nextInt(1, 10))
@@ -33,34 +34,47 @@ class TransactionService {
 
     fun getTransactionsList(): List<TransactionsDto> = transactionsList
 
+    fun getOperationById(id: String)= transactionsList.firstOrNull { it.id == id } ?: throw OperationNotFoundException()
+
     fun deleteTransaction(transaction: TransactionsDto) {
         val indexToDelete = transactionsList.indexOfFirst { it.id == transaction.id }
         if (indexToDelete != -1) {
+            transactionsList = ArrayList(transactionsList)
             transactionsList.removeAt(indexToDelete)
             notifyChanges()
         }
     }
 
-    /** @param id Идентификатор транзакции */
-    fun editTransaction(oldTransaction: TransactionsDto, id: Int,
-                        newAmount:Int, newCategory: CategoriesDto
-    ) {
-        val indexToEdit = transactionsList.indexOfFirst { it.id == oldTransaction.id }
+//    /** @param id Идентификатор транзакции */
+//    fun editTransaction(oldTransaction: TransactionsDto, id: Int,
+//                        newAmount:Int, newCategory: CategoriesDto
+//    ) {
+//        val indexToEdit = transactionsList.indexOfFirst { it.id == oldTransaction.id }
+//        if (indexToEdit != -1) {
+//            with(transactionsList[indexToEdit]) {
+//                amount = newAmount
+//                category = newCategory
+//                notifyChanges()
+//            }
+//        }
+//    }
+
+
+    fun editTransaction(transaction: TransactionsDto){
+        val indexToEdit = transactionsList.indexOfFirst { it.id == transaction.id }
         if (indexToEdit != -1) {
-            with(transactionsList[indexToEdit]) {
-                amount = newAmount
-                category = newCategory
-                notifyChanges()
-            }
+            transactionsList = ArrayList(transactionsList)
+            transactionsList[indexToEdit] = transaction
+            notifyChanges()
         }
+        else
+            throw OperationIdNotFoundException()
     }
 
     fun addTransaction(transaction: TransactionsDto) {
         transactionsList.add(transaction)
         notifyChanges()
     }
-
-
 
     fun addListener(listener: TransactionsListener){
         listeners.add(listener)
@@ -75,9 +89,7 @@ class TransactionService {
 
     companion object {
         private val CATEGORIES = CategoriesModel(CategoryDataSourseImpl()).getCategories()
-//        private val DATES = listOf<GregorianCalendar>(
-//            ,
-//        )
+
     }
 
 }

@@ -11,7 +11,7 @@ class TransactionsDataSourseImpl: TransactionsDataSourse {
 
         transactionsList = (1..30).map {
             TransactionsDto(
-                id = UUID.randomUUID(),
+                id = UUID.randomUUID().toString(),
                 amount = Random.nextInt(-10000,10000),
                 category = CATEGORIES[Random.nextInt(0,9)],
             )

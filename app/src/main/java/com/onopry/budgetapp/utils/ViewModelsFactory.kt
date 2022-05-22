@@ -16,6 +16,7 @@ class ViewModelsFactory(
             AddingMoneyViewModel::class.java -> AddingMoneyViewModel(app.transactionsService)
             AnalyticsViewModel::class.java -> AnalyticsViewModel(app.transactionsService)
             BudgetAndDebtsViewModel::class.java -> BudgetAndDebtsViewModel(app.transactionsService)
+            EditOperationViewModel::class.java -> EditOperationViewModel(app.transactionsService)
             MoreViewModel::class.java -> MoreViewModel(app.transactionsService)
             TransactionsViewModel::class.java -> TransactionsViewModel(app.transactionsService)
 
@@ -24,6 +25,3 @@ class ViewModelsFactory(
         return viewModel as T
     }
 }
-
-// TODO: разобраться с App и в целом с фабрикой
-fun Fragment.startFactory() = ViewModelsFactory(requireContext().applicationContext as App)

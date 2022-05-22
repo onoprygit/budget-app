@@ -6,43 +6,43 @@ import com.onopry.budgetapp.model.dto.CategoriesDto
 class CategoryDataSourseImpl: CategoriesDataSourse {
     override fun getCategoryes() = mutableListOf(
         CategoriesDto(
-            category = "Авто",
+            name = "Авто",
             icon = R.drawable.ic_ctegory_car
         ),
         CategoriesDto(
-            category = "Продукты",
+            name = "Продукты",
             icon = R.drawable.ic_category_eat
         ),
         CategoriesDto(
-            category = "Транпорт",
+            name = "Транпорт",
             icon = R.drawable.ic_category_bus
         ),
         CategoriesDto(
-            category = "Кафе",
+            name = "Кафе",
             icon = R.drawable.ic_category_cafe
         ),
         CategoriesDto(
-            category = "Одежда",
+            name = "Одежда",
             icon = R.drawable.ic_category_clothes
         ),
         CategoriesDto(
-            category = "Дом",
+            name = "Дом",
             icon = R.drawable.ic_category_house
         ),
         CategoriesDto(
-            category = "Подарки",
+            name = "Подарки",
             icon = R.drawable.ic_category_gift
         ),
         CategoriesDto(
-            category = "Питомцы",
+            name = "Питомцы",
             icon = R.drawable.ic_category_pets
         ),
         CategoriesDto(
-            category = "Развлечения",
+            name = "Развлечения",
             icon = R.drawable.ic_category_fun
         ),
         CategoriesDto(
-            category = "Здоровье",
+            name = "Здоровье",
             icon = R.drawable.ic_category_health
         )
     )

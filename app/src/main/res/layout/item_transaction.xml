@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/yellow_delicate">
+    android:background="@drawable/background_item_operations"
+    android:layout_marginVertical="2dp">
 
     <TextView
         android:id="@+id/transaction_amount_money"
@@ -45,6 +46,18 @@
         tools:text="2018.18.18"
         android:textColor="@color/black"
         android:textSize="10sp"
+        />
+
+    <TextView
+        android:id="@+id/tools_operation_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/transaction_category_text"
+        app:layout_constraintStart_toEndOf="@id/transaction_date"
+        android:layout_marginStart="4dp"
+        tools:text="123123123123123"
+        android:textSize="8sp"
+        android:textColor="@color/red"
         />
 
     <ImageView

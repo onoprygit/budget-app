@@ -1,4 +1,4 @@
-package com.onopry.budgetapp
+package com.onopry.budgetapp.utils
 
 import com.onopry.budgetapp.model.dto.TransactionsDto
 
@@ -14,6 +14,9 @@ interface MainNavigator {
     fun showTransactionsListScreen()
     fun showBudgetAndDebtsScreen()
     fun showMoreScreen()
+
+    fun goBack()
+    fun toast(messageRes: Int)
 
     // Экраны, вызываемые с основных экранов
     //fun showEditTransactionScreen(transaction: TransactionsDto)

@@ -1,7 +1,7 @@
 package com.onopry.budgetapp
 
 import android.os.Bundle
-import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.onopry.budgetapp.databinding.ActivityMainBinding
@@ -9,6 +9,7 @@ import com.onopry.budgetapp.screens.MoreFragment
 import com.onopry.budgetapp.screens.BudgetAndDebtsFragment
 import com.onopry.budgetapp.screens.AnalyticsFragment
 import com.onopry.budgetapp.screens.TransactionsFragment
+import com.onopry.budgetapp.utils.MainNavigator
 
 class MainActivity : AppCompatActivity(), MainNavigator {
 
@@ -67,6 +68,14 @@ class MainActivity : AppCompatActivity(), MainNavigator {
 
     override fun showMoreScreen() {
         replaceFragment(moreFragment)
+    }
+
+    override fun goBack() {
+        onBackPressed()
+    }
+
+    override fun toast(messageRes: Int) {
+        Toast.makeText(this, messageRes, Toast.LENGTH_SHORT).show()
     }
 
     // Показываем фрагмент на экране

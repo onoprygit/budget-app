@@ -5,6 +5,6 @@ import android.os.Parcelable
 import java.io.Serializable
 
 data class CategoriesDto(
-    val category: String?,
+    val name: String?,
     val icon: Int
 ): Serializable

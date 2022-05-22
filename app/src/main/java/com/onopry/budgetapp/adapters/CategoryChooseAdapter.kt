@@ -29,7 +29,7 @@ class CategoryChooseAdapter(
         val category = categoryList[position]
         with(holder.binding){
             holder.itemView.tag = category
-            transactionCategoryText.text = category.category
+            transactionCategoryText.text = category.name
             transactionCategoryImage.setImageResource(category.icon)
         }
     }

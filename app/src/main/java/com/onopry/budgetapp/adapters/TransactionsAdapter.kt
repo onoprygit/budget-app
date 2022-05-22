@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.ItemTransactionBinding
@@ -11,8 +12,25 @@ import com.onopry.budgetapp.model.dto.TransactionsDto
 
 interface TransactionActionListener{
     fun onTransactionDelete(transaction: TransactionsDto)
-    fun onTransactionAdd(transaction: TransactionsDto)
+//    fun onTransactionAdd(transaction: TransactionsDto)
     fun onTransactionEdit(transaction: TransactionsDto)
+}
+
+class OperationsDuffCallback(
+    private val oldList: List<TransactionsDto>,
+    private val newList: List<TransactionsDto>
+): DiffUtil.Callback() {
+    override fun getOldListSize() = oldList.size
+
+    override fun getNewListSize() = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+        oldList[oldItemPosition].id == newList[newItemPosition].id
+
+    override fun areContentsTheSame(oldPos: Int, newPos: Int) =
+        oldList[oldPos] == newList[newPos]
+
+
 }
 
 class TransactionsAdapter(
@@ -20,9 +38,12 @@ class TransactionsAdapter(
 ): RecyclerView.Adapter<TransactionsAdapter.CategoriesViewHolder>(), View.OnClickListener
  {
     var transactionList: List<TransactionsDto> = emptyList()
-        set(value){
-            field = value
-            notifyDataSetChanged()
+        set(newValue){
+            val diffCAll = OperationsDuffCallback(field, newValue)
+            val diffResult = DiffUtil.calculateDiff(diffCAll)
+            field = newValue
+            diffResult.dispatchUpdatesTo(this)
+//            notifyDataSetChanged()
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoriesViewHolder {
@@ -42,10 +63,14 @@ class TransactionsAdapter(
             transactionDeleteImg.tag = transaction
             transactionEditImg.tag = transaction
 
-            transactionCategoryText.text = transaction.category.category
+            transactionCategoryText.text = transaction.category.name
             transactionCategoryImage.setImageResource(transaction.category.icon)
             transactionDeleteImg.setImageResource(R.drawable.ic_delete_transaction)
             transactionDate.text = transaction.date.toString()
+
+            //
+//            toolsOperationId.text = transaction.id
+            //
 
                 if (transaction.amount > 0) {
                 transactionAmountMoney.text = "+" + transaction.amount.toString()

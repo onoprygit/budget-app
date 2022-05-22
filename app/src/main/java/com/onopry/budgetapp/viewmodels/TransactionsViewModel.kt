@@ -36,9 +36,9 @@ class TransactionsViewModel(
         transactionService.addTransaction(transaction)
     }
 
-    fun editTransaction(transaction: TransactionsDto, id: Int, newAmount:Int, newCategory: CategoriesDto){
-        transactionService.editTransaction(transaction, id, newAmount, newCategory)
-    }
+//    fun editTransaction(transaction: TransactionsDto, id: Int, newAmount:Int, newCategory: CategoriesDto){
+//        transactionService.editTransaction(transaction, id, newAmount, newCategory)
+//    }
 
     override fun onCleared() {
         super.onCleared()
