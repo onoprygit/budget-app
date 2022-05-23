@@ -24,7 +24,7 @@ class TransactionsViewModel(
         loadTransactions()
     }
 
-    fun loadTransactions(){
+    private fun loadTransactions(){
         transactionService.addListener(listener)
     }
 
@@ -32,9 +32,9 @@ class TransactionsViewModel(
         transactionService.deleteTransaction(transaction)
     }
 
-    fun addTransaction(transaction: TransactionsDto){
-        transactionService.addTransaction(transaction)
-    }
+//    fun addTransaction(transaction: TransactionsDto){
+//        transactionService.addTransaction(transaction)
+//    }
 
 //    fun editTransaction(transaction: TransactionsDto, id: Int, newAmount:Int, newCategory: CategoriesDto){
 //        transactionService.editTransaction(transaction, id, newAmount, newCategory)

@@ -67,7 +67,7 @@
         app:layout_constraintStart_toStartOf="@id/editing_operation_guide_start"
         app:layout_constraintTop_toBottomOf="@id/editing_operation_edit_text"
         android:layout_marginTop="@dimen/base_horizontal_offset"
-        android:src="@drawable/ic_no_category"
+        android:src="@drawable/ic_category_placeholder"
         />
 
     <Button

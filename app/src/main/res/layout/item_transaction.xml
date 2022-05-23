@@ -5,11 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background_item_operations"
-    android:layout_marginVertical="2dp">
+    android:layout_marginVertical="2dp"
+    android:layout_marginHorizontal="8dp"
+    android:elevation="8dp"
+    >
 
     <TextView
         android:id="@+id/transaction_amount_money"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/transaction_category_text"
@@ -56,19 +59,19 @@
         app:layout_constraintStart_toEndOf="@id/transaction_date"
         android:layout_marginStart="4dp"
         tools:text="123123123123123"
-        android:textSize="8sp"
+        android:textSize="12sp"
         android:textColor="@color/red"
         />
 
     <ImageView
         android:id="@+id/transaction_category_image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:src="@tools:sample/avatars"
         android:layout_marginTop="6dp"
-        android:layout_marginStart="@dimen/base_horizontal_offset"
+        android:layout_marginStart="8dp"
         />
 
     <ImageView

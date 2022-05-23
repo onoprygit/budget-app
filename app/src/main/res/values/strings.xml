@@ -32,6 +32,8 @@
     <string name="adding_money_hint_money">Введите сумму операции</string>
     <string name="adding_money_set_wallet">Счет</string>
     <string name="adding_monet_error_validaton_input">Введите сумму</string>
+    <string name="adding_money_radio_expence">Расход</string>
+    <string name="adding_money_radio_income">Приход</string>
 
 
     <!--  For EditOperationFragment  -->

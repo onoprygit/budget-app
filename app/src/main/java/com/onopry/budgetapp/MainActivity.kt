@@ -5,10 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.onopry.budgetapp.databinding.ActivityMainBinding
-import com.onopry.budgetapp.screens.MoreFragment
-import com.onopry.budgetapp.screens.BudgetAndDebtsFragment
-import com.onopry.budgetapp.screens.AnalyticsFragment
-import com.onopry.budgetapp.screens.TransactionsFragment
+import com.onopry.budgetapp.screens.*
 import com.onopry.budgetapp.utils.MainNavigator
 
 class MainActivity : AppCompatActivity(), MainNavigator {
@@ -20,6 +17,7 @@ class MainActivity : AppCompatActivity(), MainNavigator {
     private val transactionsFragment = TransactionsFragment()
     private val budgetAndDebtsFragment = BudgetAndDebtsFragment()
     private val moreFragment = MoreFragment()
+    private val addOperationFragment = AddOperationFragment()
     private lateinit var currentFragment: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +52,18 @@ class MainActivity : AppCompatActivity(), MainNavigator {
 
     }
 
+    override fun showAddOperationScreen() {
+        replaceFragment(addOperationFragment, isNested = true)
+    }
+
+    override fun showEditOperationScreen(operationId: String) {
+        replaceFragment(
+            EditOperationFragment.newInstance(
+                "ARG_OPERATION_ID", operationId),
+            isNested = true
+        )
+    }
+
     override fun showAnalyticsScreen() {
         replaceFragment(analyticsFragment)
     }
@@ -74,17 +84,26 @@ class MainActivity : AppCompatActivity(), MainNavigator {
         onBackPressed()
     }
 
-    override fun toast(messageRes: Int) {
+    override fun toast(messageRes: String) {
         Toast.makeText(this, messageRes, Toast.LENGTH_SHORT).show()
     }
 
     // Показываем фрагмент на экране
-    private fun replaceFragment(fragment: Fragment){
-        if (supportFragmentManager.backStackEntryCount > 0)
-            supportFragmentManager.popBackStack()
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
+    /** @param [isNested] Is the fragment must open only from other fragment **/
+    private fun replaceFragment(fragment: Fragment, isNested: Boolean = false){
+        if (isNested){
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
+        } else {
+            if (supportFragmentManager.backStackEntryCount > 0)
+                supportFragmentManager.popBackStack()
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
+        }
     }
 }

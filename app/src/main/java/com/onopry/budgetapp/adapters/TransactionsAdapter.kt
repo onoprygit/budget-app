@@ -1,6 +1,7 @@
 package com.onopry.budgetapp.adapters
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,17 +69,14 @@ class TransactionsAdapter(
             transactionDeleteImg.setImageResource(R.drawable.ic_delete_transaction)
             transactionDate.text = transaction.date.toString()
 
-            //
-//            toolsOperationId.text = transaction.id
-            //
 
-                if (transaction.amount > 0) {
-                transactionAmountMoney.text = "+" + transaction.amount.toString()
-                transactionAmountMoney.setTextColor(transactionAmountMoney.resources.getColor(R.color.green))
-            } else {
-                transactionAmountMoney.text = transaction.amount.toString()
+            toolsOperationId.text = transaction.id.substring(0..10)
+
+            transactionAmountMoney.text = transaction.amount.toString()
+            if (transaction.isExpence)
                 transactionAmountMoney.setTextColor(transactionAmountMoney.resources.getColor(R.color.red))
-            }
+            else
+                transactionAmountMoney.setTextColor(transactionAmountMoney.resources.getColor(R.color.green))
         }
     }
 

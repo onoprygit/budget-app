@@ -14,6 +14,7 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.EditOperationFragmentBinding
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.TransactionsDto
+import com.onopry.budgetapp.utils.OperationCategoryNotFoundException
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodels.EditOperationViewModel
@@ -37,7 +38,9 @@ class EditOperationFragment : Fragment() {
     ): View {
         binding = EditOperationFragmentBinding.inflate(inflater, container, false)
 
+        //put current operation category in 'tag' for get it for new operation when it will create
         binding.editingOperationTitle.text = viewModel.operation.value?.id ?: "NONE"
+        binding.editingOperationEmptyCategoryIc.tag = viewModel.operation.value?.category ?: throw OperationCategoryNotFoundException()
 
         //get actual live data and setting it to view's of this fragment
         viewModel.operation.observe(viewLifecycleOwner, {

@@ -4,18 +4,19 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
 
 class CategoryDataSourseImpl: CategoriesDataSourse {
+    //https://tablericons.com/
     override fun getCategoryes() = mutableListOf(
         CategoriesDto(
             name = "Авто",
-            icon = R.drawable.ic_ctegory_car
+            icon = R.drawable.ic_category_car
         ),
         CategoriesDto(
             name = "Продукты",
-            icon = R.drawable.ic_category_eat
+            icon = R.drawable.ic_category_food
         ),
         CategoriesDto(
             name = "Транпорт",
-            icon = R.drawable.ic_category_bus
+            icon = R.drawable.ic_category_transport
         ),
         CategoriesDto(
             name = "Кафе",
@@ -27,7 +28,7 @@ class CategoryDataSourseImpl: CategoriesDataSourse {
         ),
         CategoriesDto(
             name = "Дом",
-            icon = R.drawable.ic_category_house
+            icon = R.drawable.ic_category_home
         ),
         CategoriesDto(
             name = "Подарки",
@@ -39,7 +40,7 @@ class CategoryDataSourseImpl: CategoriesDataSourse {
         ),
         CategoriesDto(
             name = "Развлечения",
-            icon = R.drawable.ic_category_fun
+            icon = R.drawable.ic_category_entertainment
         ),
         CategoriesDto(
             name = "Здоровье",

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.onopry.budgetapp.databinding.AnalyticsFragmentBinding
+import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodels.AnalyticsViewModel
 import com.onopry.budgetapp.viewmodels.TransactionsViewModel
@@ -26,7 +27,9 @@ class AnalyticsFragment : Fragment() {
         binding = AnalyticsFragmentBinding.inflate(inflater, container, false)
 
         binding.textHome.text = "Фрагмент-хуент \"Аналитика\""
-        binding.fabAnalytics.setOnClickListener { Toast.makeText(context, "Click!", Toast.LENGTH_SHORT).show() }
+        binding.fabAnalytics.setOnClickListener {
+            navigator().showAddOperationScreen()
+        }
 
         return binding.root
     }

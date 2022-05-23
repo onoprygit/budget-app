@@ -15,13 +15,11 @@ class AddingMoneyViewModel(
     private val _transaction = MutableLiveData<TransactionsDto>()
     val transaction: LiveData<TransactionsDto> = _transaction
 
-    fun addTransaction(newOperation: TransactionsDto){
-        val transaction = TransactionsDto(
-            id = UUID.randomUUID().toString(),
-            amount = newOperation.amount,
-            category = newOperation.category,
-            date = newOperation.date
+    fun addTransaction(operation: TransactionsDto){
+        transactionService.addTransaction(
+            operation.copy(
+                id = UUID.randomUUID().toString()
+            )
         )
-        transactionService.addTransaction(transaction)
     }
 }

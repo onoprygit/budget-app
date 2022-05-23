@@ -1,27 +1,42 @@
 package com.onopry.budgetapp.screens
 
+import android.app.DatePickerDialog
+import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.datepicker.MaterialDatePicker
 
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.AddOperationFragmentBinding
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.TransactionsDto
+import com.onopry.budgetapp.utils.CONSTANTS
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodels.AddingMoneyViewModel
+import java.time.LocalDate
+import java.util.*
+
+const val TODAY = 0
+const val YESTERDAY = 1
+const val DAY_BEFORE_YESTERDAY = 2
+const val OTHER_DAY = 3
 
 class AddOperationFragment : Fragment() {
 
     private val viewModel: AddingMoneyViewModel by viewModels { startFactory() }
 
     private lateinit var binding: AddOperationFragmentBinding
-    private lateinit var categoryBottomSheet:BottomSheetDialogFragment
+    private lateinit var categoryBottomSheet: BottomSheetDialogFragment
+    private lateinit var operationDatePickerFragment: OperationDatePickerFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,39 +47,66 @@ class AddOperationFragment : Fragment() {
 //        Log.d(CONSTANTS.ADDING_MONEY_FRAGMENT_TAG, "savedInstanceState is empty? BUNDLE IS ${savedInstanceState?.isEmpty}")
 //        Log.d(CONSTANTS.ADDING_MONEY_FRAGMENT_TAG, (arguments?.getSerializable("toEdit") as TransactionsDto?)?.id ?: "nonono")
 
-
+        binding.addingOperationDatePick.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        binding.addingOperationDatePick.tag = LocalDate.now()
 
         binding.addingOperationCurrencyIc.setImageResource(R.drawable.ic_ruble)
 
-        // Categories chooser
-        categoryBottomSheet = CategoryBottomSheet{
+        // Инициализация модального окна со списком категорий
+        categoryBottomSheet = CategoryBottomSheet {
             binding.addingOperationEmptyCategoryIc.setImageResource(it.icon)
             binding.addingOperationEmptyCategoryIc.tag = it
             binding.addingOperationSelectCategory.text = it.name
             categoryBottomSheet.dismiss()
-//            navigator().goBack()
-            }
+        }
 
+        // Выбор категории
         binding.addingOperationSelectCategory.setOnClickListener {
             categoryBottomSheet.show(childFragmentManager, null)
         }
 
+        // Добавления операции в список
         binding.addingOperationAddButton.setOnClickListener {
 //            //todo: Add validation money input
-//            val category = binding.addingOperationEmptyCategoryIc.tag as CategoriesDto
-//            val money = binding.addingOperationEditText.text.toString().toInt()
-//            viewModel.addTransaction(money, category)
-//            navigator().goBack()
-            with(binding){
+            with(binding) {
                 val operation = TransactionsDto(
                     id = "",
                     amount = addingOperationEditText.text.toString().toInt(),
-                    category = binding.addingOperationEmptyCategoryIc.tag as CategoriesDto
-//                    date
+                    category = addingOperationEmptyCategoryIc.tag as CategoriesDto,
+                    isExpence = operationRadioExpence.isChecked,
+                    date = addingOperationDatePick.tag as LocalDate
                 )
                 viewModel.addTransaction(operation)
             }
         }
+
+        //Выбор даты
+        operationDatePickerFragment = OperationDatePickerFragment { year, _month, day ->
+            val month = _month + 1
+//            if (!isToday(year, month, day)) {
+//                binding.addingOperationDatePick.text = "$day-$month-$year"
+//                Log.d("RANDOM TAG", "today!")
+//            }
+            with(binding.addingOperationDatePick) {
+                when (isToday(year, month, day)) {
+                    TODAY -> text = "Сегодня"
+                    YESTERDAY -> text = "Вчера"
+                    DAY_BEFORE_YESTERDAY -> text = "Позавчера"
+                    OTHER_DAY -> text = "$day-$month-$year"
+                }
+            }
+
+            Log.d("RANDOM TAG", "$year-$month-$day")
+            binding.addingOperationDatePick.tag = LocalDate.of(year, month, day)
+        }
+
+        binding.addingOperationDatePick.setOnClickListener {
+            operationDatePickerFragment.show(parentFragmentManager, "datePicker")
+        }
+
+//        navigator().toast("${Calendar.YEAR} ${Calendar.MONTH} ${Calendar.DAY_OF_MONTH}")
+
+
         return binding.root
     }
 
@@ -76,5 +118,20 @@ class AddOperationFragment : Fragment() {
         }
 
         fun newInstance() = AddOperationFragment()
+    }
+
+    private fun isToday(year: Int, month: Int, day: Int): Int {
+        val c = Calendar.getInstance()
+        val y = c.get(Calendar.YEAR)
+        val m = c.get(Calendar.MONTH) + 1
+        val d = c.get(Calendar.DAY_OF_MONTH)
+        Log.d("DATETAG", "CalendarNow: $y $m $d")
+        Log.d("DATETAG", "DateGet: $year $month $day")
+        if ((y == year) && (m == month)) {
+            if (d == day) return TODAY
+            if (d == day + 1) return YESTERDAY
+            if (d == day + 2) return DAY_BEFORE_YESTERDAY
+        }
+        return OTHER_DAY
     }
 }

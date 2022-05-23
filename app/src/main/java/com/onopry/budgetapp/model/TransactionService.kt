@@ -25,9 +25,10 @@ class TransactionService {
         transactionsList = (1..30).map {
             TransactionsDto(
                 id = UUID.randomUUID().toString(),
-                amount = Random.nextInt(-10000,10000),
+                amount = Random.nextInt(100,10000),
                 category = CATEGORIES[Random.nextInt(0,9)],
-                date = LocalDate.of(2022, Random.nextInt(1,4), Random.nextInt(1, 10))
+                date = LocalDate.of(2022, Random.nextInt(1,4), Random.nextInt(1, 10)),
+                isExpence = Random.nextBoolean()
             )}.toMutableList()
         transactionsList.sortByDescending { it.date }
         }
@@ -65,6 +66,7 @@ class TransactionService {
         if (indexToEdit != -1) {
             transactionsList = ArrayList(transactionsList)
             transactionsList[indexToEdit] = transaction
+            transactionsList.sortByDescending { it.date }
             notifyChanges()
         }
         else
@@ -73,6 +75,7 @@ class TransactionService {
 
     fun addTransaction(transaction: TransactionsDto) {
         transactionsList.add(transaction)
+        transactionsList.sortByDescending { it.date }
         notifyChanges()
     }
 
