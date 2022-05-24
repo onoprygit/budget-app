@@ -4,45 +4,46 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
 
 class CategoryDataSourseImpl: CategoriesDataSourse {
+    //https://tablericons.com/
     override fun getCategoryes() = mutableListOf(
         CategoriesDto(
-            category = "Авто",
-            icon = R.drawable.ic_ctegory_car
+            name = "Авто",
+            icon = R.drawable.ic_category_car
         ),
         CategoriesDto(
-            category = "Продукты",
-            icon = R.drawable.ic_category_eat
+            name = "Продукты",
+            icon = R.drawable.ic_category_food
         ),
         CategoriesDto(
-            category = "Транпорт",
-            icon = R.drawable.ic_category_bus
+            name = "Транпорт",
+            icon = R.drawable.ic_category_transport
         ),
         CategoriesDto(
-            category = "Кафе",
+            name = "Кафе",
             icon = R.drawable.ic_category_cafe
         ),
         CategoriesDto(
-            category = "Одежда",
+            name = "Одежда",
             icon = R.drawable.ic_category_clothes
         ),
         CategoriesDto(
-            category = "Дом",
-            icon = R.drawable.ic_category_house
+            name = "Дом",
+            icon = R.drawable.ic_category_home
         ),
         CategoriesDto(
-            category = "Подарки",
+            name = "Подарки",
             icon = R.drawable.ic_category_gift
         ),
         CategoriesDto(
-            category = "Питомцы",
+            name = "Питомцы",
             icon = R.drawable.ic_category_pets
         ),
         CategoriesDto(
-            category = "Развлечения",
-            icon = R.drawable.ic_category_fun
+            name = "Развлечения",
+            icon = R.drawable.ic_category_entertainment
         ),
         CategoriesDto(
-            category = "Здоровье",
+            name = "Здоровье",
             icon = R.drawable.ic_category_health
         )
     )

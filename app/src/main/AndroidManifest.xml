@@ -8,9 +8,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_my_auncher"
         android:label="@string/app_name"
-
         android:supportsRtl="true"
-        android:theme="@style/Theme.BudgetApp">
+        android:theme="@style/Theme.BudgetApp"
+        android:name=".App">
         <activity
             android:name=".MainActivity"
             android:exported="true"

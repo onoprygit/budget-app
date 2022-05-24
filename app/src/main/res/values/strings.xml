@@ -24,8 +24,37 @@
         <item>Здоровье</item>
     </string-array>
 
+    <!--  For AddOperationFragment  -->
+    <string name="adding_money_title_appbar">Добавить операцию</string>
+    <string name="adding_money_set_category">Выберите категорию</string>
+    <string name="adding_money_add_button">Добавить</string>
+    <string name="adding_money_date">Сегодня</string>
+    <string name="adding_money_hint_money">Введите сумму операции</string>
+    <string name="adding_money_set_wallet">Счет</string>
+    <string name="adding_monet_error_validaton_input">Введите сумму</string>
+    <string name="adding_money_radio_expence">Расход</string>
+    <string name="adding_money_radio_income">Приход</string>
 
 
+    <!--  For EditOperationFragment  -->
+    <string name="editing_money_title_appbar">Редактировать операцию</string>
+    <string name="editing_money_set_category">Выберите категорию</string>
+    <string name="editing_money_add_button">Сохранить</string>
+    <string name="editing_money_date">Сегодня</string>
+    <string name="editing_money_hint_money">Введите сумму операции</string>
+    <string name="editing_money_set_wallet">Счет</string>
+    <string name="editing_monet_error_validaton_input">Введите сумму</string>
+
+    <!--  For AnalyticsFragment  -->
+
+
+    <!--  For BudgetAndDebtsFragment  -->
+
+
+    <!--  For MoreFragment  -->
+
+
+    <!--  For TransactionFragment  -->
 
 
 </resources>
