@@ -9,8 +9,6 @@ import androidx.fragment.app.viewModels
 import com.onopry.budgetapp.databinding.FragmentMoreBinding
 import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodels.MoreViewModel
-import com.onopry.budgetapp.viewmodels.TransactionsViewModel
-
 
 
 class MoreFragment : Fragment() {

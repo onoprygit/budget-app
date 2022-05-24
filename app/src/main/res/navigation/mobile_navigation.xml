@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_transactions"
-        android:name="com.onopry.budgetapp.screens.TransactionsFragment"
+        android:name="com.onopry.budgetapp.screens.OperationFragment"
         android:label="@string/title_transactions"
-        tools:layout="@layout/fragment_transactions" />
+        tools:layout="@layout/fragment_operation" />
 </navigation>

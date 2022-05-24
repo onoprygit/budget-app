@@ -7,43 +7,43 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.onopry.budgetapp.adapters.TransactionsAdapter
+import com.onopry.budgetapp.adapters.OperationsAdapter
 import com.onopry.budgetapp.R
-import com.onopry.budgetapp.adapters.TransactionActionListener
-import com.onopry.budgetapp.databinding.FragmentTransactionsBinding
-import com.onopry.budgetapp.model.dto.TransactionsDto
+import com.onopry.budgetapp.adapters.OperationActionListener
+import com.onopry.budgetapp.databinding.FragmentOperationBinding
+import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodels.TransactionsViewModel
+import com.onopry.budgetapp.viewmodels.OperationsViewModel
 
 
 
-class TransactionsFragment : Fragment() {
+class OperationFragment : Fragment() {
 
-    private lateinit var binding: FragmentTransactionsBinding
-    private lateinit var adapter: TransactionsAdapter
+    private lateinit var binding: FragmentOperationBinding
+    private lateinit var adapter: OperationsAdapter
 
     // TODO: Разобраться с делегатами
-    private val viewModel: TransactionsViewModel by viewModels { startFactory() }
+    private val viewModel: OperationsViewModel by viewModels { startFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentTransactionsBinding.inflate(inflater, container, false)
+        binding = FragmentOperationBinding.inflate(inflater, container, false)
 
-        adapter = TransactionsAdapter(object : TransactionActionListener {
-            override fun onTransactionDelete(transaction: TransactionsDto) {
-                viewModel.deleteTransaction(transaction)
+        adapter = OperationsAdapter(object : OperationActionListener {
+            override fun onOperationDelete(operation: OperationsDto) {
+                viewModel.deleteOperation(operation)
             }
 
-            override fun onTransactionEdit(transaction: TransactionsDto) {
-                navigator().showEditOperationScreen(transaction.id)
+            override fun onOperationEdit(operation: OperationsDto) {
+                navigator().showEditOperationScreen(operation.id)
             }
         })
 
-        viewModel.transactions.observe(viewLifecycleOwner) { adapter.transactionList = it }
+        viewModel.operations.observe(viewLifecycleOwner) { adapter.operationList = it }
 
         binding.transactionRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.transactionRecycler.adapter = adapter
@@ -56,7 +56,7 @@ class TransactionsFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = TransactionsFragment()
+        fun newInstance() = OperationFragment()
     }
 
     fun startFragmentToEdit(fragment: Fragment){

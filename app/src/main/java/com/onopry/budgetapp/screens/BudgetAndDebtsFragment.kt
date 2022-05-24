@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import com.onopry.budgetapp.databinding.FragmentBudetAndDebtsBinding
 import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodels.BudgetAndDebtsViewModel
-import com.onopry.budgetapp.viewmodels.TransactionsViewModel
 
 
 class BudgetAndDebtsFragment : Fragment() {

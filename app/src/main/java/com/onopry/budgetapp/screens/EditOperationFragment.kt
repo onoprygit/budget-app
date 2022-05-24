@@ -10,10 +10,9 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.EditOperationFragmentBinding
 import com.onopry.budgetapp.model.dto.CategoriesDto
-import com.onopry.budgetapp.model.dto.TransactionsDto
+import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.OperationCategoryNotFoundException
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
@@ -65,7 +64,7 @@ class EditOperationFragment : Fragment() {
 
         binding.editingOperationSaveButton.setOnClickListener {
             with(binding){
-                val operation = TransactionsDto(
+                val operation = OperationsDto(
                     id = "_",
                     amount = editingOperationEditText.text.toString().toInt(),
                     category = binding.editingOperationEmptyCategoryIc.tag as CategoriesDto

@@ -1,7 +1,5 @@
 package com.onopry.budgetapp.utils
 
-import com.onopry.budgetapp.screens.TransactionsFragment
-
 object CONSTANTS {
     const val ADDING_MONEY_FRAGMENT_TAG = "ADDING_MONEY_FRAGMENT_TAG"
     const val ANALYTICS_FRAGMENT_TAG = "ANALYTICS_FRAGMENT_TAG"

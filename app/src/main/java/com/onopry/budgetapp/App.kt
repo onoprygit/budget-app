@@ -1,8 +1,8 @@
 package com.onopry.budgetapp
 
 import android.app.Application
-import com.onopry.budgetapp.model.TransactionService
+import com.onopry.budgetapp.model.OperationsService
 
 class App: Application() {
-    val transactionsService = TransactionService()
+    val operationsService = OperationsService()
 }

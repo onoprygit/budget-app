@@ -1,9 +1,9 @@
 package com.onopry.budgetapp.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.onopry.budgetapp.model.TransactionService
+import com.onopry.budgetapp.model.OperationsService
 
 class MoreViewModel(
-    private val transactionService: TransactionService
+    private val operationsService: OperationsService
 ): ViewModel() {
 }

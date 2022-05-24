@@ -3,20 +3,19 @@ package com.onopry.budgetapp.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.onopry.budgetapp.model.TransactionService
-import com.onopry.budgetapp.model.dto.CategoriesDto
-import com.onopry.budgetapp.model.dto.TransactionsDto
+import com.onopry.budgetapp.model.OperationsService
+import com.onopry.budgetapp.model.dto.OperationsDto
 import java.util.*
 
 class AddingMoneyViewModel(
-    private val transactionService: TransactionService
+    private val operationsService: OperationsService
 ): ViewModel() {
 
-    private val _transaction = MutableLiveData<TransactionsDto>()
-    val transaction: LiveData<TransactionsDto> = _transaction
+    private val _operation = MutableLiveData<OperationsDto>()
+    val operation: LiveData<OperationsDto> = _operation
 
-    fun addTransaction(operation: TransactionsDto){
-        transactionService.addTransaction(
+    fun addOperation(operation: OperationsDto){
+        operationsService.addOperation(
             operation.copy(
                 id = UUID.randomUUID().toString()
             )

@@ -1,6 +1,5 @@
 package com.onopry.budgetapp.screens
 
-import android.app.DatePickerDialog
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
@@ -8,18 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.datepicker.MaterialDatePicker
 
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.AddOperationFragmentBinding
 import com.onopry.budgetapp.model.dto.CategoriesDto
-import com.onopry.budgetapp.model.dto.TransactionsDto
-import com.onopry.budgetapp.utils.CONSTANTS
-import com.onopry.budgetapp.utils.navigator
+import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodels.AddingMoneyViewModel
 import java.time.LocalDate
@@ -69,14 +63,14 @@ class AddOperationFragment : Fragment() {
         binding.addingOperationAddButton.setOnClickListener {
 //            //todo: Add validation money input
             with(binding) {
-                val operation = TransactionsDto(
+                val operation = OperationsDto(
                     id = "",
                     amount = addingOperationEditText.text.toString().toInt(),
                     category = addingOperationEmptyCategoryIc.tag as CategoriesDto,
                     isExpence = operationRadioExpence.isChecked,
                     date = addingOperationDatePick.tag as LocalDate
                 )
-                viewModel.addTransaction(operation)
+                viewModel.addOperation(operation)
             }
         }
 
@@ -111,7 +105,7 @@ class AddOperationFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(key: String, value: TransactionsDto) = AddOperationFragment().apply {
+        fun newInstance(key: String, value: OperationsDto) = AddOperationFragment().apply {
             arguments = Bundle().apply {
                 putSerializable(key, value)
             }

@@ -1,7 +1,5 @@
 package com.onopry.budgetapp.utils
 
-import android.app.Application
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.onopry.budgetapp.App
@@ -13,12 +11,12 @@ class ViewModelsFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val viewModel = when (modelClass){
 
-            AddingMoneyViewModel::class.java -> AddingMoneyViewModel(app.transactionsService)
-            AnalyticsViewModel::class.java -> AnalyticsViewModel(app.transactionsService)
-            BudgetAndDebtsViewModel::class.java -> BudgetAndDebtsViewModel(app.transactionsService)
-            EditOperationViewModel::class.java -> EditOperationViewModel(app.transactionsService)
-            MoreViewModel::class.java -> MoreViewModel(app.transactionsService)
-            TransactionsViewModel::class.java -> TransactionsViewModel(app.transactionsService)
+            AddingMoneyViewModel::class.java -> AddingMoneyViewModel(app.operationsService)
+            AnalyticsViewModel::class.java -> AnalyticsViewModel(app.operationsService)
+            BudgetAndDebtsViewModel::class.java -> BudgetAndDebtsViewModel(app.operationsService)
+            EditOperationViewModel::class.java -> EditOperationViewModel(app.operationsService)
+            MoreViewModel::class.java -> MoreViewModel(app.operationsService)
+            OperationsViewModel::class.java -> OperationsViewModel(app.operationsService)
 
             else -> throw IllegalStateException("Unknown ViewModel class")
         }

@@ -6,7 +6,7 @@ import java.io.Serializable
 import java.time.LocalDate
 import java.util.*
 
-data class TransactionsDto(
+data class OperationsDto(
     val id: String,
     var amount: Int,
     var category: CategoriesDto,

@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity(), MainNavigator {
     private lateinit var binding: ActivityMainBinding
 
     private val analyticsFragment = AnalyticsFragment()
-    private val transactionsFragment = TransactionsFragment()
+    private val operationFragment = OperationFragment()
     private val budgetAndDebtsFragment = BudgetAndDebtsFragment()
     private val moreFragment = MoreFragment()
     private val addOperationFragment = AddOperationFragment()
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), MainNavigator {
                     showAnalyticsScreen()
                 }
                 R.id.navigation_transactions -> {
-                    showTransactionsListScreen()
+                    showOperationsListScreen()
                 }
                 R.id.navigation_budget_and_debts -> {
                     showBudgetAndDebtsScreen()
@@ -68,8 +68,8 @@ class MainActivity : AppCompatActivity(), MainNavigator {
         replaceFragment(analyticsFragment)
     }
 
-    override fun showTransactionsListScreen() {
-        replaceFragment(transactionsFragment)
+    override fun showOperationsListScreen() {
+        replaceFragment(operationFragment)
     }
 
     override fun showBudgetAndDebtsScreen() {
