@@ -24,7 +24,6 @@ class AnalyticsFragment : Fragment() {
     ): View {
         binding = AnalyticsFragmentBinding.inflate(inflater, container, false)
 
-        binding.textHome.text = "Фрагмент-хуент \"Аналитика\""
         binding.fabAnalytics.setOnClickListener {
             navigator().showAddOperationScreen()
         }
