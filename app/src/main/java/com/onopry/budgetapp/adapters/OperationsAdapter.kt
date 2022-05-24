@@ -63,8 +63,8 @@ class OperationsAdapter(
             transactionDeleteImg.tag = operation
             transactionEditImg.tag = operation
 
-            transactionCategoryText.text = operation.category.name
-            transactionCategoryImage.setImageResource(operation.category.icon)
+            transactionCategoryText.text = operation.category?.name ?: ""
+            transactionCategoryImage.setImageResource(operation.category?.icon ?: R.drawable.ic_category_placeholder)
             transactionDeleteImg.setImageResource(R.drawable.ic_delete_transaction)
             transactionDate.text = operation.date.toString()
 

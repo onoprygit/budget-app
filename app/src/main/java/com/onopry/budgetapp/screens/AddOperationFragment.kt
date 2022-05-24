@@ -43,6 +43,10 @@ class AddOperationFragment : Fragment() {
 
         binding.addingOperationDatePick.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding.addingOperationDatePick.tag = LocalDate.now()
+        binding.addingOperationEmptyCategoryIc.tag = CategoriesDto(
+            name = "[Нет категории]",
+            icon = R.drawable.ic_category_placeholder
+        )
 
         binding.addingOperationCurrencyIc.setImageResource(R.drawable.ic_ruble)
 

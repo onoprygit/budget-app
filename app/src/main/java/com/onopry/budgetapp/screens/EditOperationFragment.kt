@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.EditOperationFragmentBinding
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
@@ -44,8 +45,8 @@ class EditOperationFragment : Fragment() {
         //get actual live data and setting it to view's of this fragment
         viewModel.operation.observe(viewLifecycleOwner, {
             binding.editingOperationEditText.setText(it.amount.toString())
-            binding.editingOperationEmptyCategoryIc.setImageResource(it.category.icon)
-            binding.editingOperationSelectCategory.text = it.category.name
+            binding.editingOperationEmptyCategoryIc.setImageResource(it.category?.icon ?: R.drawable.ic_category_placeholder)
+            binding.editingOperationSelectCategory.text = it.category?.name ?: ""
         })
 
         // Start bottom sheet to choose category
