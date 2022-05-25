@@ -80,6 +80,7 @@ class AddOperationFragment : Fragment() {
 
         //Выбор даты
         operationDatePickerFragment = OperationDatePickerFragment { year, _month, day ->
+            // todo: переделать или сделать wrapper
             val month = _month + 1
 //            if (!isToday(year, month, day)) {
 //                binding.addingOperationDatePick.text = "$day-$month-$year"

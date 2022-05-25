@@ -44,6 +44,7 @@
     <string name="editing_money_hint_money">Введите сумму операции</string>
     <string name="editing_money_set_wallet">Счет</string>
     <string name="editing_monet_error_validaton_input">Введите сумму</string>
+    <string name="editing_monet_error_validaton_input1">\u00A9</string>
 
     <!--  For AnalyticsFragment  -->
 
