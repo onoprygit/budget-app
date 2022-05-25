@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/amountByCategory_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <ImageView
+            android:id="@+id/amountByCategory_categoryImage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_category_placeholder"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/amountByCategory_categoryName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/amountByCategory_categoryImage"
+            app:layout_constraintBottom_toBottomOf="@id/amountByCategory_categoryImage"
+            app:layout_constraintStart_toEndOf="@id/amountByCategory_categoryImage"
+            android:text="Category"
+            android:layout_marginHorizontal="12dp"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/amountByCategory_categoryAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/amountByCategory_categoryImage"
+            app:layout_constraintBottom_toBottomOf="@id/amountByCategory_categoryImage"
+            app:layout_constraintStart_toEndOf="@id/amountByCategory_categoryName"
+            android:text="-99999"
+            android:layout_marginHorizontal="12dp"
+            android:textColor="@color/red"
+            android:gravity="center"
+            />
+</androidx.constraintlayout.widget.ConstraintLayout>

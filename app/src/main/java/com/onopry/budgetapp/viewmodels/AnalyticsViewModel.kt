@@ -27,9 +27,15 @@ class AnalyticsViewModel(
     private val _date = MutableLiveData<LocalDate>()
     val date: LiveData<LocalDate> = _date
 
+//    private val _amountByCategoryMap = MutableLiveData<Map<Cate>>
+
+//    private val
+
+
     private val listener: OperationsListener = {
         _operations.value = it
     }
+
 
     init {
         loadOperations()
@@ -71,20 +77,20 @@ class AnalyticsViewModel(
 
     // todo: можно пизже (сильно сильно сильно сильно пизже)
     fun getCategoryExpencesMap(): Map<CategoriesDto, Int> {
-        var categoryExpencesMap = mutableMapOf<CategoriesDto, Int>()
+        val categoryExpencesMap = mutableMapOf<CategoriesDto, Int>()
         // получаем операции за текущий(выбранный) период
         val operationsByPeriod = operationsService.getOperationByPeriod(period.value!!.first, period.value!!.second)
 
         //получаем сет уникальных категорий из списка выше
         val currCategorySet = mutableSetOf<CategoriesDto>()
         operationsByPeriod.forEach {
-            currCategorySet.add(it.category!!)
+            currCategorySet.add(it.category)
         }
 
         currCategorySet.forEach { category_ ->
             val sumAmountByCategory = operationsByPeriod
                 .filter { operation -> // получаем список, состоящий только из операций одной категории
-                    operation.category?.name == category_.name && operation.isExpence }
+                    operation.category.name == category_.name && operation.isExpence }
                 .sumOf { it.amount } // суммируем значения списка выше в переменную
 
             categoryExpencesMap[category_] = sumAmountByCategory

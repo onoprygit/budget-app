@@ -1,6 +1,7 @@
 package com.onopry.budgetapp.model
 
 import android.util.Log
+import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
@@ -18,12 +19,15 @@ typealias OperationsListener = (transactions: List<OperationsDto>) -> Unit // TO
 //    fun event(transactions: List<TransactionsDto>)
 //}
 
-class OperationsService {
+class OperationsService(
+    private val categoriesService: CategoriesService
+) {
 
     private var operationsList = mutableListOf<OperationsDto>()
     private val listeners = mutableSetOf<OperationsListener>()
 
     init {
+
         operationsList = (1..30).map {
             OperationsDto(
                 id = UUID.randomUUID().toString(),
@@ -130,7 +134,12 @@ class OperationsService {
 
 
     companion object {
+
+
         private val CATEGORIES = CategoriesModel(CategoryDataSourseImpl()).getCategories()
+//        private val CATEGORIES: List<CategoriesDto>
+
+//        private val CATEGORIES: MutableList<CategoriesDto>
 
     }
 

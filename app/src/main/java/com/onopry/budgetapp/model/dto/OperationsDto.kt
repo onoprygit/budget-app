@@ -9,7 +9,7 @@ import java.util.*
 data class OperationsDto(
     val id: String,
     var amount: Int,
-    var category: CategoriesDto?,
+    var category: CategoriesDto,
 //    var date: GregorianCalendar = GregorianCalendar(2022,1,1),
     var date: LocalDate = LocalDate.of(2022,1,1),
     var isExpence: Boolean = true

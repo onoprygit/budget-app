@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.screens
+package com.onopry.budgetapp.views.screens
 
 import android.graphics.Paint
 import android.os.Bundle
@@ -44,6 +44,7 @@ class AddOperationFragment : Fragment() {
         binding.addingOperationDatePick.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding.addingOperationDatePick.tag = LocalDate.now()
         binding.addingOperationEmptyCategoryIc.tag = CategoriesDto(
+            id = "no id",
             name = "[Нет категории]",
             icon = R.drawable.ic_category_placeholder
         )
@@ -55,8 +56,12 @@ class AddOperationFragment : Fragment() {
             binding.addingOperationEmptyCategoryIc.setImageResource(it.icon)
             binding.addingOperationEmptyCategoryIc.tag = it
             binding.addingOperationSelectCategory.text = it.name
+            binding.addingOperationSelectCategory.setBackgroundColor(it.color)
+            binding.addingOperationEmptyCategoryIc.setBackgroundColor(it.color)
             categoryBottomSheet.dismiss()
         }
+
+
 
         // Выбор категории
         binding.addingOperationSelectCategory.setOnClickListener {

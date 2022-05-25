@@ -1,20 +1,21 @@
-package com.onopry.budgetapp.screens
+package com.onopry.budgetapp.views.screens
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.AnalyticsFragmentBinding
-import com.onopry.budgetapp.utils.CONSTANTS
-import com.onopry.budgetapp.utils.getTextLocalDate
+import com.onopry.budgetapp.utils.getTextLocalDateTriple
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodels.AnalyticsViewModel
+import com.onopry.budgetapp.views.customviews.AmountByCategoryItem
 import java.time.LocalDate
 
 
@@ -23,6 +24,7 @@ class AnalyticsFragment : Fragment() {
     private val viewModel: AnalyticsViewModel by viewModels { startFactory() }
     private lateinit var binding : AnalyticsFragmentBinding
     private lateinit var currentDate: LocalDate
+    private lateinit var viewList: MutableList<View>
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -32,8 +34,17 @@ class AnalyticsFragment : Fragment() {
     ): View {
         binding = AnalyticsFragmentBinding.inflate(inflater, container, false)
 
+        ///
+        val cView = inflater.inflate(R.layout.item_amount_by_category, null) as ConstraintLayout
+        binding.analyticsCategoryLl.addView(cView)
+        ///
+        val itemView = AmountByCategoryItem(requireContext(), )
+
+
+
+
         viewModel.date.observe(viewLifecycleOwner, Observer { date ->
-            val textDate = date.getTextLocalDate()
+            val textDate = date.getTextLocalDateTriple()
             binding.analyticsMainAmountDate.text = "${textDate.second} ${textDate.first}"
         })
 
