@@ -17,6 +17,7 @@ class ViewModelsFactory(
             EditOperationViewModel::class.java -> EditOperationViewModel(app.operationsService)
             MoreViewModel::class.java -> MoreViewModel(app.operationsService)
             OperationsViewModel::class.java -> OperationsViewModel(app.operationsService)
+            CategoryBottomSheetViewModel::class.java -> CategoryBottomSheetViewModel(app.categoriesService)
 
             else -> throw IllegalStateException("Unknown ViewModel class")
         }

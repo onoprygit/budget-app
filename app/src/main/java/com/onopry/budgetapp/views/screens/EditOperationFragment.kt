@@ -1,6 +1,6 @@
 @file:Suppress("MoveLambdaOutsideParentheses")
 
-package com.onopry.budgetapp.screens
+package com.onopry.budgetapp.views.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -47,6 +47,8 @@ class EditOperationFragment : Fragment() {
             binding.editingOperationEditText.setText(it.amount.toString())
             binding.editingOperationEmptyCategoryIc.setImageResource(it.category?.icon ?: R.drawable.ic_category_placeholder)
             binding.editingOperationSelectCategory.text = it.category?.name ?: ""
+            binding.editingOperationSelectCategory.setBackgroundColor(it.category.color)
+            binding.editingOperationEmptyCategoryIc.setBackgroundColor(it.category.color)
         })
 
         // Start bottom sheet to choose category
@@ -59,6 +61,8 @@ class EditOperationFragment : Fragment() {
             binding.editingOperationEmptyCategoryIc.setImageResource(it.icon)
             binding.editingOperationEmptyCategoryIc.tag = it
             binding.editingOperationSelectCategory.text = it.name
+            binding.editingOperationSelectCategory.setBackgroundColor(it.color)
+            binding.editingOperationEmptyCategoryIc.setBackgroundColor(it.color)
             categoryBottomSheet.dismiss()
 //            navigator().goBack()
         }

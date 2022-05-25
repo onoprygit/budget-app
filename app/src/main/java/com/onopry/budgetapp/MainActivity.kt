@@ -5,7 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.onopry.budgetapp.databinding.ActivityMainBinding
-import com.onopry.budgetapp.screens.*
+import com.onopry.budgetapp.views.screens.*
 import com.onopry.budgetapp.utils.MainNavigator
 
 class MainActivity : AppCompatActivity(), MainNavigator {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.BudgetAndDebtsFragment">
+    tools:context=".views.screens.BudgetAndDebtsFragment">
 
     <TextView
         android:id="@+id/text_budget_and_debts"

@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.screens
+package com.onopry.budgetapp.views.screens
 
 import android.app.DatePickerDialog
 import android.app.Dialog

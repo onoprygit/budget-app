@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.ItemTransactionBinding
 import com.onopry.budgetapp.model.dto.OperationsDto
+import com.onopry.budgetapp.utils.getTextLocalDateTriple
+import java.time.LocalDate
 
 interface OperationActionListener{
     fun onOperationDelete(operation: OperationsDto)
@@ -29,8 +31,6 @@ class OperationsDuffCallback(
 
     override fun areContentsTheSame(oldPos: Int, newPos: Int) =
         oldList[oldPos] == newList[newPos]
-
-
 }
 
 class OperationsAdapter(
@@ -63,13 +63,14 @@ class OperationsAdapter(
             transactionDeleteImg.tag = operation
             transactionEditImg.tag = operation
 
-            transactionCategoryText.text = operation.category?.name ?: ""
-            transactionCategoryImage.setImageResource(operation.category?.icon ?: R.drawable.ic_category_placeholder)
+            transactionCategoryText.text = operation.category.name
+            transactionCategoryImage.setImageResource(operation.category.icon)
             transactionDeleteImg.setImageResource(R.drawable.ic_delete_transaction)
-            transactionDate.text = operation.date.toString()
+            transactionDate.text = getTextFromDate(operation.date)
 
+            transactionCategoryImage.setBackgroundColor(operation.category.color)
 
-            toolsOperationId.text = operation.id.substring(0..10)
+            toolsOperationId.text = operation.id.substring(0..15)
 
             transactionAmountMoney.text = operation.amount.toString()
             if (operation.isExpence)
@@ -77,7 +78,14 @@ class OperationsAdapter(
             else
                 transactionAmountMoney.setTextColor(transactionAmountMoney.resources.getColor(R.color.green))
         }
+
+
     }
+
+     private fun getTextFromDate(date: LocalDate): String{
+         val dayMonthYearTriple = date.getTextLocalDateTriple()
+         return "${dayMonthYearTriple.first} ${dayMonthYearTriple.second} ${dayMonthYearTriple.third}"
+     }
 
     override fun getItemCount() = operationList.size
 
