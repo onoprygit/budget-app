@@ -30,12 +30,13 @@ class AddOperationFragment : Fragment() {
 
     private lateinit var binding: AddOperationFragmentBinding
     private lateinit var categoryBottomSheet: BottomSheetDialogFragment
-    private lateinit var operationDatePickerFragment: OperationDatePickerFragment
+    private lateinit var datePickerFragment: DatePickerFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View {
         binding = AddOperationFragmentBinding.inflate(inflater, container, false)
 //        Log.d(CONSTANTS.ADDING_MONEY_FRAGMENT_TAG, "savedInstanceState is empty? BUNDLE IS ${savedInstanceState?.isEmpty}")
@@ -84,7 +85,7 @@ class AddOperationFragment : Fragment() {
         }
 
         //Выбор даты
-        operationDatePickerFragment = OperationDatePickerFragment { year, _month, day ->
+        datePickerFragment = DatePickerFragment { year, _month, day ->
             // todo: переделать или сделать wrapper
             val month = _month + 1
 //            if (!isToday(year, month, day)) {
@@ -105,7 +106,7 @@ class AddOperationFragment : Fragment() {
         }
 
         binding.addingOperationDatePick.setOnClickListener {
-            operationDatePickerFragment.show(parentFragmentManager, "datePicker")
+            datePickerFragment.show(parentFragmentManager, "datePicker")
         }
 
 //        navigator().toast("${Calendar.YEAR} ${Calendar.MONTH} ${Calendar.DAY_OF_MONTH}")

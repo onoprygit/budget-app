@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.onopry.budgetapp.adapters.BudgetsAdapter
 import com.onopry.budgetapp.databinding.FragmentBudetAndDebtsBinding
 import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodels.BudgetAndDebtsViewModel
@@ -15,15 +17,27 @@ class BudgetAndDebtsFragment : Fragment() {
 
     private val viewModel: BudgetAndDebtsViewModel by viewModels { startFactory() }
     private lateinit var binding: FragmentBudetAndDebtsBinding
+    private val targetsAdapter = BudgetsAdapter()
+    private lateinit var bottomSheet: AddTargetFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentBudetAndDebtsBinding.inflate(inflater, container, false)
 
-        binding.textBudgetAndDebts.text = "Бюджет Фрагмент"
+        viewModel.targets.observe(viewLifecycleOwner){
+            targetsAdapter.targetList = it
+        }
+
+        binding.targetRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.targetRecycler.adapter = targetsAdapter
+
+        binding.budgetIcAdd.setOnClickListener {
+            AddTargetFragment().show(childFragmentManager, null)
+        }
+
         return binding.root
     }
 

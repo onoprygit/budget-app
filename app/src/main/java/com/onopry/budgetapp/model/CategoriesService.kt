@@ -1,4 +1,5 @@
 package com.onopry.budgetapp.model
+import android.graphics.Color
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.utils.CategoryNotFoundException
@@ -13,6 +14,7 @@ class CategoriesService {
 
     private var categoriesList = mutableListOf<CategoriesDto>()
     private val listeners = mutableSetOf<CategoriesListener>()
+    private val targetService = TargetService()
 
     init {
         loadCategories()
@@ -79,6 +81,20 @@ class CategoriesService {
                 id = UUID.randomUUID().toString(),
                 name = "Здоровье",
                 icon = R.drawable.ic_category_health
+            ),
+            CategoriesDto(
+                id = UUID.randomUUID().toString(),
+                name = "На машинк",
+                icon = R.drawable.ic_category_placeholder,
+                color = Color.parseColor("#809A6F"),
+                targetId = "720cb4c2-46e6-48e6-8098-87625b866802",
+            ),
+            CategoriesDto(
+                id = UUID.randomUUID().toString(),
+                name = "На гараж",
+                icon = R.drawable.ic_category_placeholder,
+                color = Color.parseColor("#809A6F"),
+                targetId = "f5ced627-5fab-41ef-88d8-19599fae79ef",
             )
         )
     }
@@ -88,7 +104,7 @@ class CategoriesService {
         val colorsStack: Stack<Int> = Stack()
         colorsStack.push(MY_COLORS.color_category_1)
         colorsStack.push(MY_COLORS.color_category_2)
-        colorsStack.push(MY_COLORS.color_category_3)
+//        colorsStack.push(MY_COLORS.color_category_3)
         colorsStack.push(MY_COLORS.color_category_4)
         colorsStack.push(MY_COLORS.color_category_5)
         colorsStack.push(MY_COLORS.color_category_6)
@@ -96,7 +112,7 @@ class CategoriesService {
         colorsStack.push(MY_COLORS.color_category_8)
         colorsStack.push(MY_COLORS.color_category_9)
         colorsStack.push(MY_COLORS.color_category_10)
-        colorsStack.push(MY_COLORS.color_category_11)
+//        colorsStack.push(MY_COLORS.color_category_11)
         colorsStack.push(MY_COLORS.color_category_12)
         colorsStack.push(MY_COLORS.color_category_13)
         colorsStack.push(MY_COLORS.color_category_14)

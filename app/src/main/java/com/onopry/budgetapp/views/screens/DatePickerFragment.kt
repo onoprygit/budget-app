@@ -10,8 +10,8 @@ import java.util.*
 
 typealias OnDatePickListener = (year: Int, month: Int, day: Int) -> Unit
 
-class OperationDatePickerFragment(
-    val datePickListener: OnDatePickListener
+class DatePickerFragment(
+    private val datePickListener: OnDatePickListener
 ): DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
