@@ -66,6 +66,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="30dp"
             android:src="@drawable/ic_default_avatar"
+            android:layout_marginEnd="10dp"
             />
         <TextView
             android:id="@+id/more_setting_title"
