@@ -30,16 +30,8 @@ class OperationsViewModel(
         operationsService.deleteOperation(operation)
     }
 
-//    fun addTransaction(transaction: TransactionsDto){
-//        transactionService.addTransaction(transaction)
-//    }
-
-//    fun editTransaction(transaction: TransactionsDto, id: Int, newAmount:Int, newCategory: CategoriesDto){
-//        transactionService.editTransaction(transaction, id, newAmount, newCategory)
-//    }
-
     override fun onCleared() {
         super.onCleared()
-        operationsService.removeListener(listener)
+//        operationsService.removeListener(listener)
     }
 }

@@ -13,10 +13,7 @@ import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 // Листенер отдает список транзакций, который будет обновлен после операций
-typealias OperationsListener = (transactions: List<OperationsDto>) -> Unit // TODO: разобраться поподробнее с typealias и как вообще этот слушатель работает
-//interface TransactionsListener{
-//    fun event(transactions: List<TransactionsDto>)
-//}
+typealias OperationsListener = (transactions: List<OperationsDto>) -> Unit
 
 class OperationsService(
     private val targetService: TargetService
@@ -27,7 +24,7 @@ class OperationsService(
 
     init {
 
-        operationsList = (1..10).map {
+        operationsList = (1..30).map {
             OperationsDto(
                 id = UUID.randomUUID().toString(),
                 amount = Random.nextInt(100,10000),
@@ -93,6 +90,7 @@ class OperationsService(
         if (operation.category.targetId != null){
             targetService.addOperationToTarget(operation)
         }
+
         notifyChanges()
     }
 

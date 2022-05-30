@@ -59,23 +59,15 @@ class AnalyticsFragment : Fragment() {
 
         binding.analyticsMainAmountDate.setOnClickListener {
             showPeriodChooseMenu(it)
+            Log.d("showPeriodChooseMenu", "MONTH")
         }
-
-
-//        setupCategoriesSummaryList(inflater)
 
         binding.fabAnalytics.setOnClickListener {
             navigator().showAddOperationScreen()
         }
 
-//        createPie()
-//        setupPieChart()
-//        createPie()
-//        createTestPie()
         return binding.root
     }
-
-
 
     private fun showPeriodChooseMenu(v: View) {
         val popupMenu = PopupMenu(requireContext(), v)
@@ -83,21 +75,25 @@ class AnalyticsFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.period_month -> {
+                    Log.d("ChooseButtonTAG", "listener showPeriodChooseMenu = MONTH")
                     viewModel.setPeriod(LocalDate.now(), PeriodRange.MONTH)
                     navigator().toast("Месяц")
                     true
                 }
                 R.id.period_year -> {
+                    Log.d("ChooseButtonTAG", "listener showPeriodChooseMenu = YEAR")
                     viewModel.setPeriod(LocalDate.now(), PeriodRange.YEAR)
                     navigator().toast("Год")
                     true
                 }
                 R.id.period_week -> {
+                    Log.d("ChooseButtonTAG", "listener showPeriodChooseMenu = WEEK")
 //                    viewModel.setPeriod(getMonthPeriodFromNow(LocalDate.now()))
                     navigator().toast("ПОПРАВИТЬ, не реализовано")
                     true
                 }
                 R.id.period_other -> {
+                    Log.d("ChooseButtonTAG", "listener showPeriodChooseMenu = OTHER")
 //                    viewModel.setPeriod(LocalDate.now(), PeriodRange.OTHER)
                     navigator().toast("Календарь")
                     true
@@ -134,30 +130,6 @@ class AnalyticsFragment : Fragment() {
             }
         }
     }
-
-    /*private fun createTestPie(){
-        val pieDataSet = PieDataSet(listOf(
-//            0.15f, 0.3f, 0.25f, 0.1f
-            PieEntry(0.2f, "Food1"),
-            PieEntry(0.15f, "Food2"),
-            PieEntry(0.3f, "Food3"),
-            PieEntry(0.25f, "Food4"),
-            PieEntry(0.1f, "Food5"),
-        ), "Spending by categories")
-//        pieDataSet.colors = viewModel.getCategoriesColorList()
-        binding.analCategoriesPieChart.data = PieData(pieDataSet)
-        with(binding.analCategoriesPieChart.data){
-
-//            val formatter = PercentFormatter(binding.analCategoriesPieChart)
-//            val formatter = object: PercentFormatter(binding.analCategoriesPieChart) {
-//
-//            }
-            setDrawValues(true)
-            setValueFormatter(PercentFormatter(binding.analCategoriesPieChart))
-        }
-        binding.analCategoriesPieChart.setUsePercentValues(true)
-        binding.analCategoriesPieChart.invalidate()
-    }*/
 
     private fun setupPieChart() {
         with(binding.analCategoriesPieChart){
@@ -206,17 +178,6 @@ class AnalyticsFragment : Fragment() {
         createPie()
     }
 
-/*    private fun createPie (){
-        val pieDataSet = PieDataSet(viewModel.getPieEntriesList(), null)
-        pieDataSet.colors = viewModel.getCategoriesColors()
-        pieDataSet.valueFormatter = PercentFormatter(binding.analCategoriesPieChart)
-        pieDataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-        pieDataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-        val pieData = PieData(pieDataSet)
-        binding.analCategoriesPieChart.data = pieData
-        binding.analCategoriesPieChart.data.setValueTextSize(14f)
-        binding.analCategoriesPieChart.invalidate()
-    }*/
 
     companion object {
         fun newInstance(): AnalyticsFragment {

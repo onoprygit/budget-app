@@ -58,7 +58,6 @@
             android:layout_marginTop="8dp"
             android:text="@string/user_mail"
             android:textSize="16sp"
-            android:textColor="@color/material_dynamic_neutral50"
             />
         <ImageView
             android:layout_width="wrap_content"
@@ -67,6 +66,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="30dp"
             android:src="@drawable/ic_default_avatar"
+            android:layout_marginEnd="10dp"
             />
         <TextView
             android:id="@+id/more_setting_title"
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@+id/guideline_start"
             app:layout_constraintTop_toBottomOf="@+id/more_settings_template_2"
-            android:text="Текст 3"
+            android:text="Выполненные цели"
             android:layout_marginTop="8dp"
             android:textSize="20sp"
             />
