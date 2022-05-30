@@ -1,14 +1,13 @@
 package com.onopry.budgetapp.model
 
-import android.util.Log
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
 import com.onopry.budgetapp.utils.OperationIdNotFoundException
 import com.onopry.budgetapp.utils.OperationNotFoundException
+import com.onopry.budgetapp.utils.PeriodDate
 import java.time.LocalDate
-import java.time.Month
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
@@ -20,7 +19,7 @@ typealias OperationsListener = (transactions: List<OperationsDto>) -> Unit // TO
 //}
 
 class OperationsService(
-    private val categoriesService: CategoriesService
+    private val targetService: TargetService
 ) {
 
     private var operationsList = mutableListOf<OperationsDto>()
@@ -28,7 +27,7 @@ class OperationsService(
 
     init {
 
-        operationsList = (1..30).map {
+        operationsList = (1..10).map {
             OperationsDto(
                 id = UUID.randomUUID().toString(),
                 amount = Random.nextInt(100,10000),
@@ -38,6 +37,15 @@ class OperationsService(
             )}.toMutableList()
         operationsList.sortByDescending { it.date }
         }
+
+    fun addListener(listener: OperationsListener){
+        listeners.add(listener)
+        listener.invoke(operationsList)
+    }
+
+    fun removeListener(listener: OperationsListener){ listeners.remove(listener) }
+
+    private fun notifyChanges(){ listeners.forEach { it.invoke(operationsList) } }
 
     fun getTransactionsList(): List<OperationsDto> = operationsList
 
@@ -82,10 +90,13 @@ class OperationsService(
     fun addOperation(operation: OperationsDto) {
         operationsList.add(operation)
         operationsList.sortByDescending { it.date }
+        if (operation.category.targetId != null){
+            targetService.addOperationToTarget(operation)
+        }
         notifyChanges()
     }
 
-    fun getOperationsByDay(dateOfDay: LocalDate) = operationsList
+/*    fun getOperationsByDay(dateOfDay: LocalDate) = operationsList
         .filter { operation ->
             operation.date.dayOfMonth == dateOfDay.dayOfMonth
         }
@@ -98,7 +109,7 @@ class OperationsService(
     fun getOperationsByYear(dateOfYear: LocalDate) = operationsList
         .filter { operation ->
             operation.date.year == dateOfYear.year
-        }
+        }*/
 
     fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = operationsList
         .filter { operation ->
@@ -111,25 +122,58 @@ class OperationsService(
 //        Log.d("TAGG", "getSumByPeriod: ${getOperationByPeriod(startDate, endDate).map { Pair(it.amount, it.isExpence) }}")
         getOperationByPeriod(startDate, endDate)
             .forEach{
-                if (it.isExpence) sum -= it.amount else sum += it.amount
+//                if (it.isExpence) sum -= it.amount else sum += it.amount
+                if (it.isExpence) sum += it.amount
             }
         return sum
     }
 
-    fun getSumExpencesByPeriod(startDate: LocalDate, endDate: LocalDate) =
-        getOperationByPeriod(startDate, endDate)
+    fun getSumExpencesByPeriod(period: PeriodDate) =
+        getOperationByPeriod(period.startDate, period.finishDate)
             .filter{ it.isExpence }
             .sumOf { it.amount }
 
 
-    fun addListener(listener: OperationsListener){
-        listeners.add(listener)
-        listener.invoke(operationsList)
+    //=============================================
+
+    /** возвращает список **/
+    fun getSumExpences(operations: List<OperationsDto>) =
+        operations
+            .filter{ it.isExpence }
+            .sumOf { it.amount }
+
+    /** возвращает мапу соответствия key - categories, val - List<Operations> **/
+    fun extractOperationsByCategoryForPeriod(startDate: LocalDate, finishDate: LocalDate): Map<CategoriesDto, List<OperationsDto>> {
+        val extractedOperationsByCategory = mutableMapOf<CategoriesDto, List<OperationsDto>>()
+
+        // получаем операции за текущий(выбранный) период
+        val operationsByPeriod = getOperationByPeriod(startDate, finishDate)
+
+        //получаем сет уникальных категорий из списка выше
+        val uniqueCategorySet = mutableSetOf<CategoriesDto>()
+        operationsByPeriod.forEach { uniqueCategorySet.add(it.category) }
+
+        uniqueCategorySet.forEach { category ->
+            extractedOperationsByCategory[category] =
+                operationsByPeriod.filter { operation ->
+                    operation.category.id == category.id
+                }
+        }
+        return extractedOperationsByCategory
     }
 
-    fun removeListener(listener: OperationsListener){ listeners.remove(listener) }
+    /** отдает мапу ключ - категории, значение - суммарные траты по категории **/
+    fun getOperationsByCategorySumAmount(categoryMap: Map<CategoriesDto, List<OperationsDto>>): Map<CategoriesDto, Int> {
+        val oprsByCatgsSum = mutableMapOf<CategoriesDto, Int>()
+        categoryMap.forEach {
+            oprsByCatgsSum[it.key] = getSumExpences(it.value)
+        }
+        return oprsByCatgsSum
+    }
 
-    private fun notifyChanges(){ listeners.forEach { it.invoke(operationsList) } }
+
+
+
 
 
 

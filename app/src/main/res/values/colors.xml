@@ -12,6 +12,7 @@
     <color name="green">#4CAF50</color>
     <color name="yellow_delicate">#F8E2C2</color>
     <color name="analytics_text">#2C2646</color>
+    <color name="transparent">#00000000</color>
 
     //categories colors
     <color name="category_1">#EDA297</color>

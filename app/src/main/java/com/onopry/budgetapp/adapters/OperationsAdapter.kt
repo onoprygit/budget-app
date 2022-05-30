@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.ItemTransactionBinding
 import com.onopry.budgetapp.model.dto.OperationsDto
-import com.onopry.budgetapp.utils.getTextLocalDateTriple
+import com.onopry.budgetapp.utils.getTextLocalDateDMY
 import java.time.LocalDate
 
 interface OperationActionListener{
@@ -83,7 +83,7 @@ class OperationsAdapter(
     }
 
      private fun getTextFromDate(date: LocalDate): String{
-         val dayMonthYearTriple = date.getTextLocalDateTriple()
+         val dayMonthYearTriple = date.getTextLocalDateDMY()
          return "${dayMonthYearTriple.first} ${dayMonthYearTriple.second} ${dayMonthYearTriple.third}"
      }
 

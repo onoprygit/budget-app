@@ -6,17 +6,68 @@
     android:layout_height="match_parent"
     tools:context=".views.screens.BudgetAndDebtsFragment">
 
-    <TextView
-        android:id="@+id/text_budget_and_debts"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/budgets_guide_start"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/base_horizontal_offset"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/budgets_guide_end"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/base_horizontal_offset"
+        />
+
+    <TextView
+        android:id="@+id/budget_targets_title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Цели:"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/budgets_guide_start"
+        android:textSize="32sp"
+        android:textColor="@color/black"
+        />
+    <ImageView
+        android:id="@+id/budget_ic_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/budgets_guide_end"
+        app:layout_constraintTop_toTopOf="@id/budget_targets_title"
+        app:layout_constraintBottom_toBottomOf="@id/budget_targets_title"
+        android:src="@drawable/ic_plus"
+        />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/budget_targets_title"
+        app:layout_constraintStart_toStartOf="@+id/budgets_guide_start"
+        app:layout_constraintEnd_toEndOf="@id/budgets_guide_end"
+        app:contentPadding="20dp"
+        app:cardCornerRadius="20dp"
+        android:elevation="8dp"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/target_recycler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_target"
+                tools:itemCount="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="HardcodedText">
+    <group android:id="@+id/period_menu">
+        <item android:id="@+id/period_week"
+            android:title="Неделя"/>
+        <item android:id="@+id/period_month"
+            android:title="Месяц"/>
+        <item android:id="@+id/period_year"
+            android:title="Год"/>
+        <item android:id="@+id/period_other"
+            android:title="Выбрать период"/>
+    </group>
+</menu>

@@ -45,8 +45,8 @@ class EditOperationFragment : Fragment() {
         //get actual live data and setting it to view's of this fragment
         viewModel.operation.observe(viewLifecycleOwner, {
             binding.editingOperationEditText.setText(it.amount.toString())
-            binding.editingOperationEmptyCategoryIc.setImageResource(it.category?.icon ?: R.drawable.ic_category_placeholder)
-            binding.editingOperationSelectCategory.text = it.category?.name ?: ""
+            binding.editingOperationEmptyCategoryIc.setImageResource(it.category.icon)
+            binding.editingOperationSelectCategory.text = it.category.name
             binding.editingOperationSelectCategory.setBackgroundColor(it.category.color)
             binding.editingOperationEmptyCategoryIc.setBackgroundColor(it.category.color)
         })

@@ -13,5 +13,6 @@ data class CategoriesDto(
     val color:Int = MY_COLORS.color_category_other,
     val isParent: Boolean = true,
     val isExpence: Boolean = true,
-    val parentId: String? = null
+    val parentId: String? = null,
+    val targetId: String? = null
 ): Serializable

@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
-        <!--<androidx.constraintlayout.widget.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,8 +113,6 @@
             android:layout_marginTop="8dp"
             android:textSize="20sp"
             />
-
--->
     </androidx.constraintlayout.widget.ConstraintLayout>
 <!--
 </ScrollView>-->
