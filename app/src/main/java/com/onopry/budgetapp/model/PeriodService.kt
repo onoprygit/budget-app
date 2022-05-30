@@ -1,5 +1,6 @@
 package com.onopry.budgetapp.model
 
+import android.util.Log
 import com.onopry.budgetapp.utils.PeriodDate
 import com.onopry.budgetapp.utils.PeriodRange
 import java.time.LocalDate
@@ -15,6 +16,7 @@ class PeriodService{
         val startDate: LocalDate = LocalDate.of(currentDate.year, currentDate.monthValue, 1)
         val finishDate = LocalDate.of(currentDate.year, currentDate.monthValue, currentDate.lengthOfMonth())
         nowSelectedPeriod = PeriodDate(startDate, finishDate, PeriodRange.MONTH)
+        Log.d("initperiod", nowSelectedPeriod.toString())
     }
 
     fun setPeriod(startDate: LocalDate, finishDate: LocalDate, type: PeriodRange){
@@ -24,10 +26,22 @@ class PeriodService{
 
     fun setPeriod(date: LocalDate, type: PeriodRange){
         when(type){
-            PeriodRange.MONTH -> nowSelectedPeriod = getPeriodFromRange(date, type)
-            PeriodRange.YEAR -> nowSelectedPeriod = getPeriodFromRange(date, type)
-            PeriodRange.WEEK -> nowSelectedPeriod = getPeriodFromRange(date, type)
-            PeriodRange.OTHER -> throw Exception("Задан произвольный период")
+            PeriodRange.MONTH -> {
+                Log.d("ChooseButtonTAG", "service = $type")
+                nowSelectedPeriod = getPeriodFromRange(date, type)
+            }
+            PeriodRange.YEAR -> {
+                Log.d("ChooseButtonTAG", "service = $type")
+                nowSelectedPeriod = getPeriodFromRange(date, type)
+            }
+            PeriodRange.WEEK -> {
+                Log.d("ChooseButtonTAG", "service = $type")
+                nowSelectedPeriod = getPeriodFromRange(date, type)
+            }
+            PeriodRange.OTHER -> {
+                Log.d("ChooseButtonTAG", "service = $type")
+                throw Exception("Задан произвольный период")
+            }
         }
         notifyChanges()
     }

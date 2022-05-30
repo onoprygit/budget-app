@@ -59,6 +59,7 @@ class AnalyticsFragment : Fragment() {
 
         binding.analyticsMainAmountDate.setOnClickListener {
             showPeriodChooseMenu(it)
+            Log.d("showPeriodChooseMenu", "MONTH")
         }
 
         binding.fabAnalytics.setOnClickListener {
@@ -68,30 +69,31 @@ class AnalyticsFragment : Fragment() {
         return binding.root
     }
 
-
-
-
     private fun showPeriodChooseMenu(v: View) {
         val popupMenu = PopupMenu(requireContext(), v)
         popupMenu.inflate(R.menu.choose_period_menu)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.period_month -> {
+                    Log.d("ChooseButtonTAG", "listener showPeriodChooseMenu = MONTH")
                     viewModel.setPeriod(LocalDate.now(), PeriodRange.MONTH)
                     navigator().toast("Месяц")
                     true
                 }
                 R.id.period_year -> {
+                    Log.d("ChooseButtonTAG", "listener showPeriodChooseMenu = YEAR")
                     viewModel.setPeriod(LocalDate.now(), PeriodRange.YEAR)
                     navigator().toast("Год")
                     true
                 }
                 R.id.period_week -> {
+                    Log.d("ChooseButtonTAG", "listener showPeriodChooseMenu = WEEK")
 //                    viewModel.setPeriod(getMonthPeriodFromNow(LocalDate.now()))
                     navigator().toast("ПОПРАВИТЬ, не реализовано")
                     true
                 }
                 R.id.period_other -> {
+                    Log.d("ChooseButtonTAG", "listener showPeriodChooseMenu = OTHER")
 //                    viewModel.setPeriod(LocalDate.now(), PeriodRange.OTHER)
                     navigator().toast("Календарь")
                     true
@@ -175,7 +177,6 @@ class AnalyticsFragment : Fragment() {
         setupPieChart()
         createPie()
     }
-
 
 
     companion object {

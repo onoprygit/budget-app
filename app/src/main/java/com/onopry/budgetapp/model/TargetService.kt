@@ -1,6 +1,5 @@
 package com.onopry.budgetapp.model
 
-import android.util.Log
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.dto.TargetDTO
 import com.onopry.budgetapp.utils.TargetNotFoundException
@@ -65,11 +64,38 @@ class TargetService {
     fun isTargetExist(target: TargetDTO) =
         targetList.indexOfFirst { target.id == it.id } != -1
 
+    /*  при "синхронизации" операции с целью
+        проверяет не стала ли она выполнена
+        и если так, то меняем флаг, чтобы цель
+        не отображалась
+    */
     fun addOperationToTarget(operation: OperationsDto){
         val id = operation.category.targetId
         if (id != null){
-            getTargetById(id).currentAmount += operation.amount
+            val target = getTargetById(id)
+            target.currentAmount += operation.amount
+
+            if (hasTargetDone(target))
+                setDoneTarget(target)
         }
+    }
+
+    private fun hasTargetDone(target: TargetDTO) = target.cost <= target.currentAmount
+
+
+    /*fun isTargetDone(id: String): Boolean {
+        val target = getTargetById(id)
+        return target.cost <= target.currentAmount
+    }*/
+
+    private fun setDoneTarget(target: TargetDTO){
+        target.isDone = true
+        removeTarget(target)
+    }
+
+    private fun removeTarget(target: TargetDTO){
+        targetList.remove(target)
+        notifyChanges()
     }
 
     fun addListener(listener: TargetListener){

@@ -11,7 +11,8 @@ data class TargetDTO(
     var cost: Int,
     var currentAmount: Int,
     var date: LocalDate,
-    var description: String? = null
+    var description: String? = null,
+    var isDone: Boolean = false
 ) {
     val restDay: Long
         get() {

@@ -36,6 +36,7 @@ class AnalyticsViewModel(
         loadOperations()
         initPeriod()
         setOperationsByCategory()
+        Log.d("L_IFECYCLE_TAG_", "init")
     }
 
     private fun loadOperations(){
@@ -52,6 +53,7 @@ class AnalyticsViewModel(
     fun setPeriod(date: LocalDate, typePeriod: PeriodRange){
         periodService.setPeriod(date, typePeriod)
         setOperationsByCategory()
+        Log.d("ChooseButtonTAG", "viewModel setPeriod(): date = $date, period = $typePeriod")
     }
 
     // Operations by category
@@ -98,8 +100,9 @@ class AnalyticsViewModel(
     fun getCategoriesColors() = _operationsByCategory.value?.keys?.map { it.color }?.toList() ?: throw Exception("No colors")
 
     override fun onCleared() {
-        operationsService.removeListener(operationListener)
-        periodService.removeListener(periodListener)
+//        operationsService.removeListener(operationListener)
+//        periodService.removeListener(periodListener)
         super.onCleared()
+        Log.d("L_IFECYCLE_TAG_", "onCleared: ")
     }
 }
