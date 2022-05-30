@@ -61,19 +61,13 @@ class AnalyticsFragment : Fragment() {
             showPeriodChooseMenu(it)
         }
 
-
-//        setupCategoriesSummaryList(inflater)
-
         binding.fabAnalytics.setOnClickListener {
             navigator().showAddOperationScreen()
         }
 
-//        createPie()
-//        setupPieChart()
-//        createPie()
-//        createTestPie()
         return binding.root
     }
+
 
 
 
@@ -135,30 +129,6 @@ class AnalyticsFragment : Fragment() {
         }
     }
 
-    /*private fun createTestPie(){
-        val pieDataSet = PieDataSet(listOf(
-//            0.15f, 0.3f, 0.25f, 0.1f
-            PieEntry(0.2f, "Food1"),
-            PieEntry(0.15f, "Food2"),
-            PieEntry(0.3f, "Food3"),
-            PieEntry(0.25f, "Food4"),
-            PieEntry(0.1f, "Food5"),
-        ), "Spending by categories")
-//        pieDataSet.colors = viewModel.getCategoriesColorList()
-        binding.analCategoriesPieChart.data = PieData(pieDataSet)
-        with(binding.analCategoriesPieChart.data){
-
-//            val formatter = PercentFormatter(binding.analCategoriesPieChart)
-//            val formatter = object: PercentFormatter(binding.analCategoriesPieChart) {
-//
-//            }
-            setDrawValues(true)
-            setValueFormatter(PercentFormatter(binding.analCategoriesPieChart))
-        }
-        binding.analCategoriesPieChart.setUsePercentValues(true)
-        binding.analCategoriesPieChart.invalidate()
-    }*/
-
     private fun setupPieChart() {
         with(binding.analCategoriesPieChart){
             isDrawHoleEnabled = true
@@ -206,17 +176,7 @@ class AnalyticsFragment : Fragment() {
         createPie()
     }
 
-/*    private fun createPie (){
-        val pieDataSet = PieDataSet(viewModel.getPieEntriesList(), null)
-        pieDataSet.colors = viewModel.getCategoriesColors()
-        pieDataSet.valueFormatter = PercentFormatter(binding.analCategoriesPieChart)
-        pieDataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-        pieDataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-        val pieData = PieData(pieDataSet)
-        binding.analCategoriesPieChart.data = pieData
-        binding.analCategoriesPieChart.data.setValueTextSize(14f)
-        binding.analCategoriesPieChart.invalidate()
-    }*/
+
 
     companion object {
         fun newInstance(): AnalyticsFragment {
