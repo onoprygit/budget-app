@@ -1,17 +1,21 @@
 package com.onopry.budgetapp
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.onopry.budgetapp.databinding.ActivityMainBinding
 import com.onopry.budgetapp.views.screens.*
 import com.onopry.budgetapp.utils.MainNavigator
+import com.onopry.budgetapp.views.screens.auth.SignUpFragment
 
 class MainActivity : AppCompatActivity(), MainNavigator {
 
     // Инициализация переменных
     private lateinit var binding: ActivityMainBinding
+
+    private val signUpFragment = SignUpFragment()
 
     private val analyticsFragment = AnalyticsFragment()
     private val operationFragment = OperationFragment()
@@ -25,7 +29,8 @@ class MainActivity : AppCompatActivity(), MainNavigator {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        currentFragment = analyticsFragment
+        binding.navView.visibility = View.GONE
+        currentFragment = signUpFragment
         replaceFragment(currentFragment)
 //        supportFragmentManager
 //            .beginTransaction()
@@ -86,6 +91,14 @@ class MainActivity : AppCompatActivity(), MainNavigator {
 
     override fun toast(messageRes: String) {
         Toast.makeText(this, messageRes, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showRegistrationScreen() {
+        TODO("Not yet implemented")
+    }
+
+    override fun showAuthScreen() {
+        TODO("Not yet implemented")
     }
 
     // Показываем фрагмент на экране
