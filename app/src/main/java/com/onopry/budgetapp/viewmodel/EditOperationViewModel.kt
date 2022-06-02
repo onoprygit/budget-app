@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.viewmodels
+package com.onopry.budgetapp.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

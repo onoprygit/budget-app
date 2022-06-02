@@ -1,6 +1,5 @@
-package com.onopry.budgetapp.viewmodels
+package com.onopry.budgetapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,8 +8,6 @@ import com.onopry.budgetapp.model.CategoriesService
 import com.onopry.budgetapp.model.TargetService
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.TargetDTO
-import com.onopry.budgetapp.utils.MY_COLORS
-import com.onopry.budgetapp.utils.TargetNotFoundException
 import java.util.*
 
 class AddTargetViewModel(

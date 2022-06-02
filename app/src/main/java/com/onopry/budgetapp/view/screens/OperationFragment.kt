@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.views.screens
+package com.onopry.budgetapp.view.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,16 +14,13 @@ import com.onopry.budgetapp.databinding.FragmentOperationBinding
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodels.OperationsViewModel
-
-
+import com.onopry.budgetapp.viewmodel.OperationsViewModel
 
 class OperationFragment : Fragment() {
 
     private lateinit var binding: FragmentOperationBinding
     private lateinit var adapter: OperationsAdapter
 
-    // TODO: Разобраться с делегатами
     private val viewModel: OperationsViewModel by viewModels { startFactory() }
 
     override fun onCreateView(

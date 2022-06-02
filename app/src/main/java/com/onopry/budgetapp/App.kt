@@ -7,8 +7,8 @@ import com.onopry.budgetapp.model.PeriodService
 import com.onopry.budgetapp.model.TargetService
 
 class App: Application() {
-    val periodService = PeriodService()
     val targetService = TargetService()
-    val categoriesService = CategoriesService()
     val operationsService = OperationsService(targetService)
+    val categoriesService = CategoriesService()
+    val periodService = PeriodService()
 }

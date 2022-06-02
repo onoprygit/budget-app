@@ -33,6 +33,8 @@ class TargetService {
             ))
     }
 
+
+
     fun getTargetById(id: String): TargetDTO{
         val index = targetList.indexOfFirst { it.id == id }
         if (index == -1 )
@@ -81,12 +83,6 @@ class TargetService {
     }
 
     private fun hasTargetDone(target: TargetDTO) = target.cost <= target.currentAmount
-
-
-    /*fun isTargetDone(id: String): Boolean {
-        val target = getTargetById(id)
-        return target.cost <= target.currentAmount
-    }*/
 
     private fun setDoneTarget(target: TargetDTO){
         target.isDone = true

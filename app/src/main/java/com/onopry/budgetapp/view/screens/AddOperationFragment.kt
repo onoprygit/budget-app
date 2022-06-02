@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.views.screens
+package com.onopry.budgetapp.view.screens
 
 import android.graphics.Paint
 import android.os.Bundle
@@ -15,7 +15,7 @@ import com.onopry.budgetapp.databinding.AddOperationFragmentBinding
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodels.AddingMoneyViewModel
+import com.onopry.budgetapp.viewmodel.AddingMoneyViewModel
 import java.time.LocalDate
 import java.util.*
 

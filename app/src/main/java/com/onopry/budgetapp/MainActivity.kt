@@ -1,21 +1,27 @@
 package com.onopry.budgetapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.onopry.budgetapp.databinding.ActivityMainBinding
-import com.onopry.budgetapp.views.screens.*
+import com.onopry.budgetapp.utils.AUTH
+import com.onopry.budgetapp.view.screens.*
 import com.onopry.budgetapp.utils.MainNavigator
-import com.onopry.budgetapp.views.screens.auth.SignUpFragment
+import com.onopry.budgetapp.utils.initFirebase
+import com.onopry.budgetapp.view.screens.auth.SignInFragment
+import com.onopry.budgetapp.view.screens.auth.SignUpFragment
 
 class MainActivity : AppCompatActivity(), MainNavigator {
 
-    // Инициализация переменных
     private lateinit var binding: ActivityMainBinding
+    
 
     private val signUpFragment = SignUpFragment()
+    private val signInFragment = SignInFragment()
 
     private val analyticsFragment = AnalyticsFragment()
     private val operationFragment = OperationFragment()
@@ -26,17 +32,28 @@ class MainActivity : AppCompatActivity(), MainNavigator {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initFirebase()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.navView.visibility = View.GONE
-        currentFragment = signUpFragment
-        replaceFragment(currentFragment)
-//        supportFragmentManager
-//            .beginTransaction()
-//            .addToBackStack(null)
-//            .commit()
+        currentFragment = analyticsFragment
+//        currentFragment = if (AUTH.currentUser != null) {
+//            toast("SIGNED IN")
+//            Log.d("FIREBASE_TAG", AUTH.currentUser?.uid.toString())
+//            setBottomNavVisible(true)
+//            analyticsFragment
+//        } else {
+//            setBottomNavVisible(false)
+//            signInFragment
+//        }
 
+        replaceFragment(currentFragment)
+
+        initNavView()
+
+    }
+
+    private fun initNavView(){
         binding.navView.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.navigation_analytics -> {
@@ -54,7 +71,6 @@ class MainActivity : AppCompatActivity(), MainNavigator {
             }
             true
         }
-
     }
 
     override fun showAddOperationScreen() {
@@ -69,19 +85,31 @@ class MainActivity : AppCompatActivity(), MainNavigator {
         )
     }
 
+    override fun setBottomNavVisible(state: Boolean) {
+        if (state) {
+            binding.navView.visibility = View.VISIBLE
+        } else {
+            binding.navView.visibility = View.GONE
+        }
+    }
+
     override fun showAnalyticsScreen() {
+        setBottomNavVisible(true)
         replaceFragment(analyticsFragment)
     }
 
     override fun showOperationsListScreen() {
+        setBottomNavVisible(true)
         replaceFragment(operationFragment)
     }
 
     override fun showBudgetAndDebtsScreen() {
+        setBottomNavVisible(true)
         replaceFragment(budgetAndDebtsFragment)
     }
 
     override fun showMoreScreen() {
+        setBottomNavVisible(true)
         replaceFragment(moreFragment)
     }
 
@@ -93,11 +121,13 @@ class MainActivity : AppCompatActivity(), MainNavigator {
         Toast.makeText(this, messageRes, Toast.LENGTH_SHORT).show()
     }
 
-    override fun showRegistrationScreen() {
-        TODO("Not yet implemented")
+    override fun showSingUpScreen() {
+        setBottomNavVisible(false)
+        replaceFragment(signUpFragment)
     }
 
-    override fun showAuthScreen() {
+    override fun showSingInScreen() {
+        setBottomNavVisible(false)
         TODO("Not yet implemented")
     }
 

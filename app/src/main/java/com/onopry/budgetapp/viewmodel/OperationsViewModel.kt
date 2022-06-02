@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.viewmodels
+package com.onopry.budgetapp.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.onopry.budgetapp.model.OperationsService
 import com.onopry.budgetapp.model.OperationsListener
 import com.onopry.budgetapp.model.dto.OperationsDto
+import com.onopry.budgetapp.utils.initFirebase
 
 class OperationsViewModel(
     private val operationsService: OperationsService
@@ -20,6 +21,8 @@ class OperationsViewModel(
 
     init {
         loadOperations()
+//        initFirebase()
+//        operations.value?.get(3)?.let { operationsService.updateFirebaseOperations(it.toMap()) }
     }
 
     private fun loadOperations(){

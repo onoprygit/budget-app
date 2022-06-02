@@ -3,7 +3,7 @@ package com.onopry.budgetapp.utils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.onopry.budgetapp.App
-import com.onopry.budgetapp.viewmodels.*
+import com.onopry.budgetapp.viewmodel.*
 
 class ViewModelsFactory(
     private val app: App

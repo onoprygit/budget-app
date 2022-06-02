@@ -20,9 +20,6 @@ data class TargetDTO(
         }
     val restMoney: Int
         get() {
-            val onePerecent = cost.toFloat()/100
-            return (currentAmount / onePerecent).roundToInt()
+            return  (currentAmount / (cost.toFloat()/100)).roundToInt()
         }
-
-//    fun getRestDays(finishDate: LocalDate) = ChronoUnit.DAYS.between(LocalDate.now(), finishDate)
 }
