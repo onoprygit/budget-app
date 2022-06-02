@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.viewmodels
+package com.onopry.budgetapp.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -36,7 +36,7 @@ class AnalyticsViewModel(
         loadOperations()
         initPeriod()
         setOperationsByCategory()
-        Log.d("L_IFECYCLE_TAG_", "init")
+        Log.d("L_IFECYCLE_TAG_FF", "init")
     }
 
     private fun loadOperations(){
@@ -103,6 +103,6 @@ class AnalyticsViewModel(
 //        operationsService.removeListener(operationListener)
 //        periodService.removeListener(periodListener)
         super.onCleared()
-        Log.d("L_IFECYCLE_TAG_", "onCleared: ")
+        Log.d("L_IFECYCLE_TAG_FF", "onCleared: ")
     }
 }

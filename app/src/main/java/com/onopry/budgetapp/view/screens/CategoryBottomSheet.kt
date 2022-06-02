@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.views.screens
+package com.onopry.budgetapp.view.screens
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,7 @@ import com.onopry.budgetapp.adapters.CategoryActionListener
 import com.onopry.budgetapp.adapters.CategoryChooseAdapter
 import com.onopry.budgetapp.databinding.CategoryBottomSheetBinding
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodels.CategoryBottomSheetViewModel
+import com.onopry.budgetapp.viewmodel.CategoryBottomSheetViewModel
 
 const val COLUMN_NUMBER = 5
 

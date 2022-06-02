@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.screens.auth.SignUpFragment">
+
+    <TextView
+        android:id="@+id/register_screenTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/registration_cardView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Регистрация"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="20dp"
+        />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/registration_cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="8dp"
+        app:cardCornerRadius="20dp"
+        app:contentPadding="20dp"
+        android:background="@drawable/background_card_view"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            >
+
+            <TextView
+                android:id="@+id/register_tvMail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                app:layout_constraintStart_toStartOf="@id/register_etMail"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Электронная почта"
+                android:textSize="24sp"
+                />
+
+            <EditText
+                android:id="@+id/register_etMail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/register_tvMail"
+                android:hint="Введите адрес почты"
+                android:inputType="textEmailAddress"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/register_tvPass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/register_etMail"
+                app:layout_constraintStart_toStartOf="@id/register_etPass"
+                android:text="Пароль"
+                android:textSize="24sp"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/register_etPass"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/register_tvPass"
+                android:hint="Введите пароль"
+                android:inputType="textPassword"
+                android:textSize="20sp"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/registration_btnRegister"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/registration_cardView"
+        app:layout_constraintStart_toStartOf="@id/registration_cardView"
+        app:layout_constraintEnd_toEndOf="@id/registration_cardView"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="Зарегестрироваться"
+        />
+
+    <Button
+        android:id="@+id/test_read"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/registration_btnRegister"
+        app:layout_constraintStart_toStartOf="@id/registration_cardView"
+        app:layout_constraintEnd_toEndOf="@id/registration_cardView"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="Read"
+        android:visibility="gone"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

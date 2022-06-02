@@ -4,15 +4,13 @@ import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
-import com.onopry.budgetapp.utils.OperationIdNotFoundException
-import com.onopry.budgetapp.utils.OperationNotFoundException
-import com.onopry.budgetapp.utils.PeriodDate
+import com.onopry.budgetapp.utils.*
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 
-// Листенер отдает список транзакций, который будет обновлен после операций
+// Слушатель отдает список транзакций, который будет обновлен после изменения списка операций
 typealias OperationsListener = (transactions: List<OperationsDto>) -> Unit
 
 class OperationsService(
@@ -23,17 +21,26 @@ class OperationsService(
     private val listeners = mutableSetOf<OperationsListener>()
 
     init {
-
         operationsList = (1..30).map {
             OperationsDto(
                 id = UUID.randomUUID().toString(),
                 amount = Random.nextInt(100,10000),
                 category = CATEGORIES[Random.nextInt(0,9)],
-                date = LocalDate.of(2022, Random.nextInt(4,6), Random.nextInt(8, 25)),
+                date = LocalDate.of(2022, Random.nextInt(4,7), Random.nextInt(8, 25)),
                 isExpence = Random.nextBoolean()
             )}.toMutableList()
         operationsList.sortByDescending { it.date }
+
+//        initFirebase()
         }
+
+/*    fun updateFirebaseOperations(operation: Map<String, Any>){
+        val uid = AUTH.currentUser?.uid.toString()
+        val id = operation[CHILD_ID]
+
+        REF_DB_ROOT.child(DB_USERS).child(operation[CHILD_ID] as String).updateChildren(operation)
+
+    }*/
 
     fun addListener(listener: OperationsListener){
         listeners.add(listener)
@@ -43,8 +50,6 @@ class OperationsService(
     fun removeListener(listener: OperationsListener){ listeners.remove(listener) }
 
     private fun notifyChanges(){ listeners.forEach { it.invoke(operationsList) } }
-
-    fun getTransactionsList(): List<OperationsDto> = operationsList
 
     fun getOperationById(id: String)= operationsList.firstOrNull { it.id == id } ?: throw OperationNotFoundException()
 
@@ -56,21 +61,6 @@ class OperationsService(
             notifyChanges()
         }
     }
-
-/*    *//** @param id Идентификатор транзакции *//*
-    fun editTransaction(oldTransaction: TransactionsDto, id: Int,
-                        newAmount:Int, newCategory: CategoriesDto
-    ) {
-        val indexToEdit = transactionsList.indexOfFirst { it.id == oldTransaction.id }
-        if (indexToEdit != -1) {
-            with(transactionsList[indexToEdit]) {
-                amount = newAmount
-                category = newCategory
-                notifyChanges()
-            }
-        }
-    }*/
-
 
     fun editOperation(operation: OperationsDto){
         val indexToEdit = operationsList.indexOfFirst { it.id == operation.id }
@@ -94,28 +84,12 @@ class OperationsService(
         notifyChanges()
     }
 
-/*    fun getOperationsByDay(dateOfDay: LocalDate) = operationsList
-        .filter { operation ->
-            operation.date.dayOfMonth == dateOfDay.dayOfMonth
-        }
-
-    fun getOperationsByMonth(dateOfMonth: LocalDate) = operationsList
-        .filter { operation ->
-            operation.date.month == dateOfMonth.month
-        }
-
-    fun getOperationsByYear(dateOfYear: LocalDate) = operationsList
-        .filter { operation ->
-            operation.date.year == dateOfYear.year
-        }*/
-
     fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = operationsList
         .filter { operation ->
             operation.date in startDate..endDate
         }
 
-    //todo: можно сделать красивее
-    fun getSumByPeriod(startDate: LocalDate, endDate: LocalDate): Int{
+    private fun getSumByPeriod(startDate: LocalDate, endDate: LocalDate): Int{
         var sum = 0
 //        Log.d("TAGG", "getSumByPeriod: ${getOperationByPeriod(startDate, endDate).map { Pair(it.amount, it.isExpence) }}")
         getOperationByPeriod(startDate, endDate)
@@ -131,11 +105,8 @@ class OperationsService(
             .filter{ it.isExpence }
             .sumOf { it.amount }
 
-
-    //=============================================
-
     /** возвращает список **/
-    fun getSumExpences(operations: List<OperationsDto>) =
+    private fun getSumExpences(operations: List<OperationsDto>) =
         operations
             .filter{ it.isExpence }
             .sumOf { it.amount }
@@ -169,20 +140,28 @@ class OperationsService(
         return oprsByCatgsSum
     }
 
-
-
-
-
-
-
     companion object {
-
-
         private val CATEGORIES = CategoriesModel(CategoryDataSourseImpl()).getCategories()
-//        private val CATEGORIES: List<CategoriesDto>
+    }
 
-//        private val CATEGORIES: MutableList<CategoriesDto>
+    /*    fun getOperationsByDay(dateOfDay: LocalDate) = operationsList
+        .filter { operation ->
+            operation.date.dayOfMonth == dateOfDay.dayOfMonth
+        }
 
+    fun getOperationsByMonth(dateOfMonth: LocalDate) = operationsList
+        .filter { operation ->
+            operation.date.month == dateOfMonth.month
+        }
+
+    fun getOperationsByYear(dateOfYear: LocalDate) = operationsList
+        .filter { operation ->
+            operation.date.year == dateOfYear.year
+        }*/
+
+    fun naebka(){
+        getSumByPeriod(LocalDate.now(), LocalDate.now())
+        removeListener {  }
     }
 
 }

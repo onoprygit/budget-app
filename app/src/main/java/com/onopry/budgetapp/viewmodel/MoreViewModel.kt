@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.viewmodels
+package com.onopry.budgetapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.onopry.budgetapp.model.OperationsService

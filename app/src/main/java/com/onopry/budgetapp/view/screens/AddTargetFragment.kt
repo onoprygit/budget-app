@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.views.screens
+package com.onopry.budgetapp.view.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.onopry.budgetapp.databinding.FragmentAddTargetBinding
 import com.onopry.budgetapp.model.dto.TargetDTO
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodels.AddTargetViewModel
+import com.onopry.budgetapp.viewmodel.AddTargetViewModel
 import java.time.LocalDate
 import java.util.*
 

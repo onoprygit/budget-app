@@ -11,6 +11,10 @@ interface MainNavigator {
     fun goBack()
     fun toast(messageRes: String)
 
+    //Экраны регистрации и авторизации
+    fun showSingUpScreen()
+    fun showSingInScreen()
+
     // Основные экраны, отображенные на панели навигации
     fun showAnalyticsScreen()
     fun showOperationsListScreen()
@@ -20,6 +24,8 @@ interface MainNavigator {
     // Экраны, вызываемые с основных экранов
     fun showAddOperationScreen()
     fun showEditOperationScreen(operationId: String)
+
+    fun setBottomNavVisible(state: Boolean)
 
 
 }

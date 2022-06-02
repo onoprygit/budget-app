@@ -14,7 +14,6 @@ import java.time.LocalDate
 
 interface OperationActionListener{
     fun onOperationDelete(operation: OperationsDto)
-//    fun onTransactionAdd(transaction: TransactionsDto)
     fun onOperationEdit(operation: OperationsDto)
 }
 

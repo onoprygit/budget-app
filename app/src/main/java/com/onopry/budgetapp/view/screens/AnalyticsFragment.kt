@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.views.screens
+package com.onopry.budgetapp.view.screens
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -14,13 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.adapters.AmountByCategoryAdapter
 import com.onopry.budgetapp.databinding.AnalyticsFragmentBinding
 import com.onopry.budgetapp.utils.*
-import com.onopry.budgetapp.viewmodels.AnalyticsViewModel
+import com.onopry.budgetapp.viewmodel.AnalyticsViewModel
 import java.time.LocalDate
 
 class AnalyticsFragment : Fragment() {
