@@ -12,7 +12,8 @@ data class OperationsDto(
     var amount: Int,
     var category: CategoriesDto,
     var date: LocalDate = LocalDate.of(2022,1,1),
-    var isExpence: Boolean = true
+    var isExpence: Boolean = true,
+    val accountId: String? = null
 ): Serializable {
     fun toMap() = mutableMapOf<String, Any>(
         CHILD_ID to id,
