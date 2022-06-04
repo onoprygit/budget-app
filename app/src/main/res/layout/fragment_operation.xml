@@ -5,10 +5,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.screens.OperationFragment"
+    tools:context=".view.screens.operations.OperationFragment"
     android:background="@color/white"
     tools:actionBarNavMode="tabs"
     >
+
+    <TextView
+        android:id="@+id/operations_placeholderTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Ваш список операций пуст.\n Добавьте операцию на кнопку '+'"
+        tools:visibility="visible"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:visibility="gone"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

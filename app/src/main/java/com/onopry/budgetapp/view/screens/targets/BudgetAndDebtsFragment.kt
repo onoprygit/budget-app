@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.view.screens
+package com.onopry.budgetapp.view.screens.targets
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.onopry.budgetapp.adapters.BudgetsAdapter
 import com.onopry.budgetapp.databinding.FragmentBudetAndDebtsBinding
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodel.BudgetAndDebtsViewModel
+import com.onopry.budgetapp.viewmodel.screens.targets.BudgetAndDebtsViewModel
 
 
 class BudgetAndDebtsFragment : Fragment() {

@@ -10,7 +10,7 @@
         android:id="@+id/register_screenTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/registration_cardView"
+        app:layout_constraintBottom_toTopOf="@id/register_warning"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Регистрация"
@@ -18,6 +18,21 @@
         android:textStyle="bold"
         android:textColor="@color/black"
         android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:id="@+id/register_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/registration_cardView"
+        app:layout_constraintStart_toStartOf="@id/registration_cardView"
+        app:layout_constraintEnd_toEndOf="@id/registration_cardView"
+        android:drawableEnd="@drawable/ic_warning"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
 
     <androidx.cardview.widget.CardView

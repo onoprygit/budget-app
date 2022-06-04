@@ -1,10 +1,10 @@
-package com.onopry.budgetapp.viewmodel
+package com.onopry.budgetapp.viewmodel.screens.operations
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.onopry.budgetapp.model.OperationsService
 import com.onopry.budgetapp.model.dto.OperationsDto
+import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.utils.OperationIdNotFoundException
 import com.onopry.budgetapp.utils.OperationNotFoundException
 import com.onopry.budgetapp.utils.OperationParamsNotFoundException
@@ -28,6 +28,7 @@ class EditOperationViewModel(
             category = newOperation.category,
             date = operation.value?.date ?: throw OperationParamsNotFoundException(),
         )
+//        operationsService.updateDataBaseOperation(operationToAdd)
         operationsService.editOperation(operationToAdd)
 
     }

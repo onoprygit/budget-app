@@ -1,9 +1,9 @@
 package com.onopry.budgetapp.model.dto
 
+import com.onopry.budgetapp.model.services.*
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
-import kotlin.time.Duration.Companion.days
 
 data class TargetDTO(
     val id: String,
@@ -22,4 +22,14 @@ data class TargetDTO(
         get() {
             return  (currentAmount / (cost.toFloat()/100)).roundToInt()
         }
+
+    fun toMap() = mutableMapOf<String, Any>(
+//        CHILD_TARGET_ID to id,
+        CHILD_TARGET_TITLE to title,
+        CHILD_TARGET_COST to cost,
+        CHILD_TARGET_CURRENT_AMOUNT to currentAmount,
+        CHILD_TARGET_DATE to date.toString(),
+        CHILD_TARGET_DESRIPTION to "def",
+        CHILD_TARGET_IS_DONE to isDone
+    )
 }

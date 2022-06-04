@@ -1,26 +1,55 @@
 package com.onopry.budgetapp.model.dto
 
-import android.os.Parcelable
-import com.onopry.budgetapp.model.dto.CategoriesDto
-import com.onopry.budgetapp.utils.*
+import com.onopry.budgetapp.model.services.*
 import java.io.Serializable
 import java.time.LocalDate
-import java.util.*
 
 data class OperationsDto(
     val id: String,
     var amount: Int,
     var category: CategoriesDto,
     var date: LocalDate = LocalDate.of(2022,1,1),
-    var isExpence: Boolean = true
+    var isExpence: Boolean = true,
+    val accountId: String = "",
+    val categoryId: String = ""
 ): Serializable {
-    fun toMap() = mutableMapOf<String, Any>(
-        CHILD_ID to id,
-        CHILD_AMOUNT to amount,
-        CHILD_CATEGORY to category,
-        CHILD_DATE to date.toString(),
-        CHILD_IS_EXPENCE to isExpence
+    fun toMap() = mutableMapOf(
+        CHILD_OPERATION_AMOUNT to amount,
+        CHILD_OPERATION_CATEGORY to category.toMap(),
+        CHILD_OPERATION_DATE to date.toString(),
+        CHILD_OPERATION_IS_EXPENCE to isExpence,
+        CHILD_OPERATION_ACCOUNT_ID to accountId
     )
+
+    fun toMapFire() = mutableMapOf(
+        CHILD_OPERATION_AMOUNT to amount,
+        CHILD_OPERATION_CATEGORY_ID to categoryId,
+        CHILD_OPERATION_DATE to date.toString(),
+        CHILD_OPERATION_IS_EXPENCE to isExpence,
+        CHILD_OPERATION_ACCOUNT_ID to accountId
+    )
+
+    override fun toString(): String {
+        return """ OPERATION:
+            |id: $id
+            |amount: $amount
+            |category:
+            |       ${category.id}
+            |       ${category.name}
+            |date: $date
+            |isExpence: $isExpence
+            |accountId: $accountId
+        """.trimMargin()
+    }
+
+    /*companion object{
+        fun parse(operationMap: Map<String, Any>, key: String): OperationsDto{
+            OperationsDto(
+                id = key,
+                amount = (operationMap[CHILD_OPERATION_AMOUNT] as Long).toInt(),
+            )
+        }
+    }*/
 }
 
 

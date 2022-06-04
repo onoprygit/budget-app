@@ -1,10 +1,11 @@
-package com.onopry.budgetapp.viewmodel
+package com.onopry.budgetapp.viewmodel.screens.operations
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.onopry.budgetapp.model.OperationsService
+
 import com.onopry.budgetapp.model.dto.OperationsDto
+import com.onopry.budgetapp.model.services.OperationsService
 import java.util.*
 
 class AddingMoneyViewModel(

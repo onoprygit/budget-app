@@ -1,10 +1,12 @@
-package com.onopry.budgetapp.model
+package com.onopry.budgetapp.model.services
 import android.graphics.Color
+import android.util.Log
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
-import com.onopry.budgetapp.utils.CategoryNotFoundException
-import com.onopry.budgetapp.utils.MY_COLORS
-import com.onopry.budgetapp.utils.OperationNotFoundException
+import com.onopry.budgetapp.utils.*
 import java.util.*
 
 // Листенер отдает список категорий, который будет обновлен после какой либо операций
@@ -16,11 +18,8 @@ class CategoriesService {
     private val listeners = mutableSetOf<CategoriesListener>()
     private val targetService = TargetService()
 
-    init {
-        loadCategories()
-        }
-
-    private fun loadCategories(){
+    @Deprecated("Для локалки, потом убрать")
+    private fun loadCategoriesLocal(){
         val categoryColorsStack = getCategoriesColors()
         categoriesList = mutableListOf(
             CategoriesDto(
@@ -99,6 +98,41 @@ class CategoriesService {
         )
     }
 
+    fun loadCategories(){
+        REF_DB_ROOT
+            .child(NODE_CATEGORIES)
+            .child(AUTH.currentUser?.uid.toString())
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val list = mutableListOf<CategoriesDto>()
+                    snapshot.children.forEach {
+                        list.add(
+                            CategoriesDto(
+                                id = it.key as String,
+                                name = it.child(CHILD_CATEGORY_NAME).value as String,
+                                icon = (it.child(CHILD_CATEGORY_ICON).value as Long).toInt(),
+                                color = (it.child(CHILD_CATEGORY_COLOR).value as Long).toInt(),
+                                isParent = it.child(CHILD_CATEGORY_IS_PARENT).value as Boolean,
+                                isExpence = it.child(CHILD_CATEGORY_IS_EXPENCE).value as Boolean,
+                                parentId = it.child(CHILD_CATEGORY_PARENT_ID).value as String,
+                                targetId = it.child(CHILD_CATEGORY_TARGET_ID).value as String,
+                        ))
+                    }
+                    categoriesList = list
+                    notifyChanges()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    throw CategoriesUploadCancelledException()
+                }
+
+            })
+    }
+
+    fun category_log(){
+        Log.d("CATEGORY_LOG_TAG", "size: ${categoriesList.size}, list: $categoriesList")
+    }
+
     //hardcode hell
     private fun getCategoriesColors(): Stack<Int>{
         val colorsStack: Stack<Int> = Stack()
@@ -157,6 +191,11 @@ class CategoriesService {
     fun addCategory(category: CategoriesDto){
         categoriesList.add(category)
         notifyChanges()
+    }
+
+    fun updateCategory(category: CategoriesDto) {
+        val uid = AUTH.currentUser?.uid.toString()
+        REF_DB_ROOT.child(NODE_CATEGORIES).child(uid).child(category.id).updateChildren(category.toMap())
     }
 
     fun getExpencesCategories() = categoriesList.filter { it.isExpence }

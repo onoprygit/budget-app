@@ -1,6 +1,6 @@
 @file:Suppress("MoveLambdaOutsideParentheses")
 
-package com.onopry.budgetapp.view.screens
+package com.onopry.budgetapp.view.screens.operations
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,7 +16,8 @@ import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.OperationCategoryNotFoundException
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodel.EditOperationViewModel
+import com.onopry.budgetapp.view.screens.CategoryBottomSheet
+import com.onopry.budgetapp.viewmodel.screens.operations.EditOperationViewModel
 
 class EditOperationFragment : Fragment() {
 

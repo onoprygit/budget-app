@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.model
+package com.onopry.budgetapp.model.services
 
 import android.util.Log
 import com.onopry.budgetapp.utils.PeriodDate

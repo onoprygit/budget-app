@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.view.screens
+package com.onopry.budgetapp.view.screens.more
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.onopry.budgetapp.databinding.FragmentMoreBinding
+import com.onopry.budgetapp.model.services.AUTH
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodel.MoreViewModel
+import com.onopry.budgetapp.viewmodel.screens.more.MoreViewModel
 
 
 class MoreFragment : Fragment() {
@@ -22,7 +23,8 @@ class MoreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMoreBinding.inflate(inflater, container, false)
-        binding.moreTextSample.text = "Фрагмент Еще"
+
+        binding.userMail.text = AUTH.currentUser?.uid
         return binding.root
     }
 

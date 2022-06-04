@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.view.screens
+package com.onopry.budgetapp.view.screens.operations
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,7 @@ import com.onopry.budgetapp.databinding.FragmentOperationBinding
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodel.OperationsViewModel
+import com.onopry.budgetapp.viewmodel.screens.operations.OperationsViewModel
 
 class OperationFragment : Fragment() {
 

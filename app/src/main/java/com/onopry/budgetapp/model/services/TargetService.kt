@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.model
+package com.onopry.budgetapp.model.services
 
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.dto.TargetDTO
@@ -33,7 +33,9 @@ class TargetService {
             ))
     }
 
-
+    fun updateTarget(target: TargetDTO){
+        updateTargetsToDb(target.toMap(), target.id)
+    }
 
     fun getTargetById(id: String): TargetDTO{
         val index = targetList.indexOfFirst { it.id == id }
