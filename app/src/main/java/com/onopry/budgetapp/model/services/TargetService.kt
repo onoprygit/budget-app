@@ -2,7 +2,6 @@ package com.onopry.budgetapp.model.services
 
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.dto.TargetDTO
-import com.onopry.budgetapp.model.updateTargetsToDb
 import com.onopry.budgetapp.utils.TargetNotFoundException
 import java.time.LocalDate
 

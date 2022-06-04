@@ -8,9 +8,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.onopry.budgetapp.databinding.ActivityMainBinding
-import com.onopry.budgetapp.model.AUTH
+import com.onopry.budgetapp.model.services.AUTH
 import com.onopry.budgetapp.utils.MainNavigator
-import com.onopry.budgetapp.model.initFirebase
+import com.onopry.budgetapp.model.services.initFirebase
 import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.view.screens.analytics.AnalyticsFragment
 import com.onopry.budgetapp.view.screens.auth.SignInFragment
@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity(), MainNavigator {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        AUTH.signOut()
 
 //        currentFragment = analyticsFragment
         currentFragment = if (AUTH.currentUser != null) {

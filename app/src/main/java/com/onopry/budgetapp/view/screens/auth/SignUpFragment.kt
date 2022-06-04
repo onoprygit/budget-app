@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.onopry.budgetapp.databinding.FragmentSignUpBinding
-import com.onopry.budgetapp.model.AUTH
-import com.onopry.budgetapp.model.initNewUserData
+import com.onopry.budgetapp.model.services.AUTH
+import com.onopry.budgetapp.model.services.initNewUserData
 import com.onopry.budgetapp.utils.navigator
 
 class SignUpFragment : Fragment() {

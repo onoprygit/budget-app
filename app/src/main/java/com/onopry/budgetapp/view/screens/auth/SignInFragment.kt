@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.onopry.budgetapp.databinding.FragmentSingInBinding
-import com.onopry.budgetapp.model.AUTH
+import com.onopry.budgetapp.model.services.AUTH
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.viewmodel.screens.auth.SignInViewModel
 

@@ -1,25 +1,16 @@
 package com.onopry.budgetapp.model.services
 
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.onopry.budgetapp.model.*
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
 import com.onopry.budgetapp.utils.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.temporal.TemporalAccessor
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.random.Random
 
 // Слушатель отдает список транзакций, который будет обновлен после изменения списка операций
 typealias OperationsListener = (transactions: List<OperationsDto>) -> Unit
@@ -60,13 +51,27 @@ class OperationsService(
                                 amount = (it.child(CHILD_OPERATION_AMOUNT).value as Long).toInt(),
                                 CategoriesDto(
                                     id = it.child(CHILD_OPERATION_CATEGORY).child(CHILD_CATEGORY_ID).value as String,
-                                    name = it.child(CHILD_OPERATION_CATEGORY).child(CHILD_CATEGORY_NAME).value as String,
-                                    icon = (it.child(CHILD_OPERATION_CATEGORY).child(CHILD_CATEGORY_ICON).value as Long).toInt(),
-                                    color = (it.child(CHILD_OPERATION_CATEGORY).child(CHILD_CATEGORY_COLOR).value as Long).toInt(),
-                                    isParent = it.child(CHILD_OPERATION_CATEGORY).child(CHILD_CATEGORY_IS_PARENT).value as Boolean,
-                                    isExpence = it.child(CHILD_OPERATION_CATEGORY).child(CHILD_CATEGORY_IS_EXPENCE).value as Boolean,
-                                    parentId = it.child(CHILD_OPERATION_CATEGORY).child(CHILD_CATEGORY_PARENT_ID).value as String,
-                                    targetId = it.child(CHILD_OPERATION_CATEGORY).child(CHILD_CATEGORY_TARGET_ID).value as String
+                                    name = it.child(CHILD_OPERATION_CATEGORY).child(
+                                        CHILD_CATEGORY_NAME
+                                    ).value as String,
+                                    icon = (it.child(CHILD_OPERATION_CATEGORY).child(
+                                        CHILD_CATEGORY_ICON
+                                    ).value as Long).toInt(),
+                                    color = (it.child(CHILD_OPERATION_CATEGORY).child(
+                                        CHILD_CATEGORY_COLOR
+                                    ).value as Long).toInt(),
+                                    isParent = it.child(CHILD_OPERATION_CATEGORY).child(
+                                        CHILD_CATEGORY_IS_PARENT
+                                    ).value as Boolean,
+                                    isExpence = it.child(CHILD_OPERATION_CATEGORY).child(
+                                        CHILD_CATEGORY_IS_EXPENCE
+                                    ).value as Boolean,
+                                    parentId = it.child(CHILD_OPERATION_CATEGORY).child(
+                                        CHILD_CATEGORY_PARENT_ID
+                                    ).value as String,
+                                    targetId = it.child(CHILD_OPERATION_CATEGORY).child(
+                                        CHILD_CATEGORY_TARGET_ID
+                                    ).value as String
                                 ),
                                 date = LocalDate.parse(it.child(CHILD_OPERATION_DATE).value as String),
                                 isExpence = it.child(CHILD_OPERATION_IS_EXPENCE).value as Boolean,
@@ -142,9 +147,6 @@ class OperationsService(
 
         notifyChanges()
     }
-
-
-
 
     fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = operationsList
         .filter { operation ->

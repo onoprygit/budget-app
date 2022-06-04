@@ -1,6 +1,6 @@
 package com.onopry.budgetapp.model.dto
 
-import com.onopry.budgetapp.model.*
+import com.onopry.budgetapp.model.services.*
 import com.onopry.budgetapp.utils.*
 import java.io.Serializable
 

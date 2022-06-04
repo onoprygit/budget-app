@@ -2,7 +2,7 @@ package com.onopry.budgetapp.model.dto
 
 import android.graphics.Color
 import com.onopry.budgetapp.R
-import com.onopry.budgetapp.model.*
+import com.onopry.budgetapp.model.services.*
 import java.io.Serializable
 
 data class AccountDTO(

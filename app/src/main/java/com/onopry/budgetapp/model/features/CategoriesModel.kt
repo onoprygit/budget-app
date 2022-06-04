@@ -5,4 +5,5 @@ class CategoriesModel(
     private val categoriesDataSourse: CategoriesDataSourse
 ) {
     fun getCategories() = categoriesDataSourse.getCategoryes()
+    fun getCategoriesFirebase() = categoriesDataSourse.getCategoriesFirebase()
 }

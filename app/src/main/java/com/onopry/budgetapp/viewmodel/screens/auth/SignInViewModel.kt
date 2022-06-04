@@ -4,10 +4,6 @@ import androidx.lifecycle.ViewModel
 
 class SignInViewModel: ViewModel() {
 
-
-
-
-
     private fun isEmailCorrect(email: String): Boolean{
         return email.contains('@')
                 && email.contains('.')

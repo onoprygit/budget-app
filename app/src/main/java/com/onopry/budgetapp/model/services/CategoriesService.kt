@@ -5,7 +5,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.onopry.budgetapp.R
-import com.onopry.budgetapp.model.*
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.utils.*
 import java.util.*

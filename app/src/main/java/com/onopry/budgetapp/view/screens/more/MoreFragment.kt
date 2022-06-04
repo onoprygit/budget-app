@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.onopry.budgetapp.databinding.FragmentMoreBinding
-import com.onopry.budgetapp.model.AUTH
+import com.onopry.budgetapp.model.services.AUTH
 import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodel.screens.more.MoreViewModel
 
