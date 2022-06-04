@@ -1,25 +1,23 @@
 package com.onopry.budgetapp.view.screens.auth
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.auth.FirebaseAuth
+import androidx.fragment.app.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.onopry.budgetapp.databinding.FragmentSingInBinding
+import com.onopry.budgetapp.model.AUTH
 import com.onopry.budgetapp.utils.navigator
+import com.onopry.budgetapp.viewmodel.screens.auth.SignInViewModel
 
 
 class SignInFragment : Fragment() {
 
     private lateinit var binding: FragmentSingInBinding
-
-    private lateinit var auth: FirebaseAuth
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        super.onCreate(savedInstanceState)
-    }
+    private val viewModel: SignInViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,15 +25,7 @@ class SignInFragment : Fragment() {
     ): View {
         binding = FragmentSingInBinding.inflate(inflater, container, false)
 
-        /*private lateinit var auth: FirebaseAuth*/
-        auth = FirebaseAuth.getInstance()
-        if (auth.currentUser != null) {
-            navigator().toast(auth.currentUser?.uid.toString())
-        }
-
-
         binding.authTvRegister.setOnClickListener{
-            navigator().toast("REGISTER")
             navigator().showSingUpScreen()
         }
 
@@ -43,40 +33,45 @@ class SignInFragment : Fragment() {
             val email = binding.authEtMail.text.toString()
             val password = binding.authEtPass.text.toString()
 
-            if (!isEmailCorrect(email) && !isPasswordCorrect(password)){
-                navigator().toast("Неверно введена почта или пароль")
+            if (viewModel.isFieldsCorrect(email, password)){
+                binding.authNoUserTv.text = "Ошибка ввода почты\n или пароля"
+                binding.authNoUserTv.visibility = View.VISIBLE
                 return@setOnClickListener
             }
+            authUser(email, password)
         }
 
+        binding.authEtMail.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.authNoUserTv.visibility = View.GONE
+        }
+
+        binding.authEtPass.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) binding.authNoUserTv.visibility = View.GONE
+        }
 
 
         return binding.root
     }
 
-    fun authUser(email: String, pass: String){
-        auth.signInWithEmailAndPassword(email, pass)
+    private fun authUser(email: String, pass: String){
+        AUTH.signInWithEmailAndPassword(email, pass)
             .addOnCompleteListener {
                 if (!it.isSuccessful) {
-                    navigator().toast("Authentication failed, check your email and password or sign up")
+
+                    Snackbar.make(binding.authEnterTitle, "Такого пользователя не существует", Snackbar.LENGTH_LONG)
+                        .setAction("Зарегистрироваться") {
+                            navigator().showSingUpScreen()
+                        }.show()
+
+                    binding.authNoUserTv.text = "Такого пользователя\n не существует!"
+                    binding.authNoUserTv.visibility = View.VISIBLE
+
+                    Log.d("SignInFragment_TAG", "authUser: ${it.exception?.message}")
 
                 } else {
                     navigator().toast("Success")
-                    navigator().setBottomNavVisible(true)
                     navigator().showAnalyticsScreen()
                 }
             }
-    }
-
-    private fun isEmailCorrect(email: String): Boolean{
-        return email.contains('@')
-                && email.contains('.')
-                && email.length > 3
-                && !email.contains(' ')
-    }
-
-    private fun isPasswordCorrect(pass: String): Boolean{
-        return pass.length > 6
-                && !pass.contains(' ')
     }
 }

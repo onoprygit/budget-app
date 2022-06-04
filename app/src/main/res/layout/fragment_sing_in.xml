@@ -7,9 +7,10 @@
     tools:context=".view.screens.auth.SignInFragment">
 
     <TextView
+        android:id="@+id/auth_enter_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/auth_cardView"
+        app:layout_constraintBottom_toTopOf="@id/auth_noUserTv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Вход"
@@ -17,6 +18,21 @@
         android:textStyle="bold"
         android:textColor="@color/black"
         android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:id="@+id/auth_noUserTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/auth_cardView"
+        app:layout_constraintStart_toStartOf="@id/auth_cardView"
+        app:layout_constraintEnd_toEndOf="@id/auth_cardView"
+        android:drawableEnd="@drawable/ic_warning"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
 
     <androidx.cardview.widget.CardView

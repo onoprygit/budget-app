@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.view.screens
+package com.onopry.budgetapp.view.screens.analytics
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -19,7 +19,7 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.adapters.AmountByCategoryAdapter
 import com.onopry.budgetapp.databinding.AnalyticsFragmentBinding
 import com.onopry.budgetapp.utils.*
-import com.onopry.budgetapp.viewmodel.AnalyticsViewModel
+import com.onopry.budgetapp.viewmodel.screens.analytics.AnalyticsViewModel
 import java.time.LocalDate
 
 class AnalyticsFragment : Fragment() {

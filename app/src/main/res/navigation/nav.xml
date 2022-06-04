@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/signUpFragment">
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.onopry.budgetapp.view.screens.auth.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.onopry.budgetapp.view.screens.auth.SignInFragment"
+        android:label="fragment_sing_in"
+        tools:layout="@layout/fragment_sing_in" />
+    <fragment
+        android:id="@+id/moreFragment"
+        android:name="com.onopry.budgetapp.view.screens.more.MoreFragment"
+        android:label="MoreFragment" />
+    <fragment
+        android:id="@+id/budgetAndDebtsFragment"
+        android:name="com.onopry.budgetapp.view.screens.targets.BudgetAndDebtsFragment"
+        android:label="fragment_budet_and_debts"
+        tools:layout="@layout/fragment_budet_and_debts" />
+    <fragment
+        android:id="@+id/analyticsFragment2"
+        android:name="com.onopry.budgetapp.view.screens.analytics.AnalyticsFragment"
+        android:label="analytics_fragment"
+        tools:layout="@layout/analytics_fragment" />
+    <navigation android:id="@+id/navigation2"
+        app:startDestination="@id/operationFragment">
+        <fragment
+            android:id="@+id/operationFragment"
+            android:name="com.onopry.budgetapp.view.screens.operations.OperationFragment"
+            android:label="fragment_operation"
+            tools:layout="@layout/fragment_operation" >
+            <action
+                android:id="@+id/action_operationFragment_to_editOperationFragment"
+                app:destination="@id/editOperationFragment" />
+            <action
+                android:id="@+id/action_operationFragment_to_addOperationFragment"
+                app:destination="@id/addOperationFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/addOperationFragment"
+            android:name="com.onopry.budgetapp.view.screens.operations.AddOperationFragment"
+            android:label="AddOperationFragment" />
+        <fragment
+            android:id="@+id/editOperationFragment"
+            android:name="com.onopry.budgetapp.view.screens.operations.EditOperationFragment"
+            android:label="EditOperationFragment" />
+        <dialog
+            android:id="@+id/datePickerFragment"
+            android:name="com.onopry.budgetapp.view.screens.DatePickerFragment"
+            android:label="DatePickerFragment" />
+        <dialog
+            android:id="@+id/categoryBottomSheet"
+            android:name="com.onopry.budgetapp.view.screens.CategoryBottomSheet"
+            android:label="CategoryBottomSheet" />
+    </navigation>
+</navigation>
