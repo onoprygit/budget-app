@@ -9,6 +9,8 @@ import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
 import com.onopry.budgetapp.utils.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import kotlin.collections.ArrayList
 
@@ -37,19 +39,27 @@ class OperationsService(
 //        loadOperations()
     }
 
-    fun loadOperations() {
-        val TAG = "ADSASDJUDSOAINDM"
+    suspend fun loadOperations() {
+//        val TAG = "OPERATION_LOAD_TAG"
+//        Log.d(TAG, categoriesService.getCategoriesListSize().toString())
+        Log.d("HUITAAAA", "OPERATIONS_SERVICE load start")
         categoriesService.category_log()
         REF_DB_ROOT.child(NODE_OPERATIONS).child(AUTH.currentUser?.uid.toString())
             .addValueEventListener(object : ValueEventListener {
 
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val list = mutableListOf<OperationsDto>()
-                    snapshot.children.forEach {
-                        list.add(OperationsDto(
+
+                        val list = mutableListOf<OperationsDto>()
+                        Log.d("HUITAAAA", categoriesService.getCategoriesListSize().toString())
+                        snapshot.children.forEach {
+                            list.add(OperationsDto(
                                 id = it.key as String,
                                 amount = (it.child(CHILD_OPERATION_AMOUNT).value as Long).toInt(),
-                                CategoriesDto(
+
+                                category = categoriesService.getCategoryById(
+                                    it.child(CHILD_OPERATION_CATEGORY_ID).value as String
+                                ),
+                                /*                                CategoriesDto(
                                     id = it.child(CHILD_OPERATION_CATEGORY).child(CHILD_CATEGORY_ID).value as String,
                                     name = it.child(CHILD_OPERATION_CATEGORY).child(
                                         CHILD_CATEGORY_NAME
@@ -72,21 +82,23 @@ class OperationsService(
                                     targetId = it.child(CHILD_OPERATION_CATEGORY).child(
                                         CHILD_CATEGORY_TARGET_ID
                                     ).value as String
-                                ),
+                                ),*/
                                 date = LocalDate.parse(it.child(CHILD_OPERATION_DATE).value as String),
                                 isExpence = it.child(CHILD_OPERATION_IS_EXPENCE).value as Boolean,
                                 accountId = it.child(CHILD_OPERATION_ACCOUNT_ID).value as String
                             )
-                        )
-                    }
-                    operationsList = list
-                    notifyChanges()
+                            )
+                        }
+                        operationsList = list
+                        notifyChanges()
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     throw OperationsUploadCancelledException()
                 }
             })
+        Log.d("HUITAAAA", "OPERATIONS_SERVICE load start")
 //        notifyChanges()
     }
 

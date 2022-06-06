@@ -15,6 +15,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.random.Random
 
 fun initFirebase(){
@@ -27,7 +28,8 @@ fun initNewUserData(){
     val uid = AUTH.currentUser?.uid.toString()
     Log.d(TAG, "in initNewUserData")
     //TODO: такой говнокодище - БООООЖЕ
-    GlobalScope.launch(Dispatchers.IO){
+    CoroutineScope(Job() + Dispatchers.IO).launch{
+//    GlobalScope.launch(Dispatchers.IO){
         Log.d(TAG, "in GlobalScope start")
         runBlocking {
             Log.d(TAG, "in block CATEGORIES start")
@@ -100,14 +102,15 @@ suspend fun initNewUserOperations(){
             date = LocalDate.of(2022, Random.nextInt(4,7), Random.nextInt(8, 25)),
             isExpence = Random.nextBoolean()
         )
-    }.sortedByDescending { it.date }.toMutableList()
+    }.sortedByDescending { it.date }.toList()
 
-    operations.forEach{
+    //operations.forEach{
         /*CoroutineScope(Dispatchers.IO).launch {
             addOperation(it, uid)
         }*/
-        addOperation(it, uid)
-    }
+//        addOperationDef(it, uid)
+        addOperationDef(operations, uid)
+    //}
 }
 
 suspend fun addTarget(target: TargetDTO, uid: String) {
@@ -134,7 +137,7 @@ suspend fun addTarget(target: TargetDTO, uid: String) {
         REF_DB_ROOT.updateChildren(tarToUpdate).await()
 }
 
-suspend fun addOperation(operation: OperationsDto, uid: String){
+/*suspend fun addOperationDef(operations: List<OperationsDto>, uid: String*//*operation: OperationsDto, uid: String*//*){
     val TAG = "OPERATION_TAG_TEST"
     //val operationKey = REF_DB_ROOT.child(NODE_OPERATIONS).child(uid).key
     //Log.d(TAG, "operation key: $operationKey")
@@ -156,6 +159,30 @@ suspend fun addOperation(operation: OperationsDto, uid: String){
     )
 
     REF_DB_ROOT.child(NODE_OPERATIONS).child(uid).push().updateChildren(newOperation.toMapFire()).await()
+}*/
+
+suspend fun addOperationDef(operations: List<OperationsDto>, uid: String/*operation: OperationsDto, uid: String*/){
+    val TAG = "OPERATION_TAG_TEST"
+    //val operationKey = REF_DB_ROOT.child(NODE_OPERATIONS).child(uid).key
+    //Log.d(TAG, "operation key: $operationKey")
+    Log.d(TAG, "UID: $uid")
+    val categories = REF_DB_ROOT.child(NODE_CATEGORIES).child(uid).get().await()
+    val categoriesIdList = mutableListOf<String>()
+    categories.children.forEach {
+        categoriesIdList.add(it.key as String)
+    }
+    val temp = mutableMapOf<String, Any>()
+    operations.forEach {
+        temp[CHILD_OPERATION_AMOUNT] = it.amount
+        temp[CHILD_OPERATION_DATE] = it.date
+        temp[CHILD_OPERATION_IS_EXPENCE] = it.isExpence
+        temp[CHILD_OPERATION_ACCOUNT_ID] = it.accountId
+        temp[CHILD_OPERATION_CATEGORY_ID] = categoriesIdList.random()
+
+        REF_DB_ROOT.child(NODE_OPERATIONS).child(uid).push().updateChildren(it.toMapFire()).await()
+    }
+
+//    REF_DB_ROOT.child(NODE_OPERATIONS).child(uid).push().updateChildren(newOperation.toMapFire()).await()
 }
 
 suspend fun addCategory(category: CategoriesDto, uid: String){

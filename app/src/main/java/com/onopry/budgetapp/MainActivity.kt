@@ -44,13 +44,14 @@ class MainActivity : AppCompatActivity(), MainNavigator {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        AUTH.signOut()
+//        AUTH.signOut()
 
 //        currentFragment = analyticsFragment
         currentFragment = if (AUTH.currentUser != null) {
             toast("SIGNED IN")
             Log.d("FIREBASE_TAG", AUTH.currentUser?.uid.toString())
             setBottomNavVisible(true)
+            mainViewModel.loadServices()
             analyticsFragment
         } else {
             setBottomNavVisible(false)

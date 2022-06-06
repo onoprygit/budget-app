@@ -26,7 +26,8 @@ data class CategoriesDto(
     )
 
     override fun toString(): String {
-        return """id: $id
+        return """
+            |id: $id
             |name: $name
         """.trimMargin()
     }

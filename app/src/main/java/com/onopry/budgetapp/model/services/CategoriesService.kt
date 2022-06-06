@@ -98,13 +98,18 @@ class CategoriesService {
         )
     }
 
-    fun loadCategories(){
+    suspend fun loadCategories(){
+        Log.d("HUITAAAA", "CATEGORIES_SERVICE load start")
+//        val TAG = "LOAD_CATEGORY_TEST"
+        Log.d("HUITAAAA", "CATEGORIES_SERVICE onDataChanged ${categoriesList.size}")
         REF_DB_ROOT
             .child(NODE_CATEGORIES)
             .child(AUTH.currentUser?.uid.toString())
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val list = mutableListOf<CategoriesDto>()
+                    Log.d("HUITAAAA", "CATEGORIES_SERVICE onDataChanged start")
+
                     snapshot.children.forEach {
                         list.add(
                             CategoriesDto(
@@ -118,7 +123,10 @@ class CategoriesService {
                                 targetId = it.child(CHILD_CATEGORY_TARGET_ID).value as String,
                         ))
                     }
+                    Log.d("HUITAAAA", "CATEGORIES_SERVICE onDataChanged end")
                     categoriesList = list
+                    Log.d("HUITAAAA", "CATEGORIES_SERVICE onDataChanged ${categoriesList.size}")
+//                    Log.d(TAG, "$list.toString()")
                     notifyChanges()
                 }
 
@@ -127,6 +135,11 @@ class CategoriesService {
                 }
 
             })
+        Log.d("HUITAAAA", "CATEGORIES_SERVICE load end")
+    }
+
+    suspend fun getCategoryById_(){
+
     }
 
     fun category_log(){
