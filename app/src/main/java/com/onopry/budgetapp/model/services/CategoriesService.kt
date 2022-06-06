@@ -98,6 +98,7 @@ class CategoriesService {
         )
     }
 
+    //piada
     suspend fun loadCategories(){
         Log.d("HUITAAAA", "CATEGORIES_SERVICE load start")
 //        val TAG = "LOAD_CATEGORY_TEST"
