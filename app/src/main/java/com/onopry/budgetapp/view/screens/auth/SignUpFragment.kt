@@ -1,24 +1,39 @@
 package com.onopry.budgetapp.view.screens.auth
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import androidx.fragment.app.activityViewModels
 import com.onopry.budgetapp.databinding.FragmentSignUpBinding
-import com.onopry.budgetapp.utils.AUTH
 import com.onopry.budgetapp.utils.navigator
+import com.onopry.budgetapp.viewmodel.AuthViewModel
 
 class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
+    private val authViewModel: AuthViewModel by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        authViewModel.user.observe(viewLifecycleOwner) { user ->
+            Log.d("AUTH_TAG_TEST", "onCreateView: ${authViewModel.isUserLogged()}")
+            if (user != null) {
+                navigator().toast("Добро пожаловать, ${user.email.toString()}")
+                navigator().showAnalyticsScreen()
+            } else navigator().toast("Войдите или зарегистрируйтесь")
+        }
+
         binding = FragmentSignUpBinding.inflate(inflater,container,false)
 
         //write
@@ -26,39 +41,12 @@ class SignUpFragment : Fragment() {
             val email = binding.registerEtMail.text.toString()
             val password = binding.registerEtPass.text.toString()
 
-            if (!isEmailCorrect(email) && !isPasswordCorrect(password)){
-                navigator().toast("Неверно введена почта или пароль")
-                return@setOnClickListener
-            }
-            createUser(email, password)
+            if (authViewModel.isEmailCorrect(email) && authViewModel.isPassCorrect(password))
+                authViewModel.signUp(email, password)
+            else
+                navigator().toast("Вы ввели что то не так")
         }
 
         return binding.root
     }
-
-    private fun createUser(email: String, pass: String){
-        AUTH.createUserWithEmailAndPassword(email, pass)
-            .addOnCompleteListener{
-                navigator().toast("createUserWithEmail:onComplete: " + it.isSuccessful)
-                if (!it.isSuccessful){
-                    navigator().toast("SingUp failed." + it.exception)
-                } else {
-                    navigator().toast("COMPLETE " + it.result)
-                    navigator().showAnalyticsScreen()
-                }
-            }
-    }
-
-    private fun isEmailCorrect(email: String): Boolean{
-        return email.contains('@')
-                && email.contains('.')
-                && email.length > 3
-                && !email.contains(' ')
-    }
-
-    private fun isPasswordCorrect(pass: String): Boolean{
-        return pass.length > 6
-                && !pass.contains(' ')
-    }
-
 }

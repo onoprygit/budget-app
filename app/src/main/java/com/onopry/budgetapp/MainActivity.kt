@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.onopry.budgetapp.databinding.ActivityMainBinding
 import com.onopry.budgetapp.utils.AUTH
 import com.onopry.budgetapp.view.screens.*
@@ -14,11 +17,13 @@ import com.onopry.budgetapp.utils.MainNavigator
 import com.onopry.budgetapp.utils.initFirebase
 import com.onopry.budgetapp.view.screens.auth.SignInFragment
 import com.onopry.budgetapp.view.screens.auth.SignUpFragment
+import com.onopry.budgetapp.viewmodel.AuthViewModel
 
 class MainActivity : AppCompatActivity(), MainNavigator {
 
     private lateinit var binding: ActivityMainBinding
-    
+
+    private val authViewModel: AuthViewModel by viewModels()
 
     private val signUpFragment = SignUpFragment()
     private val signInFragment = SignInFragment()
@@ -28,29 +33,32 @@ class MainActivity : AppCompatActivity(), MainNavigator {
     private val budgetAndDebtsFragment = BudgetAndDebtsFragment()
     private val moreFragment = MoreFragment()
     private val addOperationFragment = AddOperationFragment()
-    private lateinit var currentFragment: Fragment
+    private val TAG = "MAIN____ACTIVIRY"
+//    private var currentFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initFirebase()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        currentFragment = analyticsFragment
-//        currentFragment = if (AUTH.currentUser != null) {
-//            toast("SIGNED IN")
-//            Log.d("FIREBASE_TAG", AUTH.currentUser?.uid.toString())
-//            setBottomNavVisible(true)
-//            analyticsFragment
-//        } else {
-//            setBottomNavVisible(false)
-//            signInFragment
-//        }
+        showSingInScreen()
 
-        replaceFragment(currentFragment)
+/*        authViewModel.user.observe(this) {
+            if (it != null) {
+                Log.d(TAG, (true).toString())
+                replaceFragment(signInFragment)
+            }
+            else {
+                Log.d(TAG, false.toString())
+                replaceFragment(analyticsFragment)
+            }
+        }*/
+
+//        replaceFragment(currentFragment)
 
         initNavView()
 
+        setContentView(binding.root)
     }
 
     private fun initNavView(){
@@ -128,12 +136,13 @@ class MainActivity : AppCompatActivity(), MainNavigator {
 
     override fun showSingInScreen() {
         setBottomNavVisible(false)
-        TODO("Not yet implemented")
+        replaceFragment(signInFragment, true)
     }
 
     // Показываем фрагмент на экране
     /** @param [isNested] Is the fragment must open only from other fragment **/
     private fun replaceFragment(fragment: Fragment, isNested: Boolean = false){
+//        currentFragment = fragment
         if (isNested){
             supportFragmentManager
                 .beginTransaction()
@@ -146,6 +155,7 @@ class MainActivity : AppCompatActivity(), MainNavigator {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
                 .commit()
         }
     }

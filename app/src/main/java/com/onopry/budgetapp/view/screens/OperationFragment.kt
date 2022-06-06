@@ -1,6 +1,7 @@
 package com.onopry.budgetapp.view.screens
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,5 +71,17 @@ class OperationFragment : Fragment() {
             .addToBackStack(null)
             .replace(R.id.fragment_container, fragment)
             .commit()
+    }
+
+    val TAG = "FRAGMENTDESTROY_TAG"
+    
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG, "onDestroyView: ")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy: ")
     }
 }
