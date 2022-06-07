@@ -1,23 +1,22 @@
 package com.onopry.budgetapp
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.onopry.budgetapp.databinding.ActivityMainBinding
-import com.onopry.budgetapp.utils.AUTH
 import com.onopry.budgetapp.view.screens.*
 import com.onopry.budgetapp.utils.MainNavigator
-import com.onopry.budgetapp.utils.initFirebase
+import com.onopry.budgetapp.view.screens.analytics.AnalyticsFragment
 import com.onopry.budgetapp.view.screens.auth.SignInFragment
 import com.onopry.budgetapp.view.screens.auth.SignUpFragment
-import com.onopry.budgetapp.viewmodel.AuthViewModel
+import com.onopry.budgetapp.view.screens.budgetanddebts.BudgetAndDebtsFragment
+import com.onopry.budgetapp.view.screens.more.MoreFragment
+import com.onopry.budgetapp.view.screens.operations.AddOperationFragment
+import com.onopry.budgetapp.view.screens.operations.EditOperationFragment
+import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
 
 class MainActivity : AppCompatActivity(), MainNavigator {
 

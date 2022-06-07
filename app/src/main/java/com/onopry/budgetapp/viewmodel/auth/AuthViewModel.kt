@@ -1,16 +1,17 @@
-package com.onopry.budgetapp.viewmodel
+package com.onopry.budgetapp.viewmodel.auth
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import androidx.lifecycle.viewModelScope
+import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.repo.AuthRepository
+import com.onopry.budgetapp.model.repo.RealTimeDBRepository
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class AuthViewModel: ViewModel() {
+class AuthViewModel(
+    private val categoriesService: CategoriesService
+): ViewModel() {
 
 /*    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val isUserLoggedIn: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -56,31 +57,43 @@ class AuthViewModel: ViewModel() {
 
     fun isPassCorrect(pass: String) =
         pass.length >= 3*/
+    private val repository = RealTimeDBRepository(categoriesService)
 
+    private val authRepository = repository.authRepository
 
-    private val repository = AuthRepository()
-
-    val user = repository.user
+    val user = repository.authRepository.user
 
     /*private val _isUserLoggedIn = MutableLiveData<Boolean>(false)
     val isUserLoggedIn: LiveData<Boolean> = _isUserLoggedIn*/
 
-    val isUserLoggedIn = repository.isUserLoggedIn
+    val isUserLoggedIn = repository.authRepository.isUserLoggedIn
 
-    fun isUserLogged() = repository.isUserAuth()
+    fun generateDefaultUserData(){
+        viewModelScope.launch {
+            runBlocking {
+                repository.initNewUserCategories()
+            }
+            runBlocking {
+                repository.initNewUserOperations()
+            }
+            runBlocking { repository.initNewUserTargets() }
+        }
+    }
+
+    fun isUserLogged() = repository.authRepository.isUserAuth()
 
     fun signUp(email: String, pass: String){
         Log.d("AUTH_TAG_TEST", "MODEL signUp: ")
-        repository.signUp(email, pass)
+        repository.authRepository.signUp(email, pass)
     }
 
     fun signIn(email: String, pass: String){
         Log.d("AUTH_TAG_TEST", "MODEL signIn: ")
-        repository.signIn(email, pass)
+        repository.authRepository.signIn(email, pass)
     }
 
     fun signOut(){
-        repository.singOut()
+        repository.authRepository.singOut()
     }
 
     fun isEmailCorrect(email: String) =

@@ -1,14 +1,17 @@
 package com.onopry.budgetapp
 
 import android.app.Application
-import com.onopry.budgetapp.model.CategoriesService
-import com.onopry.budgetapp.model.OperationsService
-import com.onopry.budgetapp.model.PeriodService
-import com.onopry.budgetapp.model.TargetService
+import com.onopry.budgetapp.model.repo.RealTimeDBRepository
+import com.onopry.budgetapp.model.services.CategoriesService
+import com.onopry.budgetapp.model.services.OperationsService
+import com.onopry.budgetapp.model.services.PeriodService
+import com.onopry.budgetapp.model.services.TargetService
 
 class App: Application() {
-    val targetService = TargetService()
-    val operationsService = OperationsService(targetService)
     val categoriesService = CategoriesService()
+    val targetService = TargetService(categoriesService)
+    val operationsService = OperationsService(targetService, categoriesService)
     val periodService = PeriodService()
+
+    //val mainRepository = RealTimeDBRepository()
 }

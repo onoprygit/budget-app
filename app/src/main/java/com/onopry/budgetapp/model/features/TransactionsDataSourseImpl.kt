@@ -13,7 +13,7 @@ class TransactionsDataSourseImpl: TransactionsDataSourse {
             OperationsDto(
                 id = UUID.randomUUID().toString(),
                 amount = Random.nextInt(-10000,10000),
-                category = CATEGORIES[Random.nextInt(0,9)],
+                categoryId = CATEGORIES[Random.nextInt(0,9)].id,
             )
         }.toMutableList()
         return transactionsList

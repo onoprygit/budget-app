@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.ItemTransactionBinding
+import com.onopry.budgetapp.model.services.CategoriesService
+import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.getTextLocalDateDMY
 import java.time.LocalDate
@@ -33,6 +35,7 @@ class OperationsDuffCallback(
 }
 
 class OperationsAdapter(
+    private val operationsService: OperationsService,
     private val actionListener: OperationActionListener
 ): RecyclerView.Adapter<OperationsAdapter.CategoriesViewHolder>(), View.OnClickListener
  {
@@ -62,12 +65,12 @@ class OperationsAdapter(
             transactionDeleteImg.tag = operation
             transactionEditImg.tag = operation
 
-            transactionCategoryText.text = operation.category.name
-            transactionCategoryImage.setImageResource(operation.category.icon)
+            transactionCategoryText.text = operationsService.getCategoryById(operation.categoryId).name
+            transactionCategoryImage.setImageResource(operationsService.getCategoryById(operation.categoryId).icon)
             transactionDeleteImg.setImageResource(R.drawable.ic_delete_transaction)
             transactionDate.text = getTextFromDate(operation.date)
 
-            transactionCategoryImage.setBackgroundColor(operation.category.color)
+            transactionCategoryImage.setBackgroundColor(operationsService.getCategoryById(operation.categoryId).color)
 
             toolsOperationId.text = operation.id.substring(0..15)
 

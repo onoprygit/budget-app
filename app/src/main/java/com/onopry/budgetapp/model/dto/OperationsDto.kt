@@ -1,27 +1,39 @@
 package com.onopry.budgetapp.model.dto
 
-import android.os.Parcelable
-import com.onopry.budgetapp.model.dto.CategoriesDto
+import com.google.firebase.database.DataSnapshot
 import com.onopry.budgetapp.utils.*
 import java.io.Serializable
 import java.time.LocalDate
-import java.util.*
 
 data class OperationsDto(
     val id: String,
     var amount: Int,
-    var category: CategoriesDto,
+//    val category: CategoriesDto,
     var date: LocalDate = LocalDate.of(2022,1,1),
     var isExpence: Boolean = true,
-    val accountId: String? = null
+    var categoryId: String,
+    val accountId: String = ""
 ): Serializable {
-    fun toMap() = mutableMapOf<String, Any>(
-        CHILD_ID to id,
-        CHILD_AMOUNT to amount,
-        CHILD_CATEGORY to category,
-        CHILD_DATE to date.toString(),
-        CHILD_IS_EXPENCE to isExpence
+    fun toMap() = mapOf<String, Any>(
+        OPERATION.AMOUNT to amount,
+        OPERATION.CATEGORY_ID to categoryId,
+        OPERATION.DATE to date.toString(),
+        OPERATION.IS_EXPENCE to isExpence,
+        OPERATION.ACCOUNT_ID to accountId
     )
+
+    companion object {
+        fun parseSnapshot(snapshot: DataSnapshot) =
+            OperationsDto(
+                id = snapshot.key as String,
+                amount = (snapshot.child(OPERATION.AMOUNT).value as Long).toInt(),
+//                category =
+                date = LocalDate.parse((snapshot.child(OPERATION.DATE).value as String)),
+                isExpence = snapshot.child(CATEGORY.IS_EXPENCE).value as Boolean,
+                accountId = snapshot.child(CATEGORY.PARENT_ID).value as String,
+                categoryId = snapshot.child(OPERATION.CATEGORY_ID).value as String,
+            )
+    }
 }
 
 

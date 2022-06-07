@@ -1,11 +1,11 @@
-package com.onopry.budgetapp.viewmodel
+package com.onopry.budgetapp.viewmodel.budgetanddebts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onopry.budgetapp.R
-import com.onopry.budgetapp.model.CategoriesService
-import com.onopry.budgetapp.model.TargetService
+import com.onopry.budgetapp.model.services.CategoriesService
+import com.onopry.budgetapp.model.services.TargetService
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.TargetDTO
 import java.util.*

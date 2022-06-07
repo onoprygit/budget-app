@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.model
+package com.onopry.budgetapp.model.services
 
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
@@ -14,18 +14,20 @@ import kotlin.random.Random
 typealias OperationsListener = (transactions: List<OperationsDto>) -> Unit
 
 class OperationsService(
-    private val targetService: TargetService
+    private val targetService: TargetService,
+    private val categoriesService: CategoriesService
 ) {
 
     private var operationsList = mutableListOf<OperationsDto>()
     private val listeners = mutableSetOf<OperationsListener>()
 
     init {
-        operationsList = (1..30).map {
+        operationsList = (1..10).map {
             OperationsDto(
                 id = UUID.randomUUID().toString(),
                 amount = Random.nextInt(100,10000),
-                category = CATEGORIES[Random.nextInt(0,9)],
+//                categoryId = CATEGORIES[Random.nextInt(0,9)].id,
+                categoryId = categoriesService.getCategoriesList()[Random.nextInt(0,9)].id,
                 date = LocalDate.of(2022, Random.nextInt(4,7), Random.nextInt(8, 25)),
                 isExpence = Random.nextBoolean()
             )}.toMutableList()
@@ -75,9 +77,10 @@ class OperationsService(
     }
 
     fun addOperation(operation: OperationsDto) {
+//        val category =
         operationsList.add(operation)
         operationsList.sortByDescending { it.date }
-        if (operation.category.targetId != null){
+        if (categoriesService.getCategoryById(operation.categoryId).targetId != ""){
             targetService.addOperationToTarget(operation)
         }
 
@@ -120,12 +123,12 @@ class OperationsService(
 
         //получаем сет уникальных категорий из списка выше
         val uniqueCategorySet = mutableSetOf<CategoriesDto>()
-        operationsByPeriod.forEach { uniqueCategorySet.add(it.category) }
+        operationsByPeriod.forEach { uniqueCategorySet.add(categoriesService.getCategoryById(it.categoryId)) }
 
         uniqueCategorySet.forEach { category ->
             extractedOperationsByCategory[category] =
                 operationsByPeriod.filter { operation ->
-                    operation.category.id == category.id
+                    operation.categoryId == category.id
                 }
         }
         return extractedOperationsByCategory
@@ -140,8 +143,13 @@ class OperationsService(
         return oprsByCatgsSum
     }
 
+    fun getCategoryById(id: String) =
+        categoriesService.getCategoriesList().firstOrNull { it.id == id } ?: throw CategoryNotFoundException()
+
     companion object {
-        private val CATEGORIES = CategoriesModel(CategoryDataSourseImpl()).getCategories()
+//        private val CATEGORIES = CategoriesModel(CategoryDataSourseImpl()).getCategories()
+        fun CATEGORIES(categoriesService: CategoriesService) =
+            categoriesService.getCategoriesList()
     }
 
     /*    fun getOperationsByDay(dateOfDay: LocalDate) = operationsList

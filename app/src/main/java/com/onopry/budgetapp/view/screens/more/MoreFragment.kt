@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.view.screens
+package com.onopry.budgetapp.view.screens.more
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,8 +11,8 @@ import com.onopry.budgetapp.databinding.FragmentMoreBinding
 import com.onopry.budgetapp.utils.navigator
 
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodel.AuthViewModel
-import com.onopry.budgetapp.viewmodel.MoreViewModel
+import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
+import com.onopry.budgetapp.viewmodel.more.MoreViewModel
 
 
 class MoreFragment : Fragment() {

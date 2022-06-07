@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.model
+package com.onopry.budgetapp.model.services
 import android.graphics.Color
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
@@ -13,12 +13,15 @@ typealias CategoriesListener = (categories: List<CategoriesDto>) -> Unit // TODO
 class CategoriesService {
 
     private var categoriesList = mutableListOf<CategoriesDto>()
+
     private val listeners = mutableSetOf<CategoriesListener>()
-    private val targetService = TargetService()
+//    private val targetService = TargetService()
 
     init {
         loadCategories()
         }
+
+    fun getCategoriesList() = categoriesList.toList()
 
     private fun loadCategories(){
         val categoryColorsStack = getCategoriesColors()

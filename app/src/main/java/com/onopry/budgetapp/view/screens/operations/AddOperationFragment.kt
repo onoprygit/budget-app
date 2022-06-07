@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.view.screens
+package com.onopry.budgetapp.view.screens.operations
 
 import android.graphics.Paint
 import android.os.Bundle
@@ -15,7 +15,8 @@ import com.onopry.budgetapp.databinding.AddOperationFragmentBinding
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodel.AddingMoneyViewModel
+import com.onopry.budgetapp.view.screens.DatePickerFragment
+import com.onopry.budgetapp.viewmodel.operations.AddingMoneyViewModel
 import java.time.LocalDate
 import java.util.*
 
@@ -76,7 +77,7 @@ class AddOperationFragment : Fragment() {
                 val operation = OperationsDto(
                     id = "",
                     amount = addingOperationEditText.text.toString().toInt(),
-                    category = addingOperationEmptyCategoryIc.tag as CategoriesDto,
+                    categoryId = (addingOperationEmptyCategoryIc.tag as CategoriesDto).id,
                     isExpence = operationRadioExpence.isChecked,
                     date = addingOperationDatePick.tag as LocalDate
                 )

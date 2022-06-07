@@ -35,10 +35,6 @@ enum class PeriodRange{
     WEEK, MONTH, YEAR, OTHER
 }
 
-/*object PeriodRange{
-    const val WEEK = 1
-    const val MONTH = 2
-    const val YEAR = 3
-    const val OTHER = 4
-}*/
-
+object FIREBASE {
+    const val DATABASE_URL = "https://budget-app-a4a96-default-rtdb.europe-west1.firebasedatabase.app"
+}

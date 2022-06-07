@@ -15,7 +15,7 @@ import com.onopry.budgetapp.databinding.FragmentOperationBinding
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodel.OperationsViewModel
+import com.onopry.budgetapp.viewmodel.operations.OperationsViewModel
 
 class OperationFragment : Fragment() {
 
@@ -31,7 +31,7 @@ class OperationFragment : Fragment() {
     ): View {
         binding = FragmentOperationBinding.inflate(inflater, container, false)
 
-        adapter = OperationsAdapter(object : OperationActionListener {
+        adapter = OperationsAdapter(viewModel.getService() ,object : OperationActionListener {
             override fun onOperationDelete(operation: OperationsDto) {
                 viewModel.deleteOperation(operation)
             }

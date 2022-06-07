@@ -1,9 +1,9 @@
-package com.onopry.budgetapp.viewmodel
+package com.onopry.budgetapp.viewmodel.operations
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.onopry.budgetapp.model.OperationsService
+import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.OperationIdNotFoundException
 import com.onopry.budgetapp.utils.OperationNotFoundException
@@ -25,10 +25,11 @@ class EditOperationViewModel(
         val operationToAdd = OperationsDto(
             id = operation.value?.id ?: throw OperationIdNotFoundException(),
             amount = newOperation.amount,
-            category = newOperation.category,
+            categoryId = newOperation.categoryId,
             date = operation.value?.date ?: throw OperationParamsNotFoundException(),
         )
         operationsService.editOperation(operationToAdd)
-
     }
+
+    fun getCategoryById(id: String) = operationsService.getCategoryById(id)
 }

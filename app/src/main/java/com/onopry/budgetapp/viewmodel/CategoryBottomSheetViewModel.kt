@@ -3,8 +3,8 @@ package com.onopry.budgetapp.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.onopry.budgetapp.model.CategoriesListener
-import com.onopry.budgetapp.model.CategoriesService
+import com.onopry.budgetapp.model.services.CategoriesListener
+import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.dto.CategoriesDto
 
 class CategoryBottomSheetViewModel(

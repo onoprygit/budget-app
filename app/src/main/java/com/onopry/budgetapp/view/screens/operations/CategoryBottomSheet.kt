@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.view.screens
+package com.onopry.budgetapp.view.screens.operations
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

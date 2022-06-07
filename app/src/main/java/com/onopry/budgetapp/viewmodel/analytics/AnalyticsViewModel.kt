@@ -1,13 +1,13 @@
-package com.onopry.budgetapp.viewmodel
+package com.onopry.budgetapp.viewmodel.analytics
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.PieEntry
-import com.onopry.budgetapp.model.OperationsListener
-import com.onopry.budgetapp.model.OperationsService
-import com.onopry.budgetapp.model.PeriodListener
-import com.onopry.budgetapp.model.PeriodService
+import com.onopry.budgetapp.model.services.OperationsListener
+import com.onopry.budgetapp.model.services.OperationsService
+import com.onopry.budgetapp.model.services.PeriodListener
+import com.onopry.budgetapp.model.services.PeriodService
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.AmountByCategory
@@ -67,9 +67,9 @@ class AnalyticsViewModel(
 
         val categorySet = mutableSetOf<CategoriesDto>()
         val operList: List<OperationsDto> = operationsService.getOperationByPeriod(startDate, finishDate).filter { it.isExpence }
-        operList.forEach { categorySet.add(it.category) }
+        operList.forEach { categorySet.add(operationsService.getCategoryById(it.categoryId)) }
         categorySet.forEach { category ->
-            map[category] = operList.filter { it.category.id == category.id && it.isExpence }
+            map[category] = operList.filter { it.categoryId == category.id && it.isExpence }
         }
         return map
     }

@@ -1,11 +1,11 @@
-package com.onopry.budgetapp.viewmodel
+package com.onopry.budgetapp.viewmodel.operations
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.onopry.budgetapp.model.OperationsService
-import com.onopry.budgetapp.model.OperationsListener
+import com.onopry.budgetapp.model.services.OperationsService
+import com.onopry.budgetapp.model.services.OperationsListener
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.initFirebase
 
@@ -41,4 +41,8 @@ class OperationsViewModel(
         operationsService.removeListener(listener)
         Log.d(TAG, "ViewModel is cleared")
     }
+
+    fun getCategoryById(id: String) = operationsService.getCategoryById(id)
+
+    fun getService() = operationsService
 }

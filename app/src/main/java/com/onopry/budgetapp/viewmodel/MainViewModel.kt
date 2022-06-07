@@ -6,15 +6,19 @@ import androidx.lifecycle.ViewModel
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.dto.TargetDTO
+import com.onopry.budgetapp.model.repo.RealTimeDBRepository
 
-class MainViewModel: ViewModel() {
-    val _categories = MutableLiveData<List<CategoriesDto>>()
+class MainViewModel(
+    //repository: RealTimeDBRepository
+): ViewModel() {
+
+    private val _categories = MutableLiveData<List<CategoriesDto>>()
     val categories: LiveData<List<CategoriesDto>> = _categories
 
-    val _operations = MutableLiveData<List<OperationsDto>>()
+    private val _operations = MutableLiveData<List<OperationsDto>>()
     val operations: LiveData<List<OperationsDto>> = _operations
 
-    val _targets = MutableLiveData<List<TargetDTO>>()
+    private val _targets = MutableLiveData<List<TargetDTO>>()
     val targets: LiveData<List<TargetDTO>> = _targets
 
 //    val _accounts = MutableLiveData<List<OperationsDto>>()

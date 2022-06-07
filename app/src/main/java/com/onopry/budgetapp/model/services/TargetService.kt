@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.model
+package com.onopry.budgetapp.model.services
 
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.dto.TargetDTO
@@ -7,7 +7,9 @@ import java.time.LocalDate
 
 typealias TargetListener = (target: List<TargetDTO>) -> Unit
 
-class TargetService {
+class TargetService(
+    val categoriesService: CategoriesService
+) {
     private var targetList = mutableListOf<TargetDTO>()
     private val listeners = mutableSetOf<TargetListener>()
 
@@ -72,8 +74,8 @@ class TargetService {
         не отображалась
     */
     fun addOperationToTarget(operation: OperationsDto){
-        val id = operation.category.targetId
-        if (id != null){
+        val id = categoriesService.getCategoryById(operation.categoryId).targetId
+        if (id.isNotEmpty()){
             val target = getTargetById(id)
             target.currentAmount += operation.amount
 

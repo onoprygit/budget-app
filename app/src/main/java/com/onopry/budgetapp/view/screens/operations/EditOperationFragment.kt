@@ -1,6 +1,6 @@
 @file:Suppress("MoveLambdaOutsideParentheses")
 
-package com.onopry.budgetapp.view.screens
+package com.onopry.budgetapp.view.screens.operations
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,7 +16,7 @@ import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.OperationCategoryNotFoundException
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.utils.startFactory
-import com.onopry.budgetapp.viewmodel.EditOperationViewModel
+import com.onopry.budgetapp.viewmodel.operations.EditOperationViewModel
 
 class EditOperationFragment : Fragment() {
 
@@ -24,6 +24,7 @@ class EditOperationFragment : Fragment() {
 //    private lateinit var viewModel: EditOperationViewModel
     private val viewModel: EditOperationViewModel by viewModels { startFactory() }
     private lateinit var categoryBottomSheet: BottomSheetDialogFragment
+//    private lateinit var categoriesService: CategoriesService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,15 +40,16 @@ class EditOperationFragment : Fragment() {
 
         //put current operation category in 'tag' for get it for new operation when it will create
         binding.editingOperationTitle.text = viewModel.operation.value?.id ?: "NONE"
-        binding.editingOperationEmptyCategoryIc.tag = viewModel.operation.value?.category ?: throw OperationCategoryNotFoundException()
+//        binding.editingOperationEmptyCategoryIc.tag = viewModel.operation.value?.categoryId ?: throw OperationCategoryNotFoundException()
+        binding.editingOperationEmptyCategoryIc.tag = viewModel.getCategoryById(viewModel.operation.value?.categoryId ?: throw OperationCategoryNotFoundException())
 
         //get actual live data and setting it to view's of this fragment
         viewModel.operation.observe(viewLifecycleOwner, {
             binding.editingOperationEditText.setText(it.amount.toString())
-            binding.editingOperationEmptyCategoryIc.setImageResource(it.category.icon)
-            binding.editingOperationSelectCategory.text = it.category.name
-            binding.editingOperationSelectCategory.setBackgroundColor(it.category.color)
-            binding.editingOperationEmptyCategoryIc.setBackgroundColor(it.category.color)
+            binding.editingOperationEmptyCategoryIc.setImageResource(viewModel.getCategoryById(it.categoryId).icon)
+            binding.editingOperationSelectCategory.text = viewModel.getCategoryById(it.categoryId).name
+            binding.editingOperationSelectCategory.setBackgroundColor(viewModel.getCategoryById(it.categoryId).color)
+            binding.editingOperationEmptyCategoryIc.setBackgroundColor(viewModel.getCategoryById(it.categoryId).color)
         })
 
         // Start bottom sheet to choose category
@@ -71,7 +73,7 @@ class EditOperationFragment : Fragment() {
                 val operation = OperationsDto(
                     id = "_",
                     amount = editingOperationEditText.text.toString().toInt(),
-                    category = binding.editingOperationEmptyCategoryIc.tag as CategoriesDto
+                    categoryId = (binding.editingOperationEmptyCategoryIc.tag as CategoriesDto).name
 //                    date
                 )
                 viewModel.editOperation(operation)

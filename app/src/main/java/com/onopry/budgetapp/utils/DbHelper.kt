@@ -20,7 +20,35 @@ const val CHILD_CATEGORY = "category"
 const val CHILD_DATE = "date"
 const val CHILD_IS_EXPENCE = "isExpence"
 
+object CATEGORY {
+    const val ID = "id"
+    const val NAME = "name"
+    const val ICON = "icon"
+    const val COLOR = "color"
+    const val IS_PARENT = "isParent"
+    const val IS_EXPENCE = "isExpence"
+    const val PARENT_ID = "parentId"
+    const val TARGET_ID = "targetId"
+}
 
+object OPERATION {
+    const val ID = "id"
+    const val AMOUNT = "amount"
+    const val CATEGORY_ID = "categoryId"
+    const val DATE = "date"
+    const val IS_EXPENCE = "isExpence"
+    const val ACCOUNT_ID = "accountId"
+}
+
+object TARGET {
+    const val ID = "id"
+    const val TITLE = "title"
+    const val COST = "cost"
+    const val CURRENT_AMOUNT = "currentAmount"
+    const val DATE = "date"
+    const val DESCRIPTION = "description"
+    const val IS_DONE = "isDone"
+}
 
 
 fun initFirebase(){
