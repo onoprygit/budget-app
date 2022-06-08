@@ -11,9 +11,11 @@ import com.onopry.budgetapp.adapters.CategoryActionListener
 import com.onopry.budgetapp.adapters.CategoryChooseAdapter
 import com.onopry.budgetapp.databinding.CategoryBottomSheetBinding
 import com.onopry.budgetapp.viewmodel.CategoryBottomSheetViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 const val COLUMN_NUMBER = 5
 
+@AndroidEntryPoint
 class CategoryBottomSheet(
     private val actionListener: CategoryActionListener
 ): BottomSheetDialogFragment() {

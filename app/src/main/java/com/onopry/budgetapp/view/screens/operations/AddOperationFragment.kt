@@ -16,6 +16,7 @@ import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.view.screens.DatePickerFragment
 import com.onopry.budgetapp.viewmodel.operations.AddingMoneyViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.util.*
 
@@ -24,6 +25,7 @@ const val YESTERDAY = 1
 const val DAY_BEFORE_YESTERDAY = 2
 const val OTHER_DAY = 3
 
+@AndroidEntryPoint
 class AddOperationFragment : Fragment() {
 
     private val viewModel: AddingMoneyViewModel by viewModels()

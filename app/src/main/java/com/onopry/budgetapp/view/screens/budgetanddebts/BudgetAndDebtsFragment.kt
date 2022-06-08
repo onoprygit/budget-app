@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onopry.budgetapp.adapters.BudgetsAdapter
 import com.onopry.budgetapp.databinding.FragmentBudetAndDebtsBinding
-import com.onopry.budgetapp.view.screens.operations.AddTargetFragment
 import com.onopry.budgetapp.viewmodel.budgetanddebts.BudgetAndDebtsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

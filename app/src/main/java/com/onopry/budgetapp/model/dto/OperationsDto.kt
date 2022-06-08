@@ -30,7 +30,7 @@ data class OperationsDto(
 //                category =
                 date = LocalDate.parse((snapshot.child(OPERATION.DATE).value as String)),
                 isExpence = snapshot.child(CATEGORY.IS_EXPENCE).value as Boolean,
-                accountId = snapshot.child(CATEGORY.PARENT_ID).value as String,
+                accountId = snapshot.child(OPERATION.ACCOUNT_ID).value as String,
                 categoryId = snapshot.child(OPERATION.CATEGORY_ID).value as String,
             )
     }

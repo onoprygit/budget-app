@@ -11,6 +11,7 @@ object LogTags {
     const val TRANSACTION_FRAGMENT_TAG = "TRANSACTION_FRAGMENT_TAG"
 
     const val GENERATE_DATA_TAG = "GENERATE_DATA_TAG"
+    const val FETCH_DATA_TAG = "FETCH_DATA_TAG"
 }
 
 object MY_COLORS{

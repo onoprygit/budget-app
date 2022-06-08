@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.view.screens
+package com.onopry.budgetapp.view.screens.operations
 
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +13,7 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.adapters.OperationActionListener
 import com.onopry.budgetapp.databinding.FragmentOperationBinding
 import com.onopry.budgetapp.model.dto.OperationsDto
+import com.onopry.budgetapp.utils.LogTags
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.viewmodel.operations.OperationsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +42,10 @@ class OperationFragment : Fragment() {
                 navigator().showEditOperationScreen(operation.id)
             }
         })
+
+        viewModel._operations_.observe(viewLifecycleOwner) { list ->
+            Log.d(LogTags.FETCH_DATA_TAG, "Fetch operations... Size: ${list.size}, IDs: ${list.map{it.id}}")
+        }
 
         viewModel.operations.observe(viewLifecycleOwner) { adapter.operationList = it }
 

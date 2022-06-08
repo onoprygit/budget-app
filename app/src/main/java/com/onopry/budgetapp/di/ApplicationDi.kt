@@ -35,7 +35,9 @@ class ServicesDi {
 
     @Provides
     @Singleton
-    fun provideAuthRepo(categoriesService: CategoriesService) = AuthRepository(categoriesService)
+    fun provideAuthRepo(categoriesService: CategoriesService,
+        operationsService: OperationsService, targetService: TargetService) = AuthRepository(
+        categoriesService, operationsService, targetService)
 }
 
 /*

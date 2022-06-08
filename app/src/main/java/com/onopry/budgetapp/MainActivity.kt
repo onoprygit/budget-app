@@ -16,6 +16,7 @@ import com.onopry.budgetapp.view.screens.budgetanddebts.BudgetAndDebtsFragment
 import com.onopry.budgetapp.view.screens.more.MoreFragment
 import com.onopry.budgetapp.view.screens.operations.AddOperationFragment
 import com.onopry.budgetapp.view.screens.operations.EditOperationFragment
+import com.onopry.budgetapp.view.screens.operations.OperationFragment
 import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

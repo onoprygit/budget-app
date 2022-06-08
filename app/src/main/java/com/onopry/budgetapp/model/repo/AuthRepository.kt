@@ -9,9 +9,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.FirebaseDatabase
 import com.onopry.budgetapp.model.services.CategoriesService
+import com.onopry.budgetapp.model.services.OperationsService
+import com.onopry.budgetapp.model.services.TargetService
 import com.onopry.budgetapp.utils.FIREBASE
 
-class AuthRepository(private val categoriesService: CategoriesService) {
+class AuthRepository(
+    private val categoriesService: CategoriesService,
+    private val operationsService: OperationsService,
+    private val targetService: TargetService
+    ) {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val dbRef = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
 
@@ -36,6 +42,7 @@ class AuthRepository(private val categoriesService: CategoriesService) {
 
     suspend fun initNewUserTargets(){
         val uid = _user.value?.uid
+
     }
 
     fun signUp(email: String, pass: String): Task<AuthResult> {

@@ -1,10 +1,13 @@
 package com.onopry.budgetapp.model.services
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
-import com.onopry.budgetapp.model.features.CategoriesModel
-import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
+import com.onopry.budgetapp.model.repo.FirebaseHelper
 import com.onopry.budgetapp.utils.*
 import java.time.LocalDate
 import java.util.*
@@ -18,10 +21,14 @@ class OperationsService(
     private val targetService: TargetService,
     private val categoriesService: CategoriesService
 ) {
+    private val uid: String = FirebaseAuth.getInstance().currentUser?.uid!!
+    private val dbReference = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
+    private val dbOperationsReference = dbReference.child(FirebaseHelper.OPERATIONS_KEY).child(uid).ref
 
     private var operationsList = mutableListOf<OperationsDto>()
 
-    private val ld = MutableLiveData<List<OperationsDto>>()
+    private val _operations = MutableLiveData<List<OperationsDto>>()
+    val operations: LiveData<List<OperationsDto>> = _operations
 
     private val listeners = mutableSetOf<OperationsListener>()
 
@@ -36,17 +43,44 @@ class OperationsService(
                 isExpence = Random.nextBoolean()
             )}.toMutableList()
         operationsList.sortByDescending { it.date }
-
-//        initFirebase()
+        fetch()
         }
 
-/*    fun updateFirebaseOperations(operation: Map<String, Any>){
-        val uid = AUTH.currentUser?.uid.toString()
-        val id = operation[CHILD_ID]
+    private fun fetch(){
+        dbOperationsReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val operations = mutableListOf<OperationsDto>()
+                snapshot.children.mapNotNull {
+                    operations.add(OperationsDto.parseSnapshot(it))
+                }
+                _operations.postValue(operations)
+            }
 
-        REF_DB_ROOT.child(DB_USERS).child(operation[CHILD_ID] as String).updateChildren(operation)
+            override fun onCancelled(error: DatabaseError) {
+                Log.d(LogTags.FETCH_DATA_TAG, "Fetch operations failed: ${error.message}")
+            }
+        })
 
-    }*/
+    }
+
+    //New user data generation -start-
+
+
+
+    /*
+        suspend fun generateDefaultUserCategories(refCategories: DatabaseReference) {
+//            val defCategoriesList = categoriesService.getCategoriesList()
+        val defCategoriesList = CategoriesModel(CategoryDataSourseImpl()).getCategories()
+        Log.d("GENERATE_DATA_TAG", "generateDefaultUserCategories: ${defCategoriesList.size}")
+        val map = HashMap<String, Any>()
+        defCategoriesList.forEach { category ->
+            map["/${category.id}"] = category.toMap()
+        }
+        refCategories.updateChildren(map)
+    }
+    */
+
+    //New user data generation -end-
 
     fun addListener(listener: OperationsListener){
         listeners.add(listener)
@@ -87,8 +121,12 @@ class OperationsService(
         if (categoriesService.getCategoryById(operation.categoryId).targetId != ""){
             targetService.addOperationToTarget(operation)
         }
-
         notifyChanges()
+    }
+
+    suspend fun addOperationFirebase(operation: OperationsDto){
+        val id = operation.id
+        dbOperationsReference.child(id).setValue(operation.toMap())
     }
 
     fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = operationsList

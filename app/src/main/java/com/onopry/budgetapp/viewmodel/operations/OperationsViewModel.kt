@@ -20,6 +20,8 @@ class OperationsViewModel @Inject constructor(
     private val _operations = MutableLiveData<List<OperationsDto>>()
     val operations: LiveData<List<OperationsDto>> = _operations
 
+    val _operations_ = operationsService.operations
+
     private val listener: OperationsListener = {
         _operations.value = it
     }
