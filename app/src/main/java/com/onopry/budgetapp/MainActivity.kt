@@ -18,6 +18,7 @@ import com.onopry.budgetapp.view.screens.operations.AddOperationFragment
 import com.onopry.budgetapp.view.screens.operations.EditOperationFragment
 import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
 
+
 class MainActivity : AppCompatActivity(), MainNavigator {
 
     private lateinit var binding: ActivityMainBinding

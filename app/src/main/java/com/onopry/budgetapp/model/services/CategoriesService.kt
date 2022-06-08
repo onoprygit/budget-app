@@ -4,7 +4,6 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.utils.CategoryNotFoundException
 import com.onopry.budgetapp.utils.MY_COLORS
-import com.onopry.budgetapp.utils.OperationNotFoundException
 import java.util.*
 
 // Листенер отдает список категорий, который будет обновлен после какой либо операций
@@ -18,12 +17,65 @@ class CategoriesService {
 //    private val targetService = TargetService()
 
     init {
-        loadCategories()
+        loadCategoriesLocal()
         }
 
     fun getCategoriesList() = categoriesList.toList()
 
-    private fun loadCategories(){
+    fun getCategoriesListSize() = categoriesList.size
+
+    fun getCategoryById(id: String) =
+        categoriesList.firstOrNull { it.id == id } ?: throw CategoryNotFoundException()
+
+    fun getParentExpencesCategories() =
+        categoriesList.filter { it.isParent && it.isExpence }
+
+    fun getParentIncomeCategories() =
+        categoriesList.filter { it.isParent && !it.isExpence }
+
+    fun getChildCategoriesByParentId(parentId: String) =
+        categoriesList.filter { !it.isParent && it.parentId == parentId }
+
+    // todo: Мб сделать оду функцию, возвращающую пару Трат и Доходов, а не по одтельности
+    fun getExpencesCategoriesAsMap(): MutableMap<String, List<CategoriesDto>> {
+        val categoriesMap = mutableMapOf<String, List<CategoriesDto>>()
+        getParentExpencesCategories()
+            .forEach { parentCategory ->
+            categoriesMap[parentCategory.id] = getChildCategoriesByParentId(parentCategory.id)
+        }
+        return categoriesMap
+    }
+
+    fun getIncomesCategoriesAsMap(): MutableMap<String, List<CategoriesDto>> {
+        val categoriesMap = mutableMapOf<String, List<CategoriesDto>>()
+        getParentIncomeCategories()
+            .forEach { parentCategory ->
+                categoriesMap[parentCategory.id] = getChildCategoriesByParentId(parentCategory.id)
+            }
+        return categoriesMap
+    }
+
+    fun addCategory(category: CategoriesDto){
+        categoriesList.add(category)
+        notifyChanges()
+    }
+
+    fun getExpencesCategories() = categoriesList.filter { it.isExpence }
+
+    fun getIncomesCategories() = categoriesList.filter { !it.isExpence }
+
+
+    fun addListener(listener: CategoriesListener){
+        listeners.add(listener)
+        listener.invoke(categoriesList)
+    }
+
+    fun removeListener(listener: CategoriesListener){ listeners.remove(listener) }
+
+    private fun notifyChanges(){ listeners.forEach { it.invoke(categoriesList) } }
+
+
+    private fun loadCategoriesLocal(){
         val categoryColorsStack = getCategoriesColors()
         categoriesList = mutableListOf(
             CategoriesDto(
@@ -123,57 +175,4 @@ class CategoriesService {
         colorsStack.shuffle()
         return colorsStack
     }
-
-    fun getCategoriesListSize() = categoriesList.size
-
-    fun getCategoryById(id: String) =
-        categoriesList.firstOrNull { it.id == id } ?: throw CategoryNotFoundException()
-
-    fun getParentExpencesCategories() =
-        categoriesList.filter { it.isParent && it.isExpence }
-
-    fun getParentIncomeCategories() =
-        categoriesList.filter { it.isParent && !it.isExpence }
-
-    fun getChildCategoriesByParentId(parentId: String) =
-        categoriesList.filter { !it.isParent && it.parentId == parentId }
-
-    // todo: Мб сделать оду функцию, возвращающую пару Трат и Доходов, а не по одтельности
-    fun getExpencesCategoriesAsMap(): MutableMap<String, List<CategoriesDto>> {
-        val categoriesMap = mutableMapOf<String, List<CategoriesDto>>()
-        getParentExpencesCategories()
-            .forEach { parentCategory ->
-            categoriesMap[parentCategory.id] = getChildCategoriesByParentId(parentCategory.id)
-        }
-        return categoriesMap
-    }
-
-    fun getIncomesCategoriesAsMap(): MutableMap<String, List<CategoriesDto>> {
-        val categoriesMap = mutableMapOf<String, List<CategoriesDto>>()
-        getParentIncomeCategories()
-            .forEach { parentCategory ->
-                categoriesMap[parentCategory.id] = getChildCategoriesByParentId(parentCategory.id)
-            }
-        return categoriesMap
-    }
-
-    fun addCategory(category: CategoriesDto){
-        categoriesList.add(category)
-        notifyChanges()
-    }
-
-    fun getExpencesCategories() = categoriesList.filter { it.isExpence }
-
-    fun getIncomesCategories() = categoriesList.filter { !it.isExpence }
-
-
-    fun addListener(listener: CategoriesListener){
-        listeners.add(listener)
-        listener.invoke(categoriesList)
-    }
-
-    fun removeListener(listener: CategoriesListener){ listeners.remove(listener) }
-
-    private fun notifyChanges(){ listeners.forEach { it.invoke(categoriesList) } }
-
 }

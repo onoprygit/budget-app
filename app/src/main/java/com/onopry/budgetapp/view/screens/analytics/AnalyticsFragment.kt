@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.components.Legend
@@ -19,12 +20,15 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.adapters.AmountByCategoryAdapter
 import com.onopry.budgetapp.databinding.AnalyticsFragmentBinding
 import com.onopry.budgetapp.utils.*
+import com.onopry.budgetapp.viewmodel.MainViewModel
 import com.onopry.budgetapp.viewmodel.analytics.AnalyticsViewModel
 import java.time.LocalDate
 
 class AnalyticsFragment : Fragment() {
 
     private val viewModel: AnalyticsViewModel by viewModels { startFactory() }
+    private val mainViewModel: MainViewModel by activityViewModels { startFactory() }
+
     private lateinit var binding: AnalyticsFragmentBinding
     private val categoriesAdapter = AmountByCategoryAdapter()
 
@@ -35,6 +39,10 @@ class AnalyticsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = AnalyticsFragmentBinding.inflate(inflater, container, false)
+
+        mainViewModel.categories.observe(viewLifecycleOwner) {
+            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView: categories load size: ${it.size}")
+        }
 
         val textDatePair = LocalDate.now().getTextLocalDateMY()
         binding.analyticsMainAmountDate.text = "${textDatePair.first} ${textDatePair.second}"

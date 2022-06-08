@@ -2,7 +2,6 @@ package com.onopry.budgetapp.model.features
 
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
-import com.onopry.budgetapp.utils.CONSTANTS
 import com.onopry.budgetapp.utils.MY_COLORS
 import java.util.*
 

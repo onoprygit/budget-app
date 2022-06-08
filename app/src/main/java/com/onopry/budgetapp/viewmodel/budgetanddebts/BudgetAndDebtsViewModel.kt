@@ -7,7 +7,7 @@ import com.onopry.budgetapp.model.services.TargetListener
 import com.onopry.budgetapp.model.services.TargetService
 import com.onopry.budgetapp.model.dto.TargetDTO
 
-class BudgetAndDebtsViewModel(
+class BudgetAndDebtsViewModel (
     private val targetService: TargetService
 ): ViewModel() {
 

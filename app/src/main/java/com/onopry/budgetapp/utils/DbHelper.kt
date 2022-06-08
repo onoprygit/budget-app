@@ -50,6 +50,13 @@ object TARGET {
     const val IS_DONE = "isDone"
 }
 
+object USER {
+    const val ID = "id"
+    const val MAIL = "mail"
+    const val NAME = "name"
+    const val SURNAME = "surname"
+}
+
 
 fun initFirebase(){
     AUTH = FirebaseAuth.getInstance()

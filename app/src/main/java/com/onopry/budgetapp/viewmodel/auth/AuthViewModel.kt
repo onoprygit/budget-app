@@ -5,101 +5,66 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.repo.AuthRepository
+import com.onopry.budgetapp.model.repo.CategoryRepoListener
 import com.onopry.budgetapp.model.repo.RealTimeDBRepository
+import com.onopry.budgetapp.utils.LogTags
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class AuthViewModel(
-    private val categoriesService: CategoriesService
+class AuthViewModel (
+    private val categoriesService: CategoriesService,
+    private val repository: RealTimeDBRepository
 ): ViewModel() {
-
-/*    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val isUserLoggedIn: MutableLiveData<Boolean> = MutableLiveData(false)
-
-    private val _user: MutableLiveData<FirebaseUser?> = MutableLiveData(null)
-    val user: LiveData<FirebaseUser?> = _user
-
-    init {
-        //        isUserLoggedIn.value = false
-        if (auth.currentUser != null)
-            _user.postValue(auth.currentUser)
-    }
-
-    fun isUserLogged() = auth.currentUser != null
-
-    fun signUp(email: String, pass: String): Task<AuthResult> {
-        Log.d("AUTH_TAG_TEST", "REPO signUp: ")
-        return auth.createUserWithEmailAndPassword(email, pass)
-            .addOnCompleteListener {
-                val result = if (it.isSuccessful) {
-                    _user.postValue(auth.currentUser)
-                    it
-                } else it
-            }
-    }
-
-
-    fun signIn(email: String, pass: String): Task<AuthResult> {
-        Log.d("AUTH_TAG_TEST", "REPO signIn: ")
-        return auth.signInWithEmailAndPassword(email, pass)
-            .addOnCompleteListener {
-                if (it.isSuccessful) _user.postValue(auth.currentUser)
-            }
-    }
-
-    fun singOut(){
-        auth.signOut()
-        isUserLoggedIn.postValue(false)
-    }
-
-    fun isEmailCorrect(email: String) =
-        email.contains("@") && email.contains(".") && email.length >= 5
-
-    fun isPassCorrect(pass: String) =
-        pass.length >= 3*/
-    private val repository = RealTimeDBRepository(categoriesService)
+//    private val repository = RealTimeDBRepository(categoriesService)
 
     private val authRepository = repository.authRepository
+//    private val authRepository = AuthRepository()
 
-    val user = repository.authRepository.user
+    val user = authRepository.user
 
     /*private val _isUserLoggedIn = MutableLiveData<Boolean>(false)
     val isUserLoggedIn: LiveData<Boolean> = _isUserLoggedIn*/
 
-    val isUserLoggedIn = repository.authRepository.isUserLoggedIn
+    val isUserLoggedIn = authRepository.isUserLoggedIn
+
+    val listener: CategoryRepoListener = {
+        Log.d(LogTags.GENERATE_DATA_TAG, "load categories size: ${it.size} ")
+    }
+
+    init {
+
+    }
 
     fun generateDefaultUserData(){
         viewModelScope.launch {
-            runBlocking {
-                repository.initNewUserCategories()
-            }
-            runBlocking {
-                repository.initNewUserOperations()
-            }
-            runBlocking { repository.initNewUserTargets() }
+            authRepository.initNewUserCategories()
+//            runBlocking { repository.initNewUserOperations() }
+//            runBlocking { repository.initNewUserTargets() }
         }
     }
 
-    fun isUserLogged() = repository.authRepository.isUserAuth()
+    fun isUserLogged() = authRepository.isUserAuth()
 
     fun signUp(email: String, pass: String){
         Log.d("AUTH_TAG_TEST", "MODEL signUp: ")
-        repository.authRepository.signUp(email, pass)
+        authRepository.signUp(email, pass)
     }
 
     fun signIn(email: String, pass: String){
         Log.d("AUTH_TAG_TEST", "MODEL signIn: ")
-        repository.authRepository.signIn(email, pass)
+        authRepository.signIn(email, pass)
+//        categoryRepository.addListener(listener)
     }
 
     fun signOut(){
-        repository.authRepository.singOut()
+        authRepository.singOut()
     }
 
     fun isEmailCorrect(email: String) =
-        email.contains("@") && email.contains(".") && email.length >= 5
+        email.contains("@")
+                && email.contains(".")
+                && email.length >= 5
 
-    fun isPassCorrect(pass: String) =
-        pass.length >= 3
+    fun isPassCorrect(pass: String) = pass.length >= 3
 
 }

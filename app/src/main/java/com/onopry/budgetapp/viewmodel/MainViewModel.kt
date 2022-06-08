@@ -8,12 +8,15 @@ import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.dto.TargetDTO
 import com.onopry.budgetapp.model.repo.RealTimeDBRepository
 
+
 class MainViewModel(
-    //repository: RealTimeDBRepository
+    repository: RealTimeDBRepository
 ): ViewModel() {
 
-    private val _categories = MutableLiveData<List<CategoriesDto>>()
-    val categories: LiveData<List<CategoriesDto>> = _categories
+    /*private val _categories = MutableLiveData<List<CategoriesDto>>()
+    val categories: LiveData<List<CategoriesDto>> = _categories*/
+
+    val categories: LiveData<List<CategoriesDto>> = repository.categoryRepository.categoriesLiveData
 
     private val _operations = MutableLiveData<List<OperationsDto>>()
     val operations: LiveData<List<OperationsDto>> = _operations

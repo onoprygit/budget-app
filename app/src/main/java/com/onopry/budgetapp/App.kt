@@ -8,10 +8,10 @@ import com.onopry.budgetapp.model.services.PeriodService
 import com.onopry.budgetapp.model.services.TargetService
 
 class App: Application() {
-    val categoriesService = CategoriesService()
+/*    val categoriesService = CategoriesService()
     val targetService = TargetService(categoriesService)
     val operationsService = OperationsService(targetService, categoriesService)
-    val periodService = PeriodService()
+    val periodService = PeriodService()*/
 
-    //val mainRepository = RealTimeDBRepository()
+//    val mainRepository = RealTimeDBRepository(categoriesService)
 }

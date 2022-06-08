@@ -7,6 +7,7 @@ import com.onopry.budgetapp.model.services.CategoriesListener
 import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.dto.CategoriesDto
 
+
 class CategoryBottomSheetViewModel(
     private val categoriesService: CategoriesService
 ): ViewModel() {

@@ -9,7 +9,7 @@ import com.onopry.budgetapp.utils.OperationIdNotFoundException
 import com.onopry.budgetapp.utils.OperationNotFoundException
 import com.onopry.budgetapp.utils.OperationParamsNotFoundException
 
-class EditOperationViewModel(
+class EditOperationViewModel (
     private val operationsService: OperationsService
 ): ViewModel() {
     private val _operation = MutableLiveData<OperationsDto>()

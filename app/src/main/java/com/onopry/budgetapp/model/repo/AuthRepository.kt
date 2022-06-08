@@ -7,10 +7,13 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
+import com.onopry.budgetapp.utils.FIREBASE
 
 class AuthRepository(
 ) {
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val dbRef = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
     /** **/
     private val _isUserLoggedIn: MutableLiveData<Boolean> = MutableLiveData(false)
     val isUserLoggedIn: LiveData<Boolean> = _isUserLoggedIn
@@ -25,6 +28,11 @@ class AuthRepository(
     }
 
     fun isUserAuth() = auth.currentUser != null
+
+    suspend fun initNewUserCategories(){
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        CategoryRepository.generateDefaultUserCategories(dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid.toString()))
+    }
 
     fun signUp(email: String, pass: String): Task<AuthResult> {
         Log.d("AUTH_TAG_TEST", "REPO signUp: ")

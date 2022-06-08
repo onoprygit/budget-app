@@ -10,7 +10,7 @@ import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.TargetDTO
 import java.util.*
 
-class AddTargetViewModel(
+class AddTargetViewModel (
     private val categoryService: CategoriesService,
     private val targetService: TargetService
 ): ViewModel() {

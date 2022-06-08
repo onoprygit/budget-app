@@ -15,7 +15,7 @@ import com.onopry.budgetapp.utils.PeriodDate
 import com.onopry.budgetapp.utils.PeriodRange
 import java.time.LocalDate
 
-class AnalyticsViewModel(
+class AnalyticsViewModel (
     private val operationsService: OperationsService,
     private val periodService: PeriodService
 ): ViewModel() {

@@ -3,6 +3,11 @@ package com.onopry.budgetapp.utils
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.onopry.budgetapp.App
+import com.onopry.budgetapp.model.repo.RealTimeDBRepository
+import com.onopry.budgetapp.model.services.CategoriesService
+import com.onopry.budgetapp.model.services.OperationsService
+import com.onopry.budgetapp.model.services.PeriodService
+import com.onopry.budgetapp.model.services.TargetService
 import com.onopry.budgetapp.viewmodel.*
 import com.onopry.budgetapp.viewmodel.analytics.AnalyticsViewModel
 import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
@@ -14,22 +19,30 @@ import com.onopry.budgetapp.viewmodel.operations.EditOperationViewModel
 import com.onopry.budgetapp.viewmodel.operations.OperationsViewModel
 
 class ViewModelsFactory(
-    private val app: App
+
 ): ViewModelProvider.Factory {
+
+    val categoriesService = CategoriesService()
+    val targetService = TargetService(categoriesService)
+    val operationsService = OperationsService(targetService, categoriesService)
+    val periodService = PeriodService()
+
+    val repository = RealTimeDBRepository(categoriesService)
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val viewModel = when (modelClass){
 
-            AddingMoneyViewModel::class.java -> AddingMoneyViewModel(app.operationsService)
-            AnalyticsViewModel::class.java -> AnalyticsViewModel(app.operationsService, app.periodService)
-            BudgetAndDebtsViewModel::class.java -> BudgetAndDebtsViewModel(app.targetService)
-            EditOperationViewModel::class.java -> EditOperationViewModel(app.operationsService)
-            MoreViewModel::class.java -> MoreViewModel(app.operationsService)
-            OperationsViewModel::class.java -> OperationsViewModel(app.operationsService)
-            CategoryBottomSheetViewModel::class.java -> CategoryBottomSheetViewModel(app.categoriesService)
-            AddTargetViewModel::class.java -> AddTargetViewModel(app.categoriesService, app.targetService)
+            AddingMoneyViewModel::class.java -> AddingMoneyViewModel(operationsService)
+            AnalyticsViewModel::class.java -> AnalyticsViewModel(operationsService, periodService)
+            BudgetAndDebtsViewModel::class.java -> BudgetAndDebtsViewModel(targetService)
+            EditOperationViewModel::class.java -> EditOperationViewModel(operationsService)
+            MoreViewModel::class.java -> MoreViewModel(operationsService)
+            OperationsViewModel::class.java -> OperationsViewModel(operationsService)
+            CategoryBottomSheetViewModel::class.java -> CategoryBottomSheetViewModel(categoriesService)
+            AddTargetViewModel::class.java -> AddTargetViewModel(categoriesService, targetService)
 
-            AuthViewModel::class.java -> AuthViewModel(app.categoriesService)
-//            MainViewModel::class.java -> MainViewModel(app.mainRepository)
+            AuthViewModel::class.java -> AuthViewModel(categoriesService, repository)
+            MainViewModel::class.java -> MainViewModel(repository)
 
             else -> throw IllegalStateException("Unknown ViewModel class")
         }
