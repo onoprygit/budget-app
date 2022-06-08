@@ -8,8 +8,11 @@ import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.OperationIdNotFoundException
 import com.onopry.budgetapp.utils.OperationNotFoundException
 import com.onopry.budgetapp.utils.OperationParamsNotFoundException
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class EditOperationViewModel (
+@HiltViewModel
+class EditOperationViewModel @Inject constructor(
     private val operationsService: OperationsService
 ): ViewModel() {
     private val _operation = MutableLiveData<OperationsDto>()

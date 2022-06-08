@@ -5,19 +5,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.repo.AuthRepository
-import com.onopry.budgetapp.model.repo.CategoryRepoListener
-import com.onopry.budgetapp.model.repo.RealTimeDBRepository
+import com.onopry.budgetapp.model.services.CategoriesListener
 import com.onopry.budgetapp.utils.LogTags
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-class AuthViewModel (
+@HiltViewModel
+class AuthViewModel @Inject constructor(
     private val categoriesService: CategoriesService,
-    private val repository: RealTimeDBRepository
+    private val authRepository: AuthRepository
 ): ViewModel() {
 //    private val repository = RealTimeDBRepository(categoriesService)
 
-    private val authRepository = repository.authRepository
+//    private val authRepository = repository.authRepository
 //    private val authRepository = AuthRepository()
 
     val user = authRepository.user
@@ -27,7 +29,7 @@ class AuthViewModel (
 
     val isUserLoggedIn = authRepository.isUserLoggedIn
 
-    val listener: CategoryRepoListener = {
+    val listener: CategoriesListener = {
         Log.d(LogTags.GENERATE_DATA_TAG, "load categories size: ${it.size} ")
     }
 

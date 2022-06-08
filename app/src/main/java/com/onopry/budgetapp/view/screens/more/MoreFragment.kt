@@ -9,15 +9,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.onopry.budgetapp.databinding.FragmentMoreBinding
 import com.onopry.budgetapp.utils.navigator
-
-import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
 import com.onopry.budgetapp.viewmodel.more.MoreViewModel
 
 
 class MoreFragment : Fragment() {
 
-    private val viewModel: MoreViewModel by viewModels { startFactory() }
+    private val viewModel: MoreViewModel by viewModels()
     private val authViewModel: AuthViewModel by activityViewModels()
     private lateinit var binding: FragmentMoreBinding
 

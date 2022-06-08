@@ -5,9 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.dto.OperationsDto
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.*
+import javax.inject.Inject
 
-class AddingMoneyViewModel(
+@HiltViewModel
+class AddingMoneyViewModel @Inject constructor(
     private val operationsService: OperationsService
 ): ViewModel() {
 

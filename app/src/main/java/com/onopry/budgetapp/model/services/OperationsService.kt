@@ -1,5 +1,6 @@
 package com.onopry.budgetapp.model.services
 
+import androidx.lifecycle.MutableLiveData
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
@@ -19,6 +20,9 @@ class OperationsService(
 ) {
 
     private var operationsList = mutableListOf<OperationsDto>()
+
+    private val ld = MutableLiveData<List<OperationsDto>>()
+
     private val listeners = mutableSetOf<OperationsListener>()
 
     init {

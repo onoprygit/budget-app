@@ -14,15 +14,16 @@ import com.onopry.budgetapp.adapters.OperationActionListener
 import com.onopry.budgetapp.databinding.FragmentOperationBinding
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.navigator
-import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodel.operations.OperationsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OperationFragment : Fragment() {
 
     private lateinit var binding: FragmentOperationBinding
     private lateinit var adapter: OperationsAdapter
 
-    private val viewModel: OperationsViewModel by viewModels { startFactory() }
+    private val viewModel: OperationsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

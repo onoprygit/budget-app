@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.onopry.budgetapp.databinding.FragmentAddTargetBinding
 import com.onopry.budgetapp.model.dto.TargetDTO
-import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.view.screens.DatePickerFragment
 import com.onopry.budgetapp.viewmodel.budgetanddebts.AddTargetViewModel
 import java.time.LocalDate
@@ -19,7 +18,7 @@ class AddTargetFragment : BottomSheetDialogFragment(){
 
     private var target: TargetDTO? = null
     private lateinit var binding: FragmentAddTargetBinding
-    private val viewModel: AddTargetViewModel by viewModels { startFactory() }
+    private val viewModel: AddTargetViewModel by viewModels()
     private lateinit var datePickerFragment: DatePickerFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -20,14 +20,16 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.adapters.AmountByCategoryAdapter
 import com.onopry.budgetapp.databinding.AnalyticsFragmentBinding
 import com.onopry.budgetapp.utils.*
-import com.onopry.budgetapp.viewmodel.MainViewModel
+//import com.onopry.budgetapp.viewmodel.MainViewModel
 import com.onopry.budgetapp.viewmodel.analytics.AnalyticsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
+@AndroidEntryPoint
 class AnalyticsFragment : Fragment() {
 
-    private val viewModel: AnalyticsViewModel by viewModels { startFactory() }
-    private val mainViewModel: MainViewModel by activityViewModels { startFactory() }
+    private val viewModel: AnalyticsViewModel by viewModels()
+//    private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var binding: AnalyticsFragmentBinding
     private val categoriesAdapter = AmountByCategoryAdapter()
@@ -40,7 +42,8 @@ class AnalyticsFragment : Fragment() {
     ): View {
         binding = AnalyticsFragmentBinding.inflate(inflater, container, false)
 
-        mainViewModel.categories.observe(viewLifecycleOwner) {
+        viewModel.catss.observe(viewLifecycleOwner) {
+            binding.analyticsToolbarTitleText.text = "asd ${it.size}"
             Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView: categories load size: ${it.size}")
         }
 

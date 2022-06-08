@@ -9,22 +9,22 @@ import com.onopry.budgetapp.model.repo.FirebaseHelper.TARGETS_KEY
 
 import com.onopry.budgetapp.utils.FIREBASE
 
-class RealTimeDBRepository(private val categoriesService: CategoriesService) {
+/*class RealTimeDBRepository(private val categoriesService: CategoriesService) {
 //    private var uid = FirebaseAuth.getInstance().currentUser?.uid
 
     private val dbRef = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
 
-    val authRepository = AuthRepository()
-    val operationsRepository = OperationsRepository()
-    val targetRepository = TargetRepository()
-    val categoryRepository = CategoryRepository(categoriesService)
+    //val authRepository = AuthRepository()
+    //val operationsRepository = OperationsRepository()
+    ////val targetRepository = TargetRepository()
+    //val categoryRepository = CategoryRepository(categoriesService)
 
     init {
 //        uid = FirebaseAuth.getInstance().currentUser?.uid
     }
 
 
-}
+}*/
 
 object FirebaseHelper {
     const val CATEGORIES_KEY = "user-categories"

@@ -9,13 +9,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.onopry.budgetapp.databinding.FragmentSignUpBinding
 import com.onopry.budgetapp.utils.navigator
-import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
-    private val authViewModel: AuthViewModel by activityViewModels{ startFactory() }
+    private val authViewModel: AuthViewModel by activityViewModels()
 //    { startFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {

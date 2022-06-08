@@ -4,20 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.mikephil.charting.data.PieEntry
-import com.onopry.budgetapp.model.services.OperationsListener
-import com.onopry.budgetapp.model.services.OperationsService
-import com.onopry.budgetapp.model.services.PeriodListener
-import com.onopry.budgetapp.model.services.PeriodService
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
+import com.onopry.budgetapp.model.services.*
 import com.onopry.budgetapp.utils.AmountByCategory
 import com.onopry.budgetapp.utils.PeriodDate
 import com.onopry.budgetapp.utils.PeriodRange
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import javax.inject.Inject
 
-class AnalyticsViewModel (
+@HiltViewModel
+class AnalyticsViewModel @Inject constructor(
     private val operationsService: OperationsService,
-    private val periodService: PeriodService
+    private val periodService: PeriodService,
+    private val categoriesService: CategoriesService
 ): ViewModel() {
 //    var currentDate: LocalDate = LocalDate.now()
     private val _operations = MutableLiveData<List<OperationsDto>>()
@@ -31,6 +32,8 @@ class AnalyticsViewModel (
 
     private val periodListener: PeriodListener = { _period.value = it }
     private val operationListener: OperationsListener = { _operations.value = it }
+
+    val catss = categoriesService.categories
 
     init {
         loadOperations()

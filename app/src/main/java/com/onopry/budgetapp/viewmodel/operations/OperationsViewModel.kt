@@ -8,8 +8,11 @@ import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.services.OperationsListener
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.initFirebase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class OperationsViewModel(
+@HiltViewModel
+class OperationsViewModel @Inject constructor(
     private val operationsService: OperationsService
 ): ViewModel() {
     val TAG = "FRAGMENTDESTROY_TAG"

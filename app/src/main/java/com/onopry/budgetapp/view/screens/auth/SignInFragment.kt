@@ -10,15 +10,15 @@ import androidx.fragment.app.activityViewModels
 import com.google.firebase.auth.FirebaseAuth
 import com.onopry.budgetapp.databinding.FragmentSingInBinding
 import com.onopry.budgetapp.utils.navigator
-import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SignInFragment : Fragment() {
 
     private lateinit var binding: FragmentSingInBinding
 
-    private val authViewModel: AuthViewModel by activityViewModels{ startFactory() }
+    private val authViewModel: AuthViewModel by activityViewModels()
 //    { startFactory() }
 
     private lateinit var auth: FirebaseAuth

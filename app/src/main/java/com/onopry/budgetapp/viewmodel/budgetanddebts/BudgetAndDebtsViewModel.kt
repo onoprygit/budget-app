@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.onopry.budgetapp.model.services.TargetListener
 import com.onopry.budgetapp.model.services.TargetService
 import com.onopry.budgetapp.model.dto.TargetDTO
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class BudgetAndDebtsViewModel (
+@HiltViewModel
+class BudgetAndDebtsViewModel @Inject constructor(
     private val targetService: TargetService
 ): ViewModel() {
 
@@ -23,8 +26,6 @@ class BudgetAndDebtsViewModel (
     }
 
     private fun loadTargets(){ targetService.addListener(listener) }
-
-
 
     override fun onCleared() {
         targetService.removeListener(listener)

@@ -8,9 +8,12 @@ import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.services.TargetService
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.TargetDTO
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.*
+import javax.inject.Inject
 
-class AddTargetViewModel (
+@HiltViewModel
+class AddTargetViewModel @Inject constructor(
     private val categoryService: CategoriesService,
     private val targetService: TargetService
 ): ViewModel() {

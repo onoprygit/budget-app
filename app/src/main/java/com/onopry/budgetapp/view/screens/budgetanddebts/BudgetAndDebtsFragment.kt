@@ -9,14 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onopry.budgetapp.adapters.BudgetsAdapter
 import com.onopry.budgetapp.databinding.FragmentBudetAndDebtsBinding
-import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.view.screens.operations.AddTargetFragment
 import com.onopry.budgetapp.viewmodel.budgetanddebts.BudgetAndDebtsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class BudgetAndDebtsFragment : Fragment() {
 
-    private val viewModel: BudgetAndDebtsViewModel by viewModels { startFactory() }
+    private val viewModel: BudgetAndDebtsViewModel by viewModels()
     private lateinit var binding: FragmentBudetAndDebtsBinding
     private val targetsAdapter = BudgetsAdapter()
     private lateinit var bottomSheet: AddTargetFragment

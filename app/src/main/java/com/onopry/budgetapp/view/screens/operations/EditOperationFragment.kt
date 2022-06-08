@@ -15,14 +15,13 @@ import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.OperationCategoryNotFoundException
 import com.onopry.budgetapp.utils.navigator
-import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodel.operations.EditOperationViewModel
 
 class EditOperationFragment : Fragment() {
 
     private lateinit var binding: EditOperationFragmentBinding
 //    private lateinit var viewModel: EditOperationViewModel
-    private val viewModel: EditOperationViewModel by viewModels { startFactory() }
+    private val viewModel: EditOperationViewModel by viewModels()
     private lateinit var categoryBottomSheet: BottomSheetDialogFragment
 //    private lateinit var categoriesService: CategoriesService
 

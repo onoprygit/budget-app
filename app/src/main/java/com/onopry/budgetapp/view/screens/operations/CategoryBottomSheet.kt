@@ -10,7 +10,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.onopry.budgetapp.adapters.CategoryActionListener
 import com.onopry.budgetapp.adapters.CategoryChooseAdapter
 import com.onopry.budgetapp.databinding.CategoryBottomSheetBinding
-import com.onopry.budgetapp.utils.startFactory
 import com.onopry.budgetapp.viewmodel.CategoryBottomSheetViewModel
 
 const val COLUMN_NUMBER = 5
@@ -21,7 +20,7 @@ class CategoryBottomSheet(
 
     private lateinit var binding: CategoryBottomSheetBinding
     private lateinit var adapter: CategoryChooseAdapter
-    private val viewModel:CategoryBottomSheetViewModel by viewModels { startFactory() }
+    private val viewModel:CategoryBottomSheetViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

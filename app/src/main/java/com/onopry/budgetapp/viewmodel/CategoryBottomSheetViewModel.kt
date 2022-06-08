@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.onopry.budgetapp.model.services.CategoriesListener
 import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.dto.CategoriesDto
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class CategoryBottomSheetViewModel(
+@HiltViewModel
+class CategoryBottomSheetViewModel @Inject constructor(
     private val categoriesService: CategoriesService
 ): ViewModel() {
     private val _categoriesList = MutableLiveData<List<CategoriesDto>>()

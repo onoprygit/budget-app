@@ -1,9 +1,10 @@
 package com.onopry.budgetapp.utils
 
+
+/*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.onopry.budgetapp.App
-import com.onopry.budgetapp.model.repo.RealTimeDBRepository
 import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.services.PeriodService
@@ -12,7 +13,6 @@ import com.onopry.budgetapp.viewmodel.*
 import com.onopry.budgetapp.viewmodel.analytics.AnalyticsViewModel
 import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
 import com.onopry.budgetapp.viewmodel.budgetanddebts.AddTargetViewModel
-import com.onopry.budgetapp.viewmodel.budgetanddebts.BudgetAndDebtsViewModel
 import com.onopry.budgetapp.viewmodel.more.MoreViewModel
 import com.onopry.budgetapp.viewmodel.operations.AddingMoneyViewModel
 import com.onopry.budgetapp.viewmodel.operations.EditOperationViewModel
@@ -41,11 +41,11 @@ class ViewModelsFactory(
             CategoryBottomSheetViewModel::class.java -> CategoryBottomSheetViewModel(categoriesService)
             AddTargetViewModel::class.java -> AddTargetViewModel(categoriesService, targetService)
 
-            AuthViewModel::class.java -> AuthViewModel(categoriesService, repository)
+            AuthViewModel::class.java -> AuthViewModel(categoriesService)
             MainViewModel::class.java -> MainViewModel(repository)
 
             else -> throw IllegalStateException("Unknown ViewModel class")
         }
         return viewModel as T
     }
-}
+}*/
