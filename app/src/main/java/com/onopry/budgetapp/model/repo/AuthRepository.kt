@@ -12,8 +12,9 @@ import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.services.TargetService
 import com.onopry.budgetapp.utils.FIREBASE
+import javax.inject.Inject
 
-class AuthRepository(
+class AuthRepository @Inject constructor(
     private val categoriesService: CategoriesService,
     private val operationsService: OperationsService,
     private val targetService: TargetService
@@ -36,8 +37,11 @@ class AuthRepository(
     fun isUserAuth() = auth.currentUser != null
 
     suspend fun initNewUserCategories(){
-        val uid = _user.value?.uid
-        categoriesService.generateDefaultUserCategories(dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid.toString()))
+        categoriesService.generateDefaultUserCategories()
+    }
+
+    suspend fun initNewUserOperations(){
+        operationsService.generateDefaultUserOperations()
     }
 
     suspend fun initNewUserTargets(){

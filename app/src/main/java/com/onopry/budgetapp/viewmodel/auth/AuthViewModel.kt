@@ -8,6 +8,7 @@ import com.onopry.budgetapp.model.repo.AuthRepository
 import com.onopry.budgetapp.model.services.CategoriesListener
 import com.onopry.budgetapp.utils.LogTags
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -39,7 +40,8 @@ class AuthViewModel @Inject constructor(
 
     fun generateDefaultUserData(){
         viewModelScope.launch {
-            authRepository.initNewUserCategories()
+            runBlocking { authRepository.initNewUserCategories() }
+            runBlocking { authRepository.initNewUserOperations() }
 //            runBlocking { repository.initNewUserOperations() }
 //            runBlocking { repository.initNewUserTargets() }
         }

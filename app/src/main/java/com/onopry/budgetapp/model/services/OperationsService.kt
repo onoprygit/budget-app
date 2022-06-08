@@ -22,8 +22,8 @@ class OperationsService(
     private val categoriesService: CategoriesService
 ) {
     private val uid: String = FirebaseAuth.getInstance().currentUser?.uid!!
-    private val dbReference = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
-    private val dbOperationsReference = dbReference.child(FirebaseHelper.OPERATIONS_KEY).child(uid).ref
+    private val dbRefRoot = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
+    private val dbRefOperations = dbRefRoot.child(FirebaseHelper.OPERATIONS_KEY).child(uid).ref
 
     private var operationsList = mutableListOf<OperationsDto>()
 
@@ -33,21 +33,21 @@ class OperationsService(
     private val listeners = mutableSetOf<OperationsListener>()
 
     init {
-        operationsList = (1..10).map {
+        operationsList = loadLocal(categoriesService.getCategoriesList())
+        load()
+        }
+
+    private fun loadLocal(categories: List<CategoriesDto>) = (1..10).map {
             OperationsDto(
                 id = UUID.randomUUID().toString(),
                 amount = Random.nextInt(100,10000),
-//                categoryId = CATEGORIES[Random.nextInt(0,9)].id,
-                category = categoriesService.getCategoriesList()[Random.nextInt(0,9)],
+                category = categories[Random.nextInt(0,9)],
                 date = LocalDate.of(2022, Random.nextInt(4,7), Random.nextInt(8, 25)),
                 isExpence = Random.nextBoolean()
-            )}.toMutableList()
-        operationsList.sortByDescending { it.date }
-        fetch()
-        }
+            )}.sortedByDescending { it.date }.toMutableList()
 
-    private fun fetch(){
-        dbOperationsReference.addValueEventListener(object : ValueEventListener {
+    private fun load(){
+        dbRefOperations.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val operations = mutableListOf<OperationsDto>()
                 snapshot.children.mapNotNull {
@@ -65,6 +65,15 @@ class OperationsService(
 
     //New user data generation -start-
 
+    suspend fun generateDefaultUserOperations(){
+        val categories = categoriesService.loadSingleCategories()
+        val operationId = UUID.randomUUID().toString()
+        val operationMap = mutableMapOf<String, Any>()
+        loadLocal(categories).map { operation ->
+            operationMap.put("/$operationId", operation.toMap())
+        }
+        dbRefOperations.updateChildren(operationMap)
+    }
 
 
     /*
@@ -126,7 +135,7 @@ class OperationsService(
 
     suspend fun addOperationFirebase(operation: OperationsDto){
         val id = operation.id
-        dbOperationsReference.child(id).setValue(operation.toMap())
+        dbRefOperations.child(id).setValue(operation.toMap())
     }
 
     fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = operationsList
@@ -166,7 +175,6 @@ class OperationsService(
         //получаем сет уникальных категорий из списка выше
         val uniqueCategorySet = mutableSetOf<CategoriesDto>()
         operationsByPeriod.forEach { uniqueCategorySet.add(it.category) }
-//        operationsByPeriod.forEach { uniqueCategorySet.add(categoriesService.getCategoryById(it.categoryId)) }
 
         uniqueCategorySet.forEach { category ->
             extractedOperationsByCategory[category] =
@@ -185,9 +193,6 @@ class OperationsService(
         }
         return oprsByCatgsSum
     }
-
-//    fun getCategoryById(id: String) =
-//        categoriesService.getCategoriesList().firstOrNull { it.id == id } ?: throw CategoryNotFoundException()
 
     companion object {
 //        private val CATEGORIES = CategoriesModel(CategoryDataSourseImpl()).getCategories()
