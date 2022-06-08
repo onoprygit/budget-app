@@ -78,7 +78,7 @@ class AddOperationFragment : Fragment() {
                 val operation = OperationsDto(
                     id = "",
                     amount = addingOperationEditText.text.toString().toInt(),
-                    categoryId = (addingOperationEmptyCategoryIc.tag as CategoriesDto).id,
+                    category = (addingOperationEmptyCategoryIc.tag as CategoriesDto),
                     isExpence = operationRadioExpence.isChecked,
                     date = addingOperationDatePick.tag as LocalDate
                 )

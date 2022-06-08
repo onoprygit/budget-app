@@ -28,11 +28,9 @@ class EditOperationViewModel @Inject constructor(
         val operationToAdd = OperationsDto(
             id = operation.value?.id ?: throw OperationIdNotFoundException(),
             amount = newOperation.amount,
-            categoryId = newOperation.categoryId,
+            category = newOperation.category,
             date = operation.value?.date ?: throw OperationParamsNotFoundException(),
         )
         operationsService.editOperation(operationToAdd)
     }
-
-    fun getCategoryById(id: String) = operationsService.getCategoryById(id)
 }

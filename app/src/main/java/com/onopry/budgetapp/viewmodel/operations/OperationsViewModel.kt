@@ -47,7 +47,7 @@ class OperationsViewModel @Inject constructor(
         Log.d(TAG, "ViewModel is cleared")
     }
 
-    fun getCategoryById(id: String) = operationsService.getCategoryById(id)
+//    fun getCategoryById(id: String) = operationsService.getCategoryById(id)
 
     fun getService() = operationsService
 }

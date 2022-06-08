@@ -30,21 +30,33 @@ data class CategoriesDto(
         CATEGORY.TARGET_ID to targetId
     )
 
+    fun toMapOperation() = mapOf<String, Any>(
+        CATEGORY.ID to id,
+        CATEGORY.NAME to name,
+        CATEGORY.ICON to icon,
+        CATEGORY.COLOR to color,
+        CATEGORY.IS_PARENT to isParent,
+        CATEGORY.IS_EXPENCE to isExpence,
+        CATEGORY.PARENT_ID to parentId,
+        CATEGORY.TARGET_ID to targetId
+    )
+
     companion object {
-        fun parseMap(id: String,map :Map<String, Any>) =
-            CategoriesDto(
-                id = id,
-                name = map[CATEGORY.NAME] as String,
-                icon = map[CATEGORY.ICON] as Int,
-                color = map[CATEGORY.COLOR] as Int,
-                isParent = map[CATEGORY.IS_PARENT] as Boolean,
-                isExpence = map[CATEGORY.IS_EXPENCE] as Boolean,
-                parentId = map[CATEGORY.PARENT_ID] as String,
-                targetId = map[CATEGORY.TARGET_ID] as String
-            )
         fun parseSnapshot(snapshot: DataSnapshot) =
             CategoriesDto(
                 id = snapshot.key as String,
+                name = snapshot.child(CATEGORY.NAME).value as String,
+                icon = (snapshot.child(CATEGORY.ICON).value as Long).toInt(),
+                color = (snapshot.child(CATEGORY.COLOR).value as Long).toInt(),
+                isParent = snapshot.child(CATEGORY.IS_PARENT).value as Boolean,
+                isExpence = snapshot.child(CATEGORY.IS_EXPENCE).value as Boolean,
+                parentId = snapshot.child(CATEGORY.PARENT_ID).value as String,
+                targetId = snapshot.child(CATEGORY.TARGET_ID).value as String,
+            )
+
+        fun parseSnapshotOperations(snapshot: DataSnapshot) =
+            CategoriesDto(
+                id = snapshot.child(CATEGORY.ID).value as String,
                 name = snapshot.child(CATEGORY.NAME).value as String,
                 icon = (snapshot.child(CATEGORY.ICON).value as Long).toInt(),
                 color = (snapshot.child(CATEGORY.COLOR).value as Long).toInt(),

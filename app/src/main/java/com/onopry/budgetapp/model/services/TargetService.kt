@@ -74,7 +74,8 @@ class TargetService(
         не отображалась
     */
     fun addOperationToTarget(operation: OperationsDto){
-        val id = categoriesService.getCategoryById(operation.categoryId).targetId
+        val id = operation.category.targetId
+//        val id = categoriesService.getCategoryById(operation.categoryId).targetId
         if (id.isNotEmpty()){
             val target = getTargetById(id)
             target.currentAmount += operation.amount

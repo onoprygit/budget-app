@@ -35,7 +35,6 @@ class OperationsDuffCallback(
 }
 
 class OperationsAdapter(
-    private val operationsService: OperationsService,
     private val actionListener: OperationActionListener
 ): RecyclerView.Adapter<OperationsAdapter.CategoriesViewHolder>(), View.OnClickListener
  {
@@ -65,12 +64,15 @@ class OperationsAdapter(
             transactionDeleteImg.tag = operation
             transactionEditImg.tag = operation
 
-            transactionCategoryText.text = operationsService.getCategoryById(operation.categoryId).name
-            transactionCategoryImage.setImageResource(operationsService.getCategoryById(operation.categoryId).icon)
+            transactionCategoryText.text = operation.category.name
+            transactionCategoryImage.setImageResource(operation.category.icon)
+//            transactionCategoryText.text = operationsService.getCategoryById(operation.categoryId).name
+//            transactionCategoryImage.setImageResource(operationsService.getCategoryById(operation.categoryId).icon)
             transactionDeleteImg.setImageResource(R.drawable.ic_delete_transaction)
             transactionDate.text = getTextFromDate(operation.date)
 
-            transactionCategoryImage.setBackgroundColor(operationsService.getCategoryById(operation.categoryId).color)
+            transactionCategoryImage.setBackgroundColor(operation.category.color)
+//            transactionCategoryImage.setBackgroundColor(operationsService.getCategoryById(operation.categoryId).color)
 
             toolsOperationId.text = operation.id.substring(0..15)
 

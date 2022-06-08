@@ -11,12 +11,12 @@ data class OperationsDto(
 //    val category: CategoriesDto,
     var date: LocalDate = LocalDate.of(2022,1,1),
     var isExpence: Boolean = true,
-    var categoryId: String,
+    var category: CategoriesDto,
     val accountId: String = ""
 ): Serializable {
     fun toMap() = mapOf<String, Any>(
         OPERATION.AMOUNT to amount,
-        OPERATION.CATEGORY_ID to categoryId,
+        OPERATION.CATEGORY to category.toMapOperation(),
         OPERATION.DATE to date.toString(),
         OPERATION.IS_EXPENCE to isExpence,
         OPERATION.ACCOUNT_ID to accountId
@@ -27,11 +27,10 @@ data class OperationsDto(
             OperationsDto(
                 id = snapshot.key as String,
                 amount = (snapshot.child(OPERATION.AMOUNT).value as Long).toInt(),
-//                category =
                 date = LocalDate.parse((snapshot.child(OPERATION.DATE).value as String)),
                 isExpence = snapshot.child(CATEGORY.IS_EXPENCE).value as Boolean,
-                accountId = snapshot.child(OPERATION.ACCOUNT_ID).value as String,
-                categoryId = snapshot.child(OPERATION.CATEGORY_ID).value as String,
+                category = CategoriesDto.parseSnapshotOperations(snapshot.child(OPERATION.CATEGORY)),
+                accountId = snapshot.child(OPERATION.ACCOUNT_ID).value as String
             )
     }
 }

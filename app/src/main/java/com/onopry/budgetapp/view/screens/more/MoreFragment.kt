@@ -11,8 +11,9 @@ import com.onopry.budgetapp.databinding.FragmentMoreBinding
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
 import com.onopry.budgetapp.viewmodel.more.MoreViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MoreFragment : Fragment() {
 
     private val viewModel: MoreViewModel by viewModels()
@@ -38,12 +39,14 @@ class MoreFragment : Fragment() {
         }
 
         binding = FragmentMoreBinding.inflate(inflater, container, false)
+        binding.userName.text = authViewModel.user.value?.email ?: "Doesn't recognize"
+        binding.userMail.text = authViewModel.user.value?.uid ?: "Doesn't recognize"
         binding.moreTextSample.text = "Фрагмент Еще"
 
-        binding.logoutButton.setOnClickListener {
-            authViewModel.signOut()
-            //navigator().showSingInScreen()
-        }
+//        binding.logoutButton.setOnClickListener {
+//            authViewModel.signOut()
+//            //navigator().showSingInScreen()
+//        }
 
         return binding.root
     }

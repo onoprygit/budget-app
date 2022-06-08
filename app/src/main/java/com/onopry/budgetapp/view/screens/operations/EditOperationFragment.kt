@@ -39,16 +39,16 @@ class EditOperationFragment : Fragment() {
 
         //put current operation category in 'tag' for get it for new operation when it will create
         binding.editingOperationTitle.text = viewModel.operation.value?.id ?: "NONE"
-//        binding.editingOperationEmptyCategoryIc.tag = viewModel.operation.value?.categoryId ?: throw OperationCategoryNotFoundException()
-        binding.editingOperationEmptyCategoryIc.tag = viewModel.getCategoryById(viewModel.operation.value?.categoryId ?: throw OperationCategoryNotFoundException())
+        binding.editingOperationEmptyCategoryIc.tag = viewModel.operation.value?.id
+//        binding.editingOperationEmptyCategoryIc.tag = viewModel.getCategoryById(viewModel.operation.value?.categoryId ?: throw OperationCategoryNotFoundException())
 
         //get actual live data and setting it to view's of this fragment
         viewModel.operation.observe(viewLifecycleOwner, {
             binding.editingOperationEditText.setText(it.amount.toString())
-            binding.editingOperationEmptyCategoryIc.setImageResource(viewModel.getCategoryById(it.categoryId).icon)
-            binding.editingOperationSelectCategory.text = viewModel.getCategoryById(it.categoryId).name
-            binding.editingOperationSelectCategory.setBackgroundColor(viewModel.getCategoryById(it.categoryId).color)
-            binding.editingOperationEmptyCategoryIc.setBackgroundColor(viewModel.getCategoryById(it.categoryId).color)
+            binding.editingOperationEmptyCategoryIc.setImageResource(viewModel.operation.value?.category?.icon!!)
+            binding.editingOperationSelectCategory.text = viewModel.operation.value?.category!!.name
+            binding.editingOperationSelectCategory.setBackgroundColor(viewModel.operation.value?.category!!.color)
+            binding.editingOperationEmptyCategoryIc.setBackgroundColor(viewModel.operation.value?.category!!.color)
         })
 
         // Start bottom sheet to choose category
@@ -72,7 +72,7 @@ class EditOperationFragment : Fragment() {
                 val operation = OperationsDto(
                     id = "_",
                     amount = editingOperationEditText.text.toString().toInt(),
-                    categoryId = (binding.editingOperationEmptyCategoryIc.tag as CategoriesDto).name
+                    category = binding.editingOperationEmptyCategoryIc.tag as CategoriesDto
 //                    date
                 )
                 viewModel.editOperation(operation)

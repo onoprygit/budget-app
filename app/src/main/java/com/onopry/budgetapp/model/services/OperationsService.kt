@@ -38,7 +38,7 @@ class OperationsService(
                 id = UUID.randomUUID().toString(),
                 amount = Random.nextInt(100,10000),
 //                categoryId = CATEGORIES[Random.nextInt(0,9)].id,
-                categoryId = categoriesService.getCategoriesList()[Random.nextInt(0,9)].id,
+                category = categoriesService.getCategoriesList()[Random.nextInt(0,9)],
                 date = LocalDate.of(2022, Random.nextInt(4,7), Random.nextInt(8, 25)),
                 isExpence = Random.nextBoolean()
             )}.toMutableList()
@@ -118,7 +118,7 @@ class OperationsService(
 //        val category =
         operationsList.add(operation)
         operationsList.sortByDescending { it.date }
-        if (categoriesService.getCategoryById(operation.categoryId).targetId != ""){
+        if (operation.category.targetId.isNotEmpty()){
             targetService.addOperationToTarget(operation)
         }
         notifyChanges()
@@ -165,12 +165,13 @@ class OperationsService(
 
         //получаем сет уникальных категорий из списка выше
         val uniqueCategorySet = mutableSetOf<CategoriesDto>()
-        operationsByPeriod.forEach { uniqueCategorySet.add(categoriesService.getCategoryById(it.categoryId)) }
+        operationsByPeriod.forEach { uniqueCategorySet.add(it.category) }
+//        operationsByPeriod.forEach { uniqueCategorySet.add(categoriesService.getCategoryById(it.categoryId)) }
 
         uniqueCategorySet.forEach { category ->
             extractedOperationsByCategory[category] =
                 operationsByPeriod.filter { operation ->
-                    operation.categoryId == category.id
+                    operation.category.id == category.id
                 }
         }
         return extractedOperationsByCategory
@@ -185,8 +186,8 @@ class OperationsService(
         return oprsByCatgsSum
     }
 
-    fun getCategoryById(id: String) =
-        categoriesService.getCategoriesList().firstOrNull { it.id == id } ?: throw CategoryNotFoundException()
+//    fun getCategoryById(id: String) =
+//        categoriesService.getCategoriesList().firstOrNull { it.id == id } ?: throw CategoryNotFoundException()
 
     companion object {
 //        private val CATEGORIES = CategoriesModel(CategoryDataSourseImpl()).getCategories()

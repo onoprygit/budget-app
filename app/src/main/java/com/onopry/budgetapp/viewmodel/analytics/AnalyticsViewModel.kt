@@ -70,9 +70,9 @@ class AnalyticsViewModel @Inject constructor(
 
         val categorySet = mutableSetOf<CategoriesDto>()
         val operList: List<OperationsDto> = operationsService.getOperationByPeriod(startDate, finishDate).filter { it.isExpence }
-        operList.forEach { categorySet.add(operationsService.getCategoryById(it.categoryId)) }
+        operList.forEach { categorySet.add(it.category) }
         categorySet.forEach { category ->
-            map[category] = operList.filter { it.categoryId == category.id && it.isExpence }
+            map[category] = operList.filter { it.category.id == category.id && it.isExpence }
         }
         return map
     }

@@ -33,7 +33,7 @@ class OperationFragment : Fragment() {
     ): View {
         binding = FragmentOperationBinding.inflate(inflater, container, false)
 
-        adapter = OperationsAdapter(viewModel.getService() ,object : OperationActionListener {
+        adapter = OperationsAdapter(object : OperationActionListener {
             override fun onOperationDelete(operation: OperationsDto) {
                 viewModel.deleteOperation(operation)
             }
