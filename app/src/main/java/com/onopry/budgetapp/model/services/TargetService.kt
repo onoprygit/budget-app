@@ -1,20 +1,80 @@
 package com.onopry.budgetapp.model.services
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.onopry.budgetapp.R
+import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.dto.TargetDTO
+import com.onopry.budgetapp.model.repo.AuthRepository
+import com.onopry.budgetapp.model.repo.FirebaseHelper
+import com.onopry.budgetapp.utils.FIREBASE
+import com.onopry.budgetapp.utils.LogTags
+import com.onopry.budgetapp.utils.TARGET
 import com.onopry.budgetapp.utils.TargetNotFoundException
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
+import java.util.*
+import javax.inject.Inject
 
 typealias TargetListener = (target: List<TargetDTO>) -> Unit
 
-class TargetService(
-    val categoriesService: CategoriesService
+class TargetService @Inject constructor(
+    private val authRepository: AuthRepository
 ) {
     private var targetList = mutableListOf<TargetDTO>()
     private val listeners = mutableSetOf<TargetListener>()
 
+    private val _targets = MutableLiveData<List<TargetDTO>>()
+    val targets: LiveData<List<TargetDTO>> = _targets
+
+    private val dbRef = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
+
     init {
         loadTargets()
+        loadFirebase()
+    }
+
+    private fun loadFirebase(){
+        val uid = authRepository.user.value?.uid
+        dbRef.child(FirebaseHelper.TARGETS_KEY).child(uid!!)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val list = mutableListOf<TargetDTO>()
+                    snapshot.children.mapNotNull { targetSnapshot ->
+                        Log.d(LogTags.FIREBASE_DATA_LISTENER_TAG, "target listener: id = ${targetSnapshot.key} [title]=${targetSnapshot.child(TARGET.TITLE).value} [cost] = ${targetSnapshot.child(TARGET.COST).value}")
+                        list.add(TargetDTO.parseSnapshot(targetSnapshot))
+                    }
+                    _targets.postValue(list)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("REPO_TAG", "Fail load targets:")
+                    Log.d("REPO_TAG", error.message)
+                }
+
+            })
+    }
+
+    private fun addTargetFirebase(target: TargetDTO){
+        val uid = authRepository.user.value!!.uid
+        val mapToAdd = mutableMapOf<String, Any>()
+        val newCategory = CategoriesDto(
+            id = UUID.randomUUID().toString(),
+            name = target.title,
+            icon = R.drawable.ic_category_placeholder,
+            targetId = target.id
+        )
+        mapToAdd["/${FirebaseHelper.TARGETS_KEY}/${uid}/${target.id}"] = target.toMap()
+        mapToAdd["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${newCategory.id}"] = newCategory.toMap()
+
+        dbRef.updateChildren(mapToAdd)
     }
 
     private fun loadTargets(){
@@ -35,8 +95,6 @@ class TargetService(
             ))
     }
 
-
-
     fun getTargetById(id: String): TargetDTO{
         val index = targetList.indexOfFirst { it.id == id }
         if (index == -1 )
@@ -45,10 +103,11 @@ class TargetService(
     }
 
     fun addTarget(target: TargetDTO){
-        if (!isTargetExist(target)) {
-            targetList.add(target)
-        }
-        notifyChanges()
+//        if (!isTargetExist(target)) {
+//            targetList.add(target)
+//        }
+        addTargetFirebase(target)
+//        notifyChanges()
     }
 
     fun editTarget(target: TargetDTO){
@@ -75,7 +134,6 @@ class TargetService(
     */
     fun addOperationToTarget(operation: OperationsDto){
         val id = operation.category.targetId
-//        val id = categoriesService.getCategoryById(operation.categoryId).targetId
         if (id.isNotEmpty()){
             val target = getTargetById(id)
             target.currentAmount += operation.amount

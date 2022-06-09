@@ -10,9 +10,11 @@ import com.onopry.budgetapp.databinding.FragmentAddTargetBinding
 import com.onopry.budgetapp.model.dto.TargetDTO
 import com.onopry.budgetapp.view.screens.DatePickerFragment
 import com.onopry.budgetapp.viewmodel.budgetanddebts.AddTargetViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.util.*
 
+@AndroidEntryPoint
 class AddTargetFragment : BottomSheetDialogFragment(){
 //    DialogFragment() {
 

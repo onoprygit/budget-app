@@ -3,6 +3,8 @@ package com.onopry.budgetapp.utils
 import android.graphics.Color
 
 object LogTags {
+    const val FIREBASE_DATA_LISTENER_TAG = "FIREBASE_DATA_LISTENER_TAG"
+    const val ADD_TARGET_VIEW_MODEL = "ADDING_MONEY_FRAGMENT_TAG"
     const val ADDING_MONEY_FRAGMENT_TAG = "ADDING_MONEY_FRAGMENT_TAG"
     const val ANALYTICS_FRAGMENT_TAG = "ANALYTICS_FRAGMENT_TAG"
     const val BUDGET_ADN_DEBTS_FRAGMENT_TAG = "BUDGET_ADN_DEBTS_FRAGMENT_TAG"
@@ -12,6 +14,7 @@ object LogTags {
 
     const val GENERATE_DATA_TAG = "GENERATE_DATA_TAG"
     const val FETCH_DATA_TAG = "FETCH_DATA_TAG"
+    const val DI_INSTANCES_TAG = "DI_INSTANCES_TAG"
 }
 
 object MY_COLORS{

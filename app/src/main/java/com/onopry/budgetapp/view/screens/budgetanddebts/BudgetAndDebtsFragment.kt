@@ -11,6 +11,7 @@ import com.onopry.budgetapp.adapters.BudgetsAdapter
 import com.onopry.budgetapp.databinding.FragmentBudetAndDebtsBinding
 import com.onopry.budgetapp.viewmodel.budgetanddebts.BudgetAndDebtsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 @AndroidEntryPoint
 class BudgetAndDebtsFragment : Fragment() {
@@ -35,7 +36,7 @@ class BudgetAndDebtsFragment : Fragment() {
         binding.targetRecycler.adapter = targetsAdapter
 
         binding.budgetIcAdd.setOnClickListener {
-            AddTargetFragment().show(childFragmentManager, null)
+            AddTargetFragment().show(parentFragmentManager, null)
         }
 
         return binding.root

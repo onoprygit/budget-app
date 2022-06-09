@@ -7,8 +7,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
+import com.onopry.budgetapp.model.repo.AuthRepository
 import com.onopry.budgetapp.model.repo.FirebaseHelper
 import com.onopry.budgetapp.utils.*
+import kotlinx.coroutines.*
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
@@ -18,6 +20,7 @@ import kotlin.random.Random
 typealias OperationsListener = (transactions: List<OperationsDto>) -> Unit
 
 class OperationsService(
+//    private val authRepository: AuthRepository,
     private val targetService: TargetService,
     private val categoriesService: CategoriesService
 ) {
@@ -33,18 +36,60 @@ class OperationsService(
     private val listeners = mutableSetOf<OperationsListener>()
 
     init {
-        operationsList = loadLocal(categoriesService.getCategoriesList())
+        Log.d(LogTags.DI_INSTANCES_TAG, "OperationsService init")
+        operationsList = loadLocal_1(categoriesService.getCategoriesList())
         load()
         }
 
-    private fun loadLocal(categories: List<CategoriesDto>) = (1..10).map {
+/*    private fun loadLocal(categories: List<CategoriesDto>) = (1..10).map {
+        Log.d(TAG, "loadLocal: ")
             OperationsDto(
                 id = UUID.randomUUID().toString(),
                 amount = Random.nextInt(100,10000),
                 category = categories[Random.nextInt(0,9)],
                 date = LocalDate.of(2022, Random.nextInt(4,7), Random.nextInt(8, 25)),
                 isExpence = Random.nextBoolean()
-            )}.sortedByDescending { it.date }.toMutableList()
+            )}.sortedByDescending { it.date }.toMutableList()*/
+
+    private fun loadLocal_1(categories: List<CategoriesDto>): MutableList<OperationsDto> {
+//        Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: start")
+        val list = mutableListOf<OperationsDto>()
+        (1..10).map {
+            list.add(
+                OperationsDto(
+                    id = UUID.randomUUID().toString(),
+                    amount = Random.nextInt(100, 10000),
+                    category = categories[Random.nextInt(0, 9)],
+                    date = LocalDate.of(2022, Random.nextInt(4, 7), Random.nextInt(8, 25)),
+                    isExpence = Random.nextBoolean()
+                )
+            )
+//            Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: size: ${list.size}")
+        }
+        list.sortByDescending { it.date }
+//        Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: end")
+        return list
+    }
+
+    private suspend fun loadLocal_2(categories: List<CategoriesDto>): MutableList<OperationsDto> {
+        Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: start")
+        val list = mutableListOf<OperationsDto>()
+        (1..10).map {
+            list.add(
+                OperationsDto(
+                    id = UUID.randomUUID().toString(),
+                    amount = Random.nextInt(100, 10000),
+                    category = categories[Random.nextInt(0, 9)],
+                    date = LocalDate.of(2022, Random.nextInt(4, 7), Random.nextInt(8, 25)),
+                    isExpence = Random.nextBoolean()
+                )
+            )
+            Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: size: ${list.size}")
+        }
+        list.sortByDescending { it.date }
+        Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: end")
+        return list
+    }
 
     private fun load(){
         dbRefOperations.addValueEventListener(object : ValueEventListener {
@@ -65,15 +110,29 @@ class OperationsService(
 
     //New user data generation -start-
 
-    suspend fun generateDefaultUserOperations(){
-        val categories = categoriesService.loadSingleCategories()
-        val operationId = UUID.randomUUID().toString()
+    suspend fun generateDefaultUserOperations(categories: List<CategoriesDto>) = coroutineScope {
+        Log.d("COROUTINES_CATEGORY_TAG", "generateDefaultUserOperations: start")
+        //val categories = categoriesService.loadSingleCategories()
+        var operations = mutableListOf<OperationsDto>()
+        operations = loadLocal_2(categories)
+
+        Log.d("COROUTINES_CATEGORY_TAG", "operations before await ${operations.size}")
         val operationMap = mutableMapOf<String, Any>()
-        loadLocal(categories).map { operation ->
-            operationMap.put("/$operationId", operation.toMap())
+
+        Log.d("COROUTINES_CATEGORY_TAG", "operations after await ${operations.size}")
+        operations.forEach {
+            operationMap["/${it.id}"] = it.toMap()
         }
+
         dbRefOperations.updateChildren(operationMap)
+        Log.d("COROUTINES_CATEGORY_TAG", "generateDefaultUserOperations: start")
     }
+
+//            lateinit var categories: List<CategoriesDto>
+
+
+
+
 
 
     /*

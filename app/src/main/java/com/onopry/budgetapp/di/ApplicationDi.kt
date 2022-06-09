@@ -18,11 +18,7 @@ class ServicesDi {
 
     @Provides
     @Singleton
-    fun provideCategoriesService() = CategoriesService()
-
-    @Provides
-    @Singleton
-    fun provideTargetService(categoriesService: CategoriesService) = TargetService(categoriesService)
+    fun provideAuthRepo() = AuthRepository()
 
     @Provides
     @Singleton
@@ -30,13 +26,17 @@ class ServicesDi {
 
     @Provides
     @Singleton
-    fun provideOperationsService(targetService: TargetService, categoriesService: CategoriesService) =
-        OperationsService(targetService = targetService, categoriesService = categoriesService)
+    fun provideCategoriesService(authRepository: AuthRepository) = CategoriesService(authRepository)
 
     @Provides
     @Singleton
-    fun provideAuthRepo(categoriesService: CategoriesService, operationsService: OperationsService, targetService: TargetService) =
-        AuthRepository(categoriesService, operationsService, targetService)
+    fun provideTargetService(authRepository: AuthRepository) = TargetService(authRepository)
+
+    @Provides
+    @Singleton
+    fun provideOperationsService(targetService: TargetService, categoriesService: CategoriesService) =
+        OperationsService(targetService = targetService, categoriesService = categoriesService)
+
 }
 
 /*

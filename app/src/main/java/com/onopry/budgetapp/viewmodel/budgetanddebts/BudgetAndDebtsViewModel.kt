@@ -17,6 +17,8 @@ class BudgetAndDebtsViewModel @Inject constructor(
     private val _targets = MutableLiveData<List<TargetDTO>>()
     val targets: LiveData<List<TargetDTO>> = _targets
 
+    val tars = targetService.targets
+
     private val listener: TargetListener = {
         _targets.value = it
     }

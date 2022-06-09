@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.onopry.budgetapp.databinding.FragmentSignUpBinding
 import com.onopry.budgetapp.utils.navigator
+import com.onopry.budgetapp.viewmodel.MainViewModel
 import com.onopry.budgetapp.viewmodel.auth.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +18,7 @@ class SignUpFragment : Fragment() {
 
     private lateinit var binding: FragmentSignUpBinding
     private val authViewModel: AuthViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 //    { startFactory() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +33,7 @@ class SignUpFragment : Fragment() {
             Log.d("AUTH_TAG_TEST", "onCreateView: ${authViewModel.isUserLogged()}")
             if (user != null) {
                 navigator().toast("Добро пожаловать, ${user.email.toString()}")
-                authViewModel.generateDefaultUserData()
+                mainViewModel.generateDefaultUserData()
                 navigator().showAnalyticsScreen()
             } else navigator().toast("Войдите или зарегистрируйтесь")
         }

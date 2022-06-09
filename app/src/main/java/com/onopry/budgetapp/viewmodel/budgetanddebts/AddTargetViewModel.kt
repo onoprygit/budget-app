@@ -1,5 +1,6 @@
 package com.onopry.budgetapp.viewmodel.budgetanddebts
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.services.TargetService
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.TargetDTO
+import com.onopry.budgetapp.utils.LogTags
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.*
 import javax.inject.Inject
@@ -17,6 +19,11 @@ class AddTargetViewModel @Inject constructor(
     private val categoryService: CategoriesService,
     private val targetService: TargetService
 ): ViewModel() {
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d(LogTags.ADD_TARGET_VIEW_MODEL, "onCleared: ")
+    }
 
     private val _targets = MutableLiveData<List<TargetDTO>>()
     val targets: LiveData<List<TargetDTO>> = _targets

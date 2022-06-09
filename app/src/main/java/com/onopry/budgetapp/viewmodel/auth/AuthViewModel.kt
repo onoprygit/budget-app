@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val categoriesService: CategoriesService,
+//    private val categoriesService: CategoriesService,
     private val authRepository: AuthRepository
 ): ViewModel() {
 //    private val repository = RealTimeDBRepository(categoriesService)
@@ -35,16 +35,8 @@ class AuthViewModel @Inject constructor(
     }
 
     init {
+        Log.d(LogTags.DI_INSTANCES_TAG, "AuthViewModel init")
 
-    }
-
-    fun generateDefaultUserData(){
-        viewModelScope.launch {
-            runBlocking { authRepository.initNewUserCategories() }
-            runBlocking { authRepository.initNewUserOperations() }
-//            runBlocking { repository.initNewUserOperations() }
-//            runBlocking { repository.initNewUserTargets() }
-        }
     }
 
     fun isUserLogged() = authRepository.isUserAuth()

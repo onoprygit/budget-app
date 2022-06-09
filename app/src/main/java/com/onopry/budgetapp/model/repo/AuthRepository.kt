@@ -3,6 +3,7 @@ package com.onopry.budgetapp.model.repo
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -12,13 +13,12 @@ import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.services.TargetService
 import com.onopry.budgetapp.utils.FIREBASE
+import com.onopry.budgetapp.utils.LogTags
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class AuthRepository @Inject constructor(
-    private val categoriesService: CategoriesService,
-    private val operationsService: OperationsService,
-    private val targetService: TargetService
-    ) {
+class AuthRepository {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val dbRef = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
 
@@ -29,6 +29,7 @@ class AuthRepository @Inject constructor(
     val user: LiveData<FirebaseUser?> = _user
 
     init {
+        Log.d(LogTags.DI_INSTANCES_TAG, "AuthRepository init")
         //        isUserLoggedIn.value = false
         if (auth.currentUser != null)
             _user.postValue(auth.currentUser)
@@ -36,18 +37,7 @@ class AuthRepository @Inject constructor(
 
     fun isUserAuth() = auth.currentUser != null
 
-    suspend fun initNewUserCategories(){
-        categoriesService.generateDefaultUserCategories()
-    }
 
-    suspend fun initNewUserOperations(){
-        operationsService.generateDefaultUserOperations()
-    }
-
-    suspend fun initNewUserTargets(){
-        val uid = _user.value?.uid
-
-    }
 
     fun signUp(email: String, pass: String): Task<AuthResult> {
         Log.d("AUTH_TAG_TEST", "REPO signUp: ")

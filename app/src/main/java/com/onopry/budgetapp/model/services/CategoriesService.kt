@@ -9,18 +9,24 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
+import com.onopry.budgetapp.model.repo.AuthRepository
 import com.onopry.budgetapp.model.repo.FirebaseHelper
 import com.onopry.budgetapp.utils.CategoryNotFoundException
 import com.onopry.budgetapp.utils.FIREBASE
 import com.onopry.budgetapp.utils.LogTags
 import com.onopry.budgetapp.utils.MY_COLORS
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 import java.util.*
+import javax.inject.Inject
 
 // Листенер отдает список категорий, который будет обновлен после какой либо операций
 typealias CategoriesListener = (categories: List<CategoriesDto>) -> Unit // TODO: разобраться поподробнее с typealias и как вообще этот слушатель работает
 
 
-class CategoriesService {
+class CategoriesService @Inject constructor(
+    private val authRepository: AuthRepository
+) {
 
     private val uid = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -39,11 +45,13 @@ class CategoriesService {
 
 
     init {
+        Log.d(LogTags.DI_INSTANCES_TAG, "CategoriesService init")
         loadCategoriesLocal()
         load()
         }
 
     private fun load(){
+//        authRepository.user.value.uid
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!)
             .addValueEventListener(object : ValueEventListener {
@@ -64,30 +72,106 @@ class CategoriesService {
         })
     }
 
-    suspend fun generateDefaultUserCategories() {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
+    suspend fun generateDefaultUserCategories(): MutableList<CategoriesDto> {
+        val uid = authRepository.user.value!!.uid
+        val returnedCategoryList = mutableListOf<CategoriesDto>()
+//        val uid = FirebaseAuth.getInstance().currentUser?.uid
         val defCategoriesList = CategoriesModel(CategoryDataSourseImpl()).getCategories()
         Log.d("GENERATE_DATA_TAG", "generateDefaultUserCategories: ${defCategoriesList.size}")
         val map = HashMap<String, Any>()
         defCategoriesList.forEach { category ->
             map["/${category.id}"] = category.toMap()
+            returnedCategoryList.add(category)
         }
         dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).updateChildren(map)
+        return returnedCategoryList
     }
 
     suspend fun loadSingleCategories() = mutableListOf<CategoriesDto>().apply {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: start")
+        val uid = authRepository.user.value!!.uid
+//        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val ds = dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get().await()
+        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: ${ds.childrenCount}")
+
+        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
+    }
+
+/*    suspend fun loadSingleCategories() = mutableListOf<CategoriesDto>().apply {
+        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: start")
+        val uid = authRepository.user.value!!.uid
+//        val uid = FirebaseAuth.getInstance().currentUser?.uid
         dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
             .addOnSuccessListener { categoriesSnapshot ->
+                Log.d("COROUTINES_CATEGORY_TAG", "snapshotSize = ${categoriesSnapshot.childrenCount}")
                 categoriesSnapshot.children.mapNotNull { category ->
+                    Log.d("COROUTINES_CATEGORY_TAG", "Success")
                     this.add(CategoriesDto.parseSnapshot(category))
                 }.let {
                     Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: Success! Size: ${it.size}")
                 }
             }.addOnFailureListener {
                 Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
+            }.await()
+        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
+    }*/
+
+/*    suspend fun loadSingleCategories(): List<CategoriesDto> = coroutineScope{
+        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: start")
+        val list = mutableListOf<CategoriesDto>()
+        coroutineScope {
+            Log.d("COROUTINES_CATEGORY_TAG", "in first Scope: start")
+
+            val uid = authRepository.user.value!!.uid
+
+            launch {
+                Log.d("COROUTINES_CATEGORY_TAG", "in run: start")
+                val a = async{
+                    val s = "2"
+                    dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).setValue(s)
+                    val v = dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
+                        .addOnSuccessListener { categoriesSnapshot ->
+                            Log.d("COROUTINES_CATEGORY_TAG", "in success: ${categoriesSnapshot.childrenCount}")
+                            categoriesSnapshot.children.mapNotNull { category ->
+                                list.add(CategoriesDto.parseSnapshot(category))
+                            }.let {
+                                Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: Success! Size: ${it.size}")
+                            }
+                        }.addOnFailureListener {
+                            Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
+                        }.await()
+                }
+                a.await()
+                Log.d("COROUTINES_CATEGORY_TAG", "in run: end")
             }
-    }
+
+            Log.d("COROUTINES_CATEGORY_TAG", "in first Scope: end")
+        }
+        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
+        list
+    }*/
+
+/*    suspend fun loadSingleCategories() = coroutineScope {
+        val uid = authRepository.user.value!!.uid
+
+        val list = mutableListOf<CategoriesDto>()
+        withContext(Dispatchers.IO) {
+            dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
+                .addOnSuccessListener { categoriesSnapshot ->
+                    categoriesSnapshot.children.mapNotNull { category ->
+                        list.add(CategoriesDto.parseSnapshot(category))
+                    }.let {
+                        Log.d(
+                            LogTags.FETCH_DATA_TAG,
+                            "loadSingleCategories: Success! Size: ${it.size}"
+                        )
+                    }
+                }.addOnFailureListener {
+                    Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
+                }
+        }
+        list
+    }*/
 
     //Firebase end
 
