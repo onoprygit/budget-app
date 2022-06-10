@@ -3,6 +3,7 @@ package com.onopry.budgetapp.model.services
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.onopry.budgetapp.model.dto.CategoriesDto
@@ -11,6 +12,7 @@ import com.onopry.budgetapp.model.repo.AuthRepository
 import com.onopry.budgetapp.model.repo.FirebaseHelper
 import com.onopry.budgetapp.utils.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
@@ -64,10 +66,8 @@ class OperationsService(
                     isExpence = Random.nextBoolean()
                 )
             )
-//            Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: size: ${list.size}")
         }
         list.sortByDescending { it.date }
-//        Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: end")
         return list
     }
 
@@ -159,19 +159,38 @@ class OperationsService(
 
     private fun notifyChanges(){ listeners.forEach { it.invoke(operationsList) } }
 
-    fun getOperationById(id: String)= operationsList.firstOrNull { it.id == id } ?: throw OperationNotFoundException()
+    fun getOperationById(id: String) =
+        _operations.value?.firstOrNull() { it.id == id } ?: throw OperationNotFoundException()
+        // old RAM version
+        /*operationsList.firstOrNull { it.id == id } ?: throw OperationNotFoundException()*/
 
     fun deleteOperation(operation: OperationsDto) {
-        val indexToDelete = operationsList.indexOfFirst { it.id == operation.id }
+        //RAM version
+        /*val indexToDelete = operationsList.indexOfFirst { it.id == operation.id }
         if (indexToDelete != -1) {
             operationsList = ArrayList(operationsList)
             operationsList.removeAt(indexToDelete)
             notifyChanges()
+        }*/
+
+        //FireBase version
+        val indexToDelete = _operations.value?.indexOfFirst { it.id == operation.id } ?: throw OperationNotFoundException()
+        if (indexToDelete != -1){
+            dbRefOperations.child(operation.id).removeValue()
         }
     }
 
     fun editOperation(operation: OperationsDto){
-        val indexToEdit = operationsList.indexOfFirst { it.id == operation.id }
+        //New Firebase
+        val indexToEdit = _operations.value?.indexOfFirst { it.id == operation.id } ?: throw OperationNotFoundException()
+        if (indexToEdit != -1) {
+            dbRefOperations.child(operation.id).updateChildren(operation.toMap())
+        }
+        else
+            throw OperationIdNotFoundException()
+
+        //Old RAM
+        /*val indexToEdit = operationsList.indexOfFirst { it.id == operation.id }
         if (indexToEdit != -1) {
             operationsList = ArrayList(operationsList)
             operationsList[indexToEdit] = operation
@@ -179,23 +198,27 @@ class OperationsService(
             notifyChanges()
         }
         else
-            throw OperationIdNotFoundException()
+            throw OperationIdNotFoundException()*/
     }
 
-    fun addOperation(operation: OperationsDto) {
-//        val category =
-        operationsList.add(operation)
+    suspend fun addOperation(operation: OperationsDto){
+        // new Firevase version
+        dbRefOperations.child(operation.id).setValue(operation.toMap())
+
+
+        // old RAM version
+        /*operationsList.add(operation)
         operationsList.sortByDescending { it.date }
         if (operation.category.targetId.isNotEmpty()){
             targetService.addOperationToTarget(operation)
         }
-        notifyChanges()
+        notifyChanges()*/
     }
 
-    suspend fun addOperationFirebase(operation: OperationsDto){
+/*    suspend fun addOperationFirebase(operation: OperationsDto){
         val id = operation.id
         dbRefOperations.child(id).setValue(operation.toMap())
-    }
+    }*/
 
     fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = operationsList
         .filter { operation ->

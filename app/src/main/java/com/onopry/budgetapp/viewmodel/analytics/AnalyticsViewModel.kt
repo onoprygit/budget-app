@@ -33,6 +33,8 @@ class AnalyticsViewModel @Inject constructor(
     private val periodListener: PeriodListener = { _period.value = it }
     private val operationListener: OperationsListener = { _operations.value = it }
 
+    val opers = operationsService.operations
+
     val catss = categoriesService.categories
 
     init {

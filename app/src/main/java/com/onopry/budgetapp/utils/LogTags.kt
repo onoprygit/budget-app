@@ -3,6 +3,7 @@ package com.onopry.budgetapp.utils
 import android.graphics.Color
 
 object LogTags {
+    const val FIREBASE_DATA_ADDING_TAG = "FIREBASE_DATA_ADDING_TAG"
     const val FIREBASE_DATA_LISTENER_TAG = "FIREBASE_DATA_LISTENER_TAG"
     const val ADD_TARGET_VIEW_MODEL = "ADDING_MONEY_FRAGMENT_TAG"
     const val ADDING_MONEY_FRAGMENT_TAG = "ADDING_MONEY_FRAGMENT_TAG"

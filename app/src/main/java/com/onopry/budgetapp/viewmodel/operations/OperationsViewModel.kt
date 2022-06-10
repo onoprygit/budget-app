@@ -17,25 +17,25 @@ class OperationsViewModel @Inject constructor(
 ): ViewModel() {
     val TAG = "FRAGMENTDESTROY_TAG"
 
-    private val _operations = MutableLiveData<List<OperationsDto>>()
-    val operations: LiveData<List<OperationsDto>> = _operations
+//    private val _operations = MutableLiveData<List<OperationsDto>>()
+    val operations = operationsService.operations
 
     val _operations_ = operationsService.operations
 
-    private val listener: OperationsListener = {
+/*    private val listener: OperationsListener = {
         _operations.value = it
-    }
+    }*/
 
     init {
         Log.d(TAG, "ViewModel is init")
-        loadOperations()
+//        loadOperations()
 //        initFirebase()
 //        operations.value?.get(3)?.let { operationsService.updateFirebaseOperations(it.toMap()) }
     }
 
-    private fun loadOperations(){
+/*    private fun loadOperations(){
         operationsService.addListener(listener)
-    }
+    }*/
 
     fun deleteOperation(operation: OperationsDto){
         operationsService.deleteOperation(operation)
@@ -43,7 +43,7 @@ class OperationsViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        operationsService.removeListener(listener)
+//        operationsService.removeListener(listener)
         Log.d(TAG, "ViewModel is cleared")
     }
 

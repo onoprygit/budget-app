@@ -20,8 +20,7 @@ class EditOperationViewModel @Inject constructor(
 
     fun setOperation(operationId: String?){
         if (operationId == null) throw OperationNotFoundException()
-        val operation = operationsService.getOperationById(operationId)
-        _operation.value = operation
+        _operation.value = operationsService.getOperationById(operationId)
     }
 
     fun editOperation(newOperation: OperationsDto){

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.Task
 import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.dto.OperationsDto
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,16 +21,18 @@ class AddingMoneyViewModel @Inject constructor(
     private val _operation = MutableLiveData<OperationsDto>()
     val operation: LiveData<OperationsDto> = _operation
 
+    // todo: Добавить коллбек от результата добавления, чтобы прокидывать его прям до фрагмента, и при успешном завершении - закрывать фрагмент
     fun addOperation(operation: OperationsDto){
-        val id = UUID.randomUUID().toString()
-        operationsService.addOperation(
-            operation.copy(
-                id = id
-            )
-        )
         viewModelScope.launch(Dispatchers.IO) {
+            operationsService.addOperation(
+                operation.copy(
+                    id = UUID.randomUUID().toString()
+                )
+            )
+        }
+/*        viewModelScope.launch(Dispatchers.IO) {
             operationsService.addOperationFirebase(
                 operation.copy(id = id))
-        }
+        }*/
     }
 }

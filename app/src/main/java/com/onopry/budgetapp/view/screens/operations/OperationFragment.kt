@@ -44,10 +44,11 @@ class OperationFragment : Fragment() {
         })
 
         viewModel._operations_.observe(viewLifecycleOwner) { list ->
+            adapter.operationList = list
             Log.d(LogTags.FETCH_DATA_TAG, "Fetch operations... Size: ${list.size}, IDs: ${list.map{it.id}}")
         }
 
-        viewModel.operations.observe(viewLifecycleOwner) { adapter.operationList = it }
+//        viewModel.operations.observe(viewLifecycleOwner) { adapter.operationList = it }
 
         binding.transactionRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.transactionRecycler.adapter = adapter

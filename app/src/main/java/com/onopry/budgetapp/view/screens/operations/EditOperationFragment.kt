@@ -16,7 +16,9 @@ import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.OperationCategoryNotFoundException
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.viewmodel.operations.EditOperationViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class EditOperationFragment : Fragment() {
 
     private lateinit var binding: EditOperationFragmentBinding
@@ -39,7 +41,7 @@ class EditOperationFragment : Fragment() {
 
         //put current operation category in 'tag' for get it for new operation when it will create
         binding.editingOperationTitle.text = viewModel.operation.value?.id ?: "NONE"
-        binding.editingOperationEmptyCategoryIc.tag = viewModel.operation.value?.id
+        binding.editingOperationEmptyCategoryIc.tag = viewModel.operation.value?.category
 //        binding.editingOperationEmptyCategoryIc.tag = viewModel.getCategoryById(viewModel.operation.value?.categoryId ?: throw OperationCategoryNotFoundException())
 
         //get actual live data and setting it to view's of this fragment
@@ -70,7 +72,8 @@ class EditOperationFragment : Fragment() {
         binding.editingOperationSaveButton.setOnClickListener {
             with(binding){
                 val operation = OperationsDto(
-                    id = "_",
+                    id = "",
+//                    id = viewModel.operation.value!!.id,
                     amount = editingOperationEditText.text.toString().toInt(),
                     category = binding.editingOperationEmptyCategoryIc.tag as CategoriesDto
 //                    date

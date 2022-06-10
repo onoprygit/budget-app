@@ -43,8 +43,14 @@ class AnalyticsFragment : Fragment() {
         binding = AnalyticsFragmentBinding.inflate(inflater, container, false)
 
         viewModel.catss.observe(viewLifecycleOwner) {
-            binding.analyticsToolbarTitleText.text = "asd ${it.size}"
+//            binding.analyticsToolbarTitleText.text = "asd ${it.size}"
             Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView: categories load size: ${it.size}")
+        }
+
+        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView: viewModel.opers.value: ${viewModel.opers.value}")
+        viewModel.opers.observe(viewLifecycleOwner) {
+            binding.analyticsToolbarTitleText.text = "asd ${it.size}"
+            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView in observe: ${it.size}")
         }
 
         val textDatePair = LocalDate.now().getTextLocalDateMY()
@@ -56,10 +62,13 @@ class AnalyticsFragment : Fragment() {
 
         // Следим за периодом
         viewModel.period.observe(viewLifecycleOwner) {
+            Log.d("PERIOD_OBSERVER_TAG", "Period is: ${it.startDate} ${it.finishDate} ${it.periodRange}")
+            if (viewModel.opers.value.isNullOrEmpty()){
+                binding.analyticsProgress.visibility = View.GONE
+            } else binding.analyticsProgress.visibility = View.VISIBLE
+            //Log.d("PERIOD_OBSERVER_TAG", "OperationsFromDB is: ${viewModel.opers.value!!.size}")
             setTextDate(it)
             binding.analyticsMainAmount.text = "₽ " + viewModel.getAmountByPeriod()
-
-            Log.d("HUITA", "period = ${viewModel.period.value}\n")
         }
 
         viewModel.operationsByCategory.observe(viewLifecycleOwner){
