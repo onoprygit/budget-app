@@ -28,7 +28,7 @@ class BudgetAndDebtsFragment : Fragment() {
     ): View {
         binding = FragmentBudetAndDebtsBinding.inflate(inflater, container, false)
 
-        viewModel.targets.observe(viewLifecycleOwner){
+        viewModel.tars.observe(viewLifecycleOwner){
             targetsAdapter.targetList = it
         }
 

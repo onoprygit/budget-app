@@ -20,7 +20,6 @@ class AnalyticsViewModel @Inject constructor(
     private val periodService: PeriodService,
     private val categoriesService: CategoriesService
 ): ViewModel() {
-//    var currentDate: LocalDate = LocalDate.now()
     private val _operations = MutableLiveData<List<OperationsDto>>()
     val operations: LiveData<List<OperationsDto>> = _operations
 

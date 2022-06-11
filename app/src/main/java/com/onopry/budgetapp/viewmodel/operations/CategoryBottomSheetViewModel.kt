@@ -1,4 +1,4 @@
-package com.onopry.budgetapp.viewmodel
+package com.onopry.budgetapp.viewmodel.operations
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,15 +16,17 @@ class CategoryBottomSheetViewModel @Inject constructor(
     private val _categoriesList = MutableLiveData<List<CategoriesDto>>()
     val categoriesList: LiveData<List<CategoriesDto>> = _categoriesList
 
-    private val listener: CategoriesListener = {
+    val categories = categoriesService.categories
+
+    /*private val listener: CategoriesListener = {
         _categoriesList.value = it
-    }
+    }*/
 
-    init {
+    /*init {
         loadCategories()
-    }
+    }*/
 
-    private fun loadCategories(){
+/*    private fun loadCategories(){
         categoriesService.addListener(listener)
-    }
+    }*/
 }

@@ -97,81 +97,84 @@ class CategoriesService @Inject constructor(
         Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
     }
 
-/*    suspend fun loadSingleCategories() = mutableListOf<CategoriesDto>().apply {
-        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: start")
-        val uid = authRepository.user.value!!.uid
-//        val uid = FirebaseAuth.getInstance().currentUser?.uid
-        dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
-            .addOnSuccessListener { categoriesSnapshot ->
-                Log.d("COROUTINES_CATEGORY_TAG", "snapshotSize = ${categoriesSnapshot.childrenCount}")
-                categoriesSnapshot.children.mapNotNull { category ->
-                    Log.d("COROUTINES_CATEGORY_TAG", "Success")
-                    this.add(CategoriesDto.parseSnapshot(category))
-                }.let {
-                    Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: Success! Size: ${it.size}")
-                }
-            }.addOnFailureListener {
-                Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
-            }.await()
-        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
-    }*/
+/*
+//    suspend fun loadSingleCategories() = mutableListOf<CategoriesDto>().apply {
+//        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: start")
+//        val uid = authRepository.user.value!!.uid
+////        val uid = FirebaseAuth.getInstance().currentUser?.uid
+//        dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
+//            .addOnSuccessListener { categoriesSnapshot ->
+//                Log.d("COROUTINES_CATEGORY_TAG", "snapshotSize = ${categoriesSnapshot.childrenCount}")
+//                categoriesSnapshot.children.mapNotNull { category ->
+//                    Log.d("COROUTINES_CATEGORY_TAG", "Success")
+//                    this.add(CategoriesDto.parseSnapshot(category))
+//                }.let {
+//                    Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: Success! Size: ${it.size}")
+//                }
+//            }.addOnFailureListener {
+//                Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
+//            }.await()
+//        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
+//    }
+//
+//    suspend fun loadSingleCategories(): List<CategoriesDto> = coroutineScope{
+//        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: start")
+//        val list = mutableListOf<CategoriesDto>()
+//        coroutineScope {
+//            Log.d("COROUTINES_CATEGORY_TAG", "in first Scope: start")
+//
+//            val uid = authRepository.user.value!!.uid
+//
+//            launch {
+//                Log.d("COROUTINES_CATEGORY_TAG", "in run: start")
+//                val a = async{
+//                    val s = "2"
+//                    dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).setValue(s)
+//                    val v = dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
+//                        .addOnSuccessListener { categoriesSnapshot ->
+//                            Log.d("COROUTINES_CATEGORY_TAG", "in success: ${categoriesSnapshot.childrenCount}")
+//                            categoriesSnapshot.children.mapNotNull { category ->
+//                                list.add(CategoriesDto.parseSnapshot(category))
+//                            }.let {
+//                                Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: Success! Size: ${it.size}")
+//                            }
+//                        }.addOnFailureListener {
+//                            Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
+//                        }.await()
+//                }
+//                a.await()
+//                Log.d("COROUTINES_CATEGORY_TAG", "in run: end")
+//            }
+//
+//            Log.d("COROUTINES_CATEGORY_TAG", "in first Scope: end")
+//        }
+//        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
+//        list
+//    }
+//
+//    suspend fun loadSingleCategories() = coroutineScope {
+//        val uid = authRepository.user.value!!.uid
+//
+//        val list = mutableListOf<CategoriesDto>()
+//        withContext(Dispatchers.IO) {
+//            dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
+//                .addOnSuccessListener { categoriesSnapshot ->
+//                    categoriesSnapshot.children.mapNotNull { category ->
+//                        list.add(CategoriesDto.parseSnapshot(category))
+//                    }.let {
+//                        Log.d(
+//                            LogTags.FETCH_DATA_TAG,
+//                            "loadSingleCategories: Success! Size: ${it.size}"
+//                        )
+//                    }
+//                }.addOnFailureListener {
+//                    Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
+//                }
+//        }
+//        list
+//    }
 
-/*    suspend fun loadSingleCategories(): List<CategoriesDto> = coroutineScope{
-        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: start")
-        val list = mutableListOf<CategoriesDto>()
-        coroutineScope {
-            Log.d("COROUTINES_CATEGORY_TAG", "in first Scope: start")
-
-            val uid = authRepository.user.value!!.uid
-
-            launch {
-                Log.d("COROUTINES_CATEGORY_TAG", "in run: start")
-                val a = async{
-                    val s = "2"
-                    dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).setValue(s)
-                    val v = dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
-                        .addOnSuccessListener { categoriesSnapshot ->
-                            Log.d("COROUTINES_CATEGORY_TAG", "in success: ${categoriesSnapshot.childrenCount}")
-                            categoriesSnapshot.children.mapNotNull { category ->
-                                list.add(CategoriesDto.parseSnapshot(category))
-                            }.let {
-                                Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: Success! Size: ${it.size}")
-                            }
-                        }.addOnFailureListener {
-                            Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
-                        }.await()
-                }
-                a.await()
-                Log.d("COROUTINES_CATEGORY_TAG", "in run: end")
-            }
-
-            Log.d("COROUTINES_CATEGORY_TAG", "in first Scope: end")
-        }
-        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
-        list
-    }*/
-
-/*    suspend fun loadSingleCategories() = coroutineScope {
-        val uid = authRepository.user.value!!.uid
-
-        val list = mutableListOf<CategoriesDto>()
-        withContext(Dispatchers.IO) {
-            dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
-                .addOnSuccessListener { categoriesSnapshot ->
-                    categoriesSnapshot.children.mapNotNull { category ->
-                        list.add(CategoriesDto.parseSnapshot(category))
-                    }.let {
-                        Log.d(
-                            LogTags.FETCH_DATA_TAG,
-                            "loadSingleCategories: Success! Size: ${it.size}"
-                        )
-                    }
-                }.addOnFailureListener {
-                    Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
-                }
-        }
-        list
-    }*/
+    */
 
     //Firebase end
 
@@ -229,6 +232,29 @@ class CategoriesService @Inject constructor(
 
     private fun notifyChanges(){ listeners.forEach { it.invoke(categoriesList) } }
 
+    fun getCategoryByTargetId(id: String) = _categories.value?.find { it.targetId == id }
+
+    //hardcode hell
+    private fun getCategoriesColors(): Stack<Int>{
+        val colorsStack: Stack<Int> = Stack()
+        colorsStack.push(MY_COLORS.color_category_1)
+        colorsStack.push(MY_COLORS.color_category_2)
+//        colorsStack.push(MY_COLORS.color_category_3)
+        colorsStack.push(MY_COLORS.color_category_4)
+        colorsStack.push(MY_COLORS.color_category_5)
+        colorsStack.push(MY_COLORS.color_category_6)
+        colorsStack.push(MY_COLORS.color_category_7)
+        colorsStack.push(MY_COLORS.color_category_8)
+        colorsStack.push(MY_COLORS.color_category_9)
+        colorsStack.push(MY_COLORS.color_category_10)
+//        colorsStack.push(MY_COLORS.color_category_11)
+        colorsStack.push(MY_COLORS.color_category_12)
+        colorsStack.push(MY_COLORS.color_category_13)
+        colorsStack.push(MY_COLORS.color_category_14)
+        colorsStack.push(MY_COLORS.color_category_15)
+        colorsStack.shuffle()
+        return colorsStack
+    }
 
     private fun loadCategoriesLocal(){
         val categoryColorsStack = getCategoriesColors()
@@ -307,27 +333,5 @@ class CategoriesService @Inject constructor(
                 targetId = "f5ced627-5fab-41ef-88d8-19599fae79ef",
             )
         )
-    }
-
-    //hardcode hell
-    private fun getCategoriesColors(): Stack<Int>{
-        val colorsStack: Stack<Int> = Stack()
-        colorsStack.push(MY_COLORS.color_category_1)
-        colorsStack.push(MY_COLORS.color_category_2)
-//        colorsStack.push(MY_COLORS.color_category_3)
-        colorsStack.push(MY_COLORS.color_category_4)
-        colorsStack.push(MY_COLORS.color_category_5)
-        colorsStack.push(MY_COLORS.color_category_6)
-        colorsStack.push(MY_COLORS.color_category_7)
-        colorsStack.push(MY_COLORS.color_category_8)
-        colorsStack.push(MY_COLORS.color_category_9)
-        colorsStack.push(MY_COLORS.color_category_10)
-//        colorsStack.push(MY_COLORS.color_category_11)
-        colorsStack.push(MY_COLORS.color_category_12)
-        colorsStack.push(MY_COLORS.color_category_13)
-        colorsStack.push(MY_COLORS.color_category_14)
-        colorsStack.push(MY_COLORS.color_category_15)
-        colorsStack.shuffle()
-        return colorsStack
     }
 }

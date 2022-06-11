@@ -30,7 +30,7 @@ class ServicesDi {
 
     @Provides
     @Singleton
-    fun provideTargetService(authRepository: AuthRepository) = TargetService(authRepository)
+    fun provideTargetService(authRepository: AuthRepository, categoriesService: CategoriesService) = TargetService(authRepository, categoriesService)
 
     @Provides
     @Singleton

@@ -3,7 +3,6 @@ package com.onopry.budgetapp.model.services
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -26,7 +25,8 @@ import javax.inject.Inject
 typealias TargetListener = (target: List<TargetDTO>) -> Unit
 
 class TargetService @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val categoriesService: CategoriesService
 ) {
     private var targetList = mutableListOf<TargetDTO>()
     private val listeners = mutableSetOf<TargetListener>()
@@ -35,9 +35,11 @@ class TargetService @Inject constructor(
     val targets: LiveData<List<TargetDTO>> = _targets
 
     private val dbRef = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
+    private val dbRefTargets = dbRef.child(FirebaseHelper.TARGETS_KEY).child(authRepository.user.value!!.uid)
+    private val dbRefTargetsCompleted = dbRef.child(FirebaseHelper.COMPLETED_TARGETS_KEY)
 
     init {
-        loadTargets()
+        //loadTargets()
         loadFirebase()
     }
 
@@ -62,7 +64,7 @@ class TargetService @Inject constructor(
             })
     }
 
-    private fun addTargetFirebase(target: TargetDTO){
+    /*private fun addTargetFirebase(target: TargetDTO){
         val uid = authRepository.user.value!!.uid
         val mapToAdd = mutableMapOf<String, Any>()
         val newCategory = CategoriesDto(
@@ -75,7 +77,7 @@ class TargetService @Inject constructor(
         mapToAdd["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${newCategory.id}"] = newCategory.toMap()
 
         dbRef.updateChildren(mapToAdd)
-    }
+    }*/
 
     private fun loadTargets(){
         targetList = mutableListOf(
@@ -96,22 +98,58 @@ class TargetService @Inject constructor(
     }
 
     fun getTargetById(id: String): TargetDTO{
-        val index = targetList.indexOfFirst { it.id == id }
+        val index = _targets.value?.indexOfFirst { it.id == id } ?: throw TargetNotFoundException()
         if (index == -1 )
             throw TargetNotFoundException()
-        return targetList[index]
+        return _targets.value?.get(index)!!
     }
 
     fun addTarget(target: TargetDTO){
 //        if (!isTargetExist(target)) {
 //            targetList.add(target)
 //        }
-        addTargetFirebase(target)
 //        notifyChanges()
+        val uid = authRepository.user.value!!.uid
+        val mapToAdd = mutableMapOf<String, Any>()
+        val newCategory = CategoriesDto(
+            id = UUID.randomUUID().toString(),
+            name = target.title,
+            icon = R.drawable.ic_category_placeholder,
+            targetId = target.id
+        )
+        mapToAdd["/${FirebaseHelper.TARGETS_KEY}/${uid}/${target.id}"] = target.toMap()
+        mapToAdd["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${newCategory.id}"] = newCategory.toMap()
+
+        dbRef.updateChildren(mapToAdd)
     }
 
-    fun editTarget(target: TargetDTO){
-        val index = targetList.indexOfFirst { it.id == target.id }
+    suspend fun editTarget(target: TargetDTO){
+        //new Fire
+        val index = _targets.value?.indexOfFirst { it.id == target.id } ?: throw TargetNotFoundException()
+        if (index != -1) {
+            val editedTarget = _targets.value?.get(index)?.copy(
+                title = target.title,
+                cost = target.cost,
+                currentAmount = target.currentAmount,
+                date = target.date,
+                description = target.description
+            )
+            val uid = authRepository.user.value!!.uid
+            val mapToAdd = mutableMapOf<String, Any>()
+
+
+            val newCategory = categoriesService.getCategoryByTargetId(editedTarget!!.id)
+                ?.copy(name = editedTarget.title)!!
+
+            mapToAdd["/${FirebaseHelper.TARGETS_KEY}/${uid}/${target.id}"] = target.toMap()
+            mapToAdd["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${newCategory.id}"] = newCategory.toMap()
+
+            dbRef.updateChildren(mapToAdd).await()
+        }
+    }
+
+        // old RAM
+        /*val index = targetList.indexOfFirst { it.id == target.id }
         if (index != -1){
             with(targetList[index]){
                 title = target.title
@@ -121,48 +159,74 @@ class TargetService @Inject constructor(
                 description = target.description
             }
         }
-        notifyChanges()
-    }
+        notifyChanges()*/
 
     fun isTargetExist(target: TargetDTO) =
-        targetList.indexOfFirst { target.id == it.id } != -1
+        _targets.value?.indexOfFirst { target.id == it.id } != -1
+        // Old RAM
+        /*targetList.indexOfFirst { target.id == it.id } != -1*/
 
     /*  при "синхронизации" операции с целью
         проверяет не стала ли она выполнена
         и если так, то меняем флаг, чтобы цель
         не отображалась
     */
+
     fun addOperationToTarget(operation: OperationsDto){
+        //New Fire
         val id = operation.category.targetId
+        if (id.isNotEmpty()) {
+            val currTarget = getTargetById(id)
+            val newTarget = currTarget.copy(currentAmount = currTarget.currentAmount + operation.amount)
+            dbRefTargets.child(newTarget.id).updateChildren(newTarget.toMap())
+
+            if (hasTargetDone(newTarget))
+                setTargetCompleted(newTarget)
+        }
+
+        //old RAM
+        /*val id = operation.category.targetId
         if (id.isNotEmpty()){
             val target = getTargetById(id)
             target.currentAmount += operation.amount
 
             if (hasTargetDone(target))
                 setDoneTarget(target)
-        }
+        }*/
     }
 
     private fun hasTargetDone(target: TargetDTO) = target.cost <= target.currentAmount
 
-    private fun setDoneTarget(target: TargetDTO){
+    private fun setTargetCompleted(target: TargetDTO){
+        val uid = authRepository.user.value!!.uid
         target.isDone = true
-        removeTarget(target)
+        val doneTarget = target.copy(isDone = true)
+        val category = categoriesService.getCategoryByTargetId(doneTarget.id)!!
+
+        val mapToUpdate = mutableMapOf<String, Any?>()
+
+        mapToUpdate["/${FirebaseHelper.TARGETS_KEY}/${uid}/${doneTarget.id}"] = null
+        mapToUpdate["/${FirebaseHelper.COMPLETED_TARGETS_KEY}/${uid}/${doneTarget.id}"] = doneTarget.toMap()
+        mapToUpdate["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${category.id}"] = null
+
+        dbRef.updateChildren(mapToUpdate)
     }
 
     private fun removeTarget(target: TargetDTO){
-        targetList.remove(target)
-        notifyChanges()
+        if (!target.isDone) {
+            val uid = authRepository.user.value!!.uid
+            val mapToUpdate = mutableMapOf<String, Any?>()
+            val category = categoriesService.getCategoryByTargetId(target.id)!!
+            mapToUpdate["/${FirebaseHelper.TARGETS_KEY}/${uid}/${target.id}"] = null
+            mapToUpdate["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${category.id}"] = null
+
+            dbRef.updateChildren(mapToUpdate)
+        } else
+            dbRefTargetsCompleted.child(target.id).removeValue()
     }
 
     fun addListener(listener: TargetListener){
         listeners.add(listener)
         listener.invoke(targetList)
     }
-
-    fun removeListener(listener: TargetListener){ listeners.remove(listener) }
-
-    private fun notifyChanges(){ listeners.forEach { it.invoke(targetList) } }
-
-
 }

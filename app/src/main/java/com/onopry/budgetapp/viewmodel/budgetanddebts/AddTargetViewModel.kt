@@ -39,21 +39,21 @@ class AddTargetViewModel @Inject constructor(
             return null
     }
 
-    fun saveTarget(target: TargetDTO){
-        if (targetService.isTargetExist(target))
-            targetService.editTarget(target)
-        else {
-            targetService.addTarget(target)
-            categoryService.addCategory(
-                CategoriesDto(
-                    id = UUID.randomUUID().toString(),
-                    name = target.title,
-                    icon = R.drawable.ic_category_placeholder,
-                    targetId = target.id
-                )
-            )
-        }
-    }
+//    fun saveTarget(target: TargetDTO){
+//        if (targetService.isTargetExist(target))
+//            targetService.editTarget(target)
+//        else {
+//            targetService.addTarget(target)
+//            categoryService.addCategory(
+//                CategoriesDto(
+//                    id = UUID.randomUUID().toString(),
+//                    name = target.title,
+//                    icon = R.drawable.ic_category_placeholder,
+//                    targetId = target.id
+//                )
+//            )
+//        }
+//    }
 
 
 }

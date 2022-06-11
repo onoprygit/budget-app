@@ -27,6 +27,7 @@ import com.onopry.budgetapp.utils.FIREBASE
 }*/
 
 object FirebaseHelper {
+    const val COMPLETED_TARGETS_KEY = "user-targets-completed"
     const val CATEGORIES_KEY = "user-categories"
     const val OPERATIONS_KEY = "user-operations"
     const val TARGETS_KEY = "user-targets"

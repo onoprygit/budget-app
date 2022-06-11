@@ -204,6 +204,10 @@ class OperationsService(
     suspend fun addOperation(operation: OperationsDto){
         // new Firevase version
         dbRefOperations.child(operation.id).setValue(operation.toMap())
+        _operations.value?.sortedByDescending { it.date }
+        if (operation.category.targetId.isNotEmpty()){
+            targetService.addOperationToTarget(operation)
+        }
 
 
         // old RAM version

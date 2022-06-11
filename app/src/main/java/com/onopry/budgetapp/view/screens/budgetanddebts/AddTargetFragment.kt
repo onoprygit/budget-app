@@ -8,8 +8,10 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.onopry.budgetapp.databinding.FragmentAddTargetBinding
 import com.onopry.budgetapp.model.dto.TargetDTO
+import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.view.screens.DatePickerFragment
 import com.onopry.budgetapp.viewmodel.budgetanddebts.AddTargetViewModel
+import com.onopry.budgetapp.viewmodel.budgetanddebts.BudgetAndDebtsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.util.*
@@ -20,7 +22,8 @@ class AddTargetFragment : BottomSheetDialogFragment(){
 
     private var target: TargetDTO? = null
     private lateinit var binding: FragmentAddTargetBinding
-    private val viewModel: AddTargetViewModel by viewModels()
+//    private val viewModel: AddTargetViewModel by viewModels()
+    private val viewModel: BudgetAndDebtsViewModel by viewModels()
     private lateinit var datePickerFragment: DatePickerFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,10 +53,12 @@ class AddTargetFragment : BottomSheetDialogFragment(){
         binding.addTargetSaveBnt.setOnClickListener {
             setTargetData(target)
             viewModel.saveTarget(target!!)
+            this.dismiss()
         }
 
         return binding.root
     }
+
     companion object {
         fun newInstance(key: String, value: String) =
             AddTargetFragment().apply {
@@ -85,6 +90,7 @@ class AddTargetFragment : BottomSheetDialogFragment(){
                     cost = addTargetNeedMoney.text.toString().toInt()
                     currentAmount = addTargetHasMoney.text.toString().toInt()
                     date = LocalDate.now().plusMonths(1)
+
                 }
             }
         }
