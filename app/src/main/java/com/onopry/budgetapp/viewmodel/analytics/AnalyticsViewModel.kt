@@ -8,6 +8,7 @@ import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.services.*
 import com.onopry.budgetapp.utils.AmountByCategory
+import com.onopry.budgetapp.utils.LogTags
 import com.onopry.budgetapp.utils.PeriodDate
 import com.onopry.budgetapp.utils.PeriodRange
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,8 +21,6 @@ class AnalyticsViewModel @Inject constructor(
     private val periodService: PeriodService,
     private val categoriesService: CategoriesService
 ): ViewModel() {
-    private val _operations = MutableLiveData<List<OperationsDto>>()
-    val operations: LiveData<List<OperationsDto>> = _operations
 
     private val _period = MutableLiveData<PeriodDate>()
     val period: LiveData<PeriodDate> = _period
@@ -29,22 +28,16 @@ class AnalyticsViewModel @Inject constructor(
     private val _operationsByCategory = MutableLiveData<Map<CategoriesDto, List<OperationsDto>>>()
     var operationsByCategory: LiveData<Map<CategoriesDto, List<OperationsDto>>> = _operationsByCategory
 
+//    private val _amountByCategory = MutableLiveData<>
+
+    val operations = categoriesService.categories
+
     private val periodListener: PeriodListener = { _period.value = it }
-    private val operationListener: OperationsListener = { _operations.value = it }
-
-    val opers = operationsService.operations
-
-    val catss = categoriesService.categories
 
     init {
-        loadOperations()
         initPeriod()
         setOperationsByCategory()
         Log.d("L_IFECYCLE_TAG_FF", "init")
-    }
-
-    private fun loadOperations(){
-        operationsService.addListener(operationListener)
     }
 
     private fun initPeriod(){
@@ -52,7 +45,9 @@ class AnalyticsViewModel @Inject constructor(
     }
 
     // Period settings
-    fun setPeriod(startDate: LocalDate, finishDate: LocalDate){ periodService.setPeriod(startDate, finishDate, PeriodRange.OTHER) }
+    fun setPeriod(startDate: LocalDate, finishDate: LocalDate){
+        periodService.setPeriod(startDate, finishDate, PeriodRange.OTHER)
+    }
 
     fun setPeriod(date: LocalDate, typePeriod: PeriodRange){
         periodService.setPeriod(date, typePeriod)
@@ -61,20 +56,24 @@ class AnalyticsViewModel @Inject constructor(
     }
 
     // Operations by category
-    private fun setOperationsByCategory(){
+    fun setOperationsByCategory(){
         _operationsByCategory.value = loadOperationsByCategory(_period.value!!.startDate, _period.value!!.finishDate)
-        Log.d("TAG", "setOperationsByCategory: ${_period.value!!.startDate}, ${_period.value!!.finishDate}, ${_period.value!!.periodRange}")
+        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "setOperationsByCategory: ${(_operationsByCategory.value as MutableMap<CategoriesDto, List<OperationsDto>>).size}")
     }
 
     private fun loadOperationsByCategory(startDate: LocalDate, finishDate: LocalDate): MutableMap<CategoriesDto, List<OperationsDto>> {
         val map = mutableMapOf<CategoriesDto, List<OperationsDto>>()
 
         val categorySet = mutableSetOf<CategoriesDto>()
-        val operList: List<OperationsDto> = operationsService.getOperationByPeriod(startDate, finishDate).filter { it.isExpence }
-        operList.forEach { categorySet.add(it.category) }
+        val operList: List<OperationsDto>? = operationsService.getOperationByPeriod(startDate, finishDate)
+            ?.filter { it.isExpence }
+
+
+        operList?.forEach { categorySet.add(it.category) }
         categorySet.forEach { category ->
-            map[category] = operList.filter { it.category.id == category.id && it.isExpence }
+            map[category] = operList?.filter { it.category.id == category.id && it.isExpence } ?: listOf()
         }
+        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "loadOperationsByCategory: map = ${map.size}, list = ${operList?.size}")
         return map
     }
 
@@ -101,6 +100,8 @@ class AnalyticsViewModel @Inject constructor(
     }
 
     fun getCategoriesColors() = _operationsByCategory.value?.keys?.map { it.color }?.toList() ?: throw Exception("No colors")
+
+    fun getPeriodFromRange(date: LocalDate, typePeriod: PeriodRange) = periodService.getPeriodFromRange(date, typePeriod)
 
     override fun onCleared() {
 //        operationsService.removeListener(operationListener)

@@ -37,7 +37,8 @@ class SignInFragment : Fragment() {
             Log.d("AUTH_TAG_TEST", "onCreateView: ${authViewModel.isUserLogged()}")
             if (user != null) {
                 navigator().toast("Добро пожаловать, ${user.email.toString()}")
-                navigator().showAnalyticsScreen()
+//                navigator().showAnalyticsScreen()
+                navigator().showOperationsListScreen()
             } else navigator().toast("Войдите или зарегистрируйтесь")
         }
 

@@ -34,7 +34,8 @@ class SignUpFragment : Fragment() {
             if (user != null) {
                 navigator().toast("Добро пожаловать, ${user.email.toString()}")
                 mainViewModel.generateDefaultUserData()
-                navigator().showAnalyticsScreen()
+//                navigator().showAnalyticsScreen()
+                navigator().showOperationsListScreen()
             } else navigator().toast("Войдите или зарегистрируйтесь")
         }
 

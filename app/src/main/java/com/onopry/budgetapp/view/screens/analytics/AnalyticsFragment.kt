@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.components.Legend
@@ -42,18 +41,6 @@ class AnalyticsFragment : Fragment() {
     ): View {
         binding = AnalyticsFragmentBinding.inflate(inflater, container, false)
 
-        /*viewModel.catss.observe(viewLifecycleOwner) {
-//            binding.analyticsToolbarTitleText.text = "asd ${it.size}"
-            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView: categories load size: ${it.size}")
-        }*/
-
-        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView: ${viewModel.opers.value!!.size}")
-
-        viewModel.opers.observe(viewLifecycleOwner) {
-            binding.analyticsToolbarTitleText.text = "asd ${it.size}"
-            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView in observe: ${it.size}")
-        }
-
         val textDatePair = LocalDate.now().getTextLocalDateMY()
         binding.analyticsMainAmountDate.text = "${textDatePair.first} ${textDatePair.second}"
 
@@ -61,15 +48,29 @@ class AnalyticsFragment : Fragment() {
         binding.afCategoryRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.afCategoryRecycler.adapter = categoriesAdapter
 
+        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "operations = ${viewModel.operations.value?.size} ")
+
+        viewModel.operations.observe(viewLifecycleOwner) {
+            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "operations observe = ${viewModel.operations.value?.size} ")
+            viewModel.setOperationsByCategory()
+//            val t = binding.analyticsMainAmountDate.tag as PeriodDate
+//            viewModel.setPeriod(LocalDate.now(), t.periodRange)
+
+        }
+
         // Следим за периодом
         viewModel.period.observe(viewLifecycleOwner) {
             setTextDate(it)
             binding.analyticsMainAmount.text = "₽ " + viewModel.getAmountByPeriod()
         }
 
+        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "before observe: ${viewModel.operationsByCategory.value?.size ?: 99999}")
         // Следим за операциями
         viewModel.operationsByCategory.observe(viewLifecycleOwner){
-            categoriesAdapter.categoryList = viewModel.getSumAmountByCategory()
+            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "in observe: ${it.size}")
+            val temp = viewModel.getSumAmountByCategory()
+            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "operation by category size: ${temp.size}")
+            categoriesAdapter.categoryList = temp
             makePieChart()
         }
 
@@ -123,18 +124,22 @@ class AnalyticsFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun setTextDate(date_: PeriodDate) {
         val date = Triple(date_.startDate, date_.finishDate, date_.periodRange)
+        val nowDate = LocalDate.now()
         when (date.third) {
             PeriodRange.MONTH -> {
                 val textDatePair = date.first.getTextLocalDateMY()
                 binding.analyticsMainAmountDate.text = "${textDatePair.first} ${textDatePair.second}"
+//                binding.analyticsMainAmountDate.tag = viewModel.getPeriodFromRange(nowDate, PeriodRange.MONTH)
             }
             PeriodRange.WEEK -> {
                 val textDatePair = date.first.getTextLocalDateMY()
                 binding.analyticsMainAmountDate.text = "Неделя"
+//                binding.analyticsMainAmountDate.tag = viewModel.getPeriodFromRange(nowDate, PeriodRange.WEEK)
             }
             PeriodRange.YEAR -> {
                 val textDatePair = date.first.getTextLocalDateMY()
                 binding.analyticsMainAmountDate.text = "${textDatePair.second} год"
+//                binding.analyticsMainAmountDate.tag = viewModel.getPeriodFromRange(nowDate, PeriodRange.YEAR)
             }
             PeriodRange.OTHER -> {
                 val textStartDateTriple = date.first.getTextLocalDateDMY()
@@ -143,6 +148,7 @@ class AnalyticsFragment : Fragment() {
                 binding.analyticsMainAmountDate.text =
                     "${textStartDateTriple.first} ${textStartDateTriple.second} ${textStartDateTriple.third} - " +
                             "${textFinishDateTriple.first} ${textFinishDateTriple.second} ${textFinishDateTriple.third}"
+//                binding.analyticsMainAmountDate.tag = viewModel.getPeriodFromRange(nowDate, PeriodRange.OTHER)
             }
         }
     }

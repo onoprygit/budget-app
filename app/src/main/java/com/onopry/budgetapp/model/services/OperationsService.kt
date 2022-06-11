@@ -30,16 +30,17 @@ class OperationsService(
     private val dbRefRoot = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
     private val dbRefOperations = dbRefRoot.child(FirebaseHelper.OPERATIONS_KEY).child(uid).ref
 
-    private var operationsList = mutableListOf<OperationsDto>()
+//    private var operationsList = mutableListOf<OperationsDto>()
 
-    private val _operations = MutableLiveData<List<OperationsDto>>(emptyList())
+    private val _operations = MutableLiveData<List<OperationsDto>>()
     val operations: LiveData<List<OperationsDto>> = _operations
 
     private val listeners = mutableSetOf<OperationsListener>()
 
     init {
+        _operations.value = emptyList<OperationsDto>()
         Log.d(LogTags.DI_INSTANCES_TAG, "OperationsService init")
-        operationsList = loadLocal_1(categoriesService.getCategoriesList())
+//        operationsList = loadLocal_1(categoriesService.getCategoriesList())
         load()
         }
 
@@ -152,19 +153,19 @@ class OperationsService(
 
     fun addListener(listener: OperationsListener){
         listeners.add(listener)
-        listener.invoke(operationsList)
+//        listener.invoke(operations.value)
     }
 
-    fun removeListener(listener: OperationsListener){ listeners.remove(listener) }
+//    fun removeListener(listener: OperationsListener){ listeners.remove(listener) }
 
-    private fun notifyChanges(){ listeners.forEach { it.invoke(operationsList) } }
+//    private fun notifyChanges(){ listeners.forEach { it.invoke(operationsList) } }
 
     fun getOperationById(id: String) =
         _operations.value?.firstOrNull() { it.id == id } ?: throw OperationNotFoundException()
         // old RAM version
         /*operationsList.firstOrNull { it.id == id } ?: throw OperationNotFoundException()*/
 
-    fun deleteOperation(operation: OperationsDto) {
+    suspend fun deleteOperation(operation: OperationsDto) {
         //RAM version
         /*val indexToDelete = operationsList.indexOfFirst { it.id == operation.id }
         if (indexToDelete != -1) {
@@ -176,7 +177,17 @@ class OperationsService(
         //FireBase version
         val indexToDelete = _operations.value?.indexOfFirst { it.id == operation.id } ?: throw OperationNotFoundException()
         if (indexToDelete != -1){
-            dbRefOperations.child(operation.id).removeValue()
+            if (operation.category.targetId.isNotEmpty()) {
+
+                targetService.removeTarget(
+                    targetService.getTargetById(
+                        operation.category.targetId
+                    )
+                )
+
+                dbRefOperations.child(operation.id).removeValue().await()
+            } else
+                dbRefOperations.child(operation.id).removeValue().await()
         }
     }
 
@@ -219,16 +230,15 @@ class OperationsService(
         notifyChanges()*/
     }
 
-    fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = operationsList
-        .filter { operation ->
+    fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = _operations.value
+        ?.filter { operation ->
             operation.date in startDate..endDate
         }
 
     private fun getSumByPeriod(startDate: LocalDate, endDate: LocalDate): Int{
         var sum = 0
-//        Log.d("TAGG", "getSumByPeriod: ${getOperationByPeriod(startDate, endDate).map { Pair(it.amount, it.isExpence) }}")
         getOperationByPeriod(startDate, endDate)
-            .forEach{
+            ?.forEach{
 //                if (it.isExpence) sum -= it.amount else sum += it.amount
                 if (it.isExpence) sum += it.amount
             }
@@ -237,8 +247,8 @@ class OperationsService(
 
     fun getSumExpencesByPeriod(period: PeriodDate) =
         getOperationByPeriod(period.startDate, period.finishDate)
-            .filter{ it.isExpence }
-            .sumOf { it.amount }
+            ?.filter{ it.isExpence }
+            ?.sumOf { it.amount }
 
     /** возвращает список **/
     private fun getSumExpences(operations: List<OperationsDto>) =
@@ -255,13 +265,13 @@ class OperationsService(
 
         //получаем сет уникальных категорий из списка выше
         val uniqueCategorySet = mutableSetOf<CategoriesDto>()
-        operationsByPeriod.forEach { uniqueCategorySet.add(it.category) }
+        operationsByPeriod?.forEach { uniqueCategorySet.add(it.category) }
 
         uniqueCategorySet.forEach { category ->
             extractedOperationsByCategory[category] =
-                operationsByPeriod.filter { operation ->
+                operationsByPeriod?.filter { operation ->
                     operation.category.id == category.id
-                }
+                }!!
         }
         return extractedOperationsByCategory
     }
@@ -298,7 +308,7 @@ class OperationsService(
 
     fun naebka(){
         getSumByPeriod(LocalDate.now(), LocalDate.now())
-        removeListener {  }
+        //removeListener {  }
     }
 
 }

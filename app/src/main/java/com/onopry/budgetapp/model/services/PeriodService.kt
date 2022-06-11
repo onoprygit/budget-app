@@ -46,7 +46,7 @@ class PeriodService{
         notifyChanges()
     }
 
-    private fun getPeriodFromRange(date: LocalDate, type: PeriodRange): PeriodDate {
+    fun getPeriodFromRange(date: LocalDate, type: PeriodRange): PeriodDate {
         val startDate: LocalDate
         val finishDate: LocalDate
         when (type) {

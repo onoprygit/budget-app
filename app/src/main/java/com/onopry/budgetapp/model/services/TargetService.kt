@@ -212,7 +212,7 @@ class TargetService @Inject constructor(
         dbRef.updateChildren(mapToUpdate)
     }
 
-    private fun removeTarget(target: TargetDTO){
+    fun removeTarget(target: TargetDTO){
         if (!target.isDone) {
             val uid = authRepository.user.value!!.uid
             val mapToUpdate = mutableMapOf<String, Any?>()

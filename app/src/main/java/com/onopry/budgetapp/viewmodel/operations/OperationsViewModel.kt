@@ -4,11 +4,14 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.services.OperationsListener
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.utils.initFirebase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,7 +41,9 @@ class OperationsViewModel @Inject constructor(
     }*/
 
     fun deleteOperation(operation: OperationsDto){
-        operationsService.deleteOperation(operation)
+        viewModelScope.launch(Dispatchers.IO) {
+            operationsService.deleteOperation(operation)
+        }
     }
 
     override fun onCleared() {
