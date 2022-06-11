@@ -80,9 +80,8 @@ class AnalyticsViewModel @Inject constructor(
 
     fun getSumAmountByCategory(): List<AmountByCategory>{
         val list: MutableList<AmountByCategory> = mutableListOf()
-        operationsService.getOperationsByCategorySumAmount(_operationsByCategory.value!!).forEach {
-            list.add(AmountByCategory(it.key, it.value))
-        }
+        operationsService.getOperationsByCategorySumAmount(_operationsByCategory.value!!)
+            .forEach { list.add(AmountByCategory(it.key, it.value)) }
         list.filter { it.amount > 0 }
         list.sortByDescending { it.amount }
         return list

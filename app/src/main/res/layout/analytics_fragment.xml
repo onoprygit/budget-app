@@ -132,6 +132,7 @@
                 app:contentPadding="20dp"
                 app:cardCornerRadius="20dp"
                 tools:backgroundTint="@color/white"
+                tools:layout_height="76dp"
                 >
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/af_category_recycler"

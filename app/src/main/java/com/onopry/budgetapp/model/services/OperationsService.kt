@@ -32,7 +32,7 @@ class OperationsService(
 
     private var operationsList = mutableListOf<OperationsDto>()
 
-    private val _operations = MutableLiveData<List<OperationsDto>>()
+    private val _operations = MutableLiveData<List<OperationsDto>>(emptyList())
     val operations: LiveData<List<OperationsDto>> = _operations
 
     private val listeners = mutableSetOf<OperationsListener>()
@@ -218,11 +218,6 @@ class OperationsService(
         }
         notifyChanges()*/
     }
-
-/*    suspend fun addOperationFirebase(operation: OperationsDto){
-        val id = operation.id
-        dbRefOperations.child(id).setValue(operation.toMap())
-    }*/
 
     fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = operationsList
         .filter { operation ->

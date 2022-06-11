@@ -42,12 +42,13 @@ class AnalyticsFragment : Fragment() {
     ): View {
         binding = AnalyticsFragmentBinding.inflate(inflater, container, false)
 
-        viewModel.catss.observe(viewLifecycleOwner) {
+        /*viewModel.catss.observe(viewLifecycleOwner) {
 //            binding.analyticsToolbarTitleText.text = "asd ${it.size}"
             Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView: categories load size: ${it.size}")
-        }
+        }*/
 
-        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView: viewModel.opers.value: ${viewModel.opers.value}")
+        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView: ${viewModel.opers.value!!.size}")
+
         viewModel.opers.observe(viewLifecycleOwner) {
             binding.analyticsToolbarTitleText.text = "asd ${it.size}"
             Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "onCreateView in observe: ${it.size}")
@@ -62,15 +63,11 @@ class AnalyticsFragment : Fragment() {
 
         // Следим за периодом
         viewModel.period.observe(viewLifecycleOwner) {
-            Log.d("PERIOD_OBSERVER_TAG", "Period is: ${it.startDate} ${it.finishDate} ${it.periodRange}")
-            if (viewModel.opers.value.isNullOrEmpty()){
-                binding.analyticsProgress.visibility = View.GONE
-            } else binding.analyticsProgress.visibility = View.VISIBLE
-            //Log.d("PERIOD_OBSERVER_TAG", "OperationsFromDB is: ${viewModel.opers.value!!.size}")
             setTextDate(it)
             binding.analyticsMainAmount.text = "₽ " + viewModel.getAmountByPeriod()
         }
 
+        // Следим за операциями
         viewModel.operationsByCategory.observe(viewLifecycleOwner){
             categoriesAdapter.categoryList = viewModel.getSumAmountByCategory()
             makePieChart()
