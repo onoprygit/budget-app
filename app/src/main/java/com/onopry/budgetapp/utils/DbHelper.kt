@@ -3,6 +3,7 @@ package com.onopry.budgetapp.utils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.util.*
 
 lateinit var AUTH: FirebaseAuth
 lateinit var CURRENT_UID: String
@@ -55,6 +56,14 @@ object USER {
     const val MAIL = "mail"
     const val NAME = "name"
     const val SURNAME = "surname"
+}
+
+object ACCOUNT {
+    const val ID = "id"
+    const val NAME = "name"
+    const val CURRENCY = "currency"
+    const val ICON = "icon"
+    const val COLOR = "color"
 }
 
 

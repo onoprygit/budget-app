@@ -3,34 +3,30 @@ package com.onopry.budgetapp.model.services
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.onopry.budgetapp.model.dto.AccountDto
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
-import com.onopry.budgetapp.model.repo.AuthRepository
 import com.onopry.budgetapp.model.repo.FirebaseHelper
 import com.onopry.budgetapp.utils.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.util.*
-import kotlin.collections.ArrayList
+import javax.inject.Inject
 import kotlin.random.Random
 
 // Слушатель отдает список транзакций, который будет обновлен после изменения списка операций
 typealias OperationsListener = (transactions: List<OperationsDto>) -> Unit
 
-class OperationsService(
+class OperationsService @Inject constructor(
 //    private val authRepository: AuthRepository,
     private val targetService: TargetService,
-    private val categoriesService: CategoriesService
 ) {
     private val uid: String = FirebaseAuth.getInstance().currentUser?.uid!!
     private val dbRefRoot = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
     private val dbRefOperations = dbRefRoot.child(FirebaseHelper.OPERATIONS_KEY).child(uid).ref
-
-//    private var operationsList = mutableListOf<OperationsDto>()
 
     private val _operations = MutableLiveData<List<OperationsDto>>()
     val operations: LiveData<List<OperationsDto>> = _operations
@@ -39,23 +35,13 @@ class OperationsService(
 
     init {
         _operations.value = emptyList<OperationsDto>()
-        Log.d(LogTags.DI_INSTANCES_TAG, "OperationsService init")
-//        operationsList = loadLocal_1(categoriesService.getCategoriesList())
         load()
-        }
+    }
 
-/*    private fun loadLocal(categories: List<CategoriesDto>) = (1..10).map {
-        Log.d(TAG, "loadLocal: ")
-            OperationsDto(
-                id = UUID.randomUUID().toString(),
-                amount = Random.nextInt(100,10000),
-                category = categories[Random.nextInt(0,9)],
-                date = LocalDate.of(2022, Random.nextInt(4,7), Random.nextInt(8, 25)),
-                isExpence = Random.nextBoolean()
-            )}.sortedByDescending { it.date }.toMutableList()*/
-
-    private fun loadLocal_1(categories: List<CategoriesDto>): MutableList<OperationsDto> {
-//        Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: start")
+    private suspend fun loadLocal(
+        categories: List<CategoriesDto>,
+        accId: String
+    ): MutableList<OperationsDto> {
         val list = mutableListOf<OperationsDto>()
         (1..10).map {
             list.add(
@@ -64,7 +50,8 @@ class OperationsService(
                     amount = Random.nextInt(100, 10000),
                     category = categories[Random.nextInt(0, 9)],
                     date = LocalDate.of(2022, Random.nextInt(4, 7), Random.nextInt(8, 25)),
-                    isExpence = Random.nextBoolean()
+                    isExpence = Random.nextBoolean(),
+                    accountId = accId
                 )
             )
         }
@@ -72,27 +59,7 @@ class OperationsService(
         return list
     }
 
-    private suspend fun loadLocal_2(categories: List<CategoriesDto>): MutableList<OperationsDto> {
-        Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: start")
-        val list = mutableListOf<OperationsDto>()
-        (1..10).map {
-            list.add(
-                OperationsDto(
-                    id = UUID.randomUUID().toString(),
-                    amount = Random.nextInt(100, 10000),
-                    category = categories[Random.nextInt(0, 9)],
-                    date = LocalDate.of(2022, Random.nextInt(4, 7), Random.nextInt(8, 25)),
-                    isExpence = Random.nextBoolean()
-                )
-            )
-            Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: size: ${list.size}")
-        }
-        list.sortByDescending { it.date }
-        Log.d("COROUTINES_CATEGORY_TAG", "oper_loadLocal: end")
-        return list
-    }
-
-    private fun load(){
+    private fun load() {
         dbRefOperations.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val operations = mutableListOf<OperationsDto>()
@@ -109,74 +76,27 @@ class OperationsService(
 
     }
 
-    //New user data generation -start-
+    // Operations self methods
+    suspend fun generateDefaultUserOperations(categories: List<CategoriesDto>, accId: String) =
+        coroutineScope {
+            var operations = mutableListOf<OperationsDto>()
+            operations = loadLocal(categories, accId)
+            val operationMap = mutableMapOf<String, Any>()
 
-    suspend fun generateDefaultUserOperations(categories: List<CategoriesDto>) = coroutineScope {
-        Log.d("COROUTINES_CATEGORY_TAG", "generateDefaultUserOperations: start")
-        //val categories = categoriesService.loadSingleCategories()
-        var operations = mutableListOf<OperationsDto>()
-        operations = loadLocal_2(categories)
+            operations.forEach {
+                operationMap["/${it.id}"] = it.toMap()
+            }
 
-        Log.d("COROUTINES_CATEGORY_TAG", "operations before await ${operations.size}")
-        val operationMap = mutableMapOf<String, Any>()
-
-        Log.d("COROUTINES_CATEGORY_TAG", "operations after await ${operations.size}")
-        operations.forEach {
-            operationMap["/${it.id}"] = it.toMap()
+            dbRefOperations.updateChildren(operationMap)
         }
 
-        dbRefOperations.updateChildren(operationMap)
-        Log.d("COROUTINES_CATEGORY_TAG", "generateDefaultUserOperations: start")
-    }
-
-//            lateinit var categories: List<CategoriesDto>
-
-
-
-
-
-
-    /*
-        suspend fun generateDefaultUserCategories(refCategories: DatabaseReference) {
-//            val defCategoriesList = categoriesService.getCategoriesList()
-        val defCategoriesList = CategoriesModel(CategoryDataSourseImpl()).getCategories()
-        Log.d("GENERATE_DATA_TAG", "generateDefaultUserCategories: ${defCategoriesList.size}")
-        val map = HashMap<String, Any>()
-        defCategoriesList.forEach { category ->
-            map["/${category.id}"] = category.toMap()
-        }
-        refCategories.updateChildren(map)
-    }
-    */
-
-    //New user data generation -end-
-
-    fun addListener(listener: OperationsListener){
-        listeners.add(listener)
-//        listener.invoke(operations.value)
-    }
-
-//    fun removeListener(listener: OperationsListener){ listeners.remove(listener) }
-
-//    private fun notifyChanges(){ listeners.forEach { it.invoke(operationsList) } }
-
-    fun getOperationById(id: String) =
-        _operations.value?.firstOrNull() { it.id == id } ?: throw OperationNotFoundException()
-        // old RAM version
-        /*operationsList.firstOrNull { it.id == id } ?: throw OperationNotFoundException()*/
+    fun getOperationById(id: String) = _operations.value?.firstOrNull() { it.id == id }
+        ?: throw OperationNotFoundException()
 
     suspend fun deleteOperation(operation: OperationsDto) {
-        //RAM version
-        /*val indexToDelete = operationsList.indexOfFirst { it.id == operation.id }
+        val indexToDelete = _operations.value?.indexOfFirst { it.id == operation.id }
+            ?: throw OperationNotFoundException()
         if (indexToDelete != -1) {
-            operationsList = ArrayList(operationsList)
-            operationsList.removeAt(indexToDelete)
-            notifyChanges()
-        }*/
-
-        //FireBase version
-        val indexToDelete = _operations.value?.indexOfFirst { it.id == operation.id } ?: throw OperationNotFoundException()
-        if (indexToDelete != -1){
             if (operation.category.targetId.isNotEmpty()) {
 
                 targetService.removeTarget(
@@ -191,55 +111,34 @@ class OperationsService(
         }
     }
 
-    fun editOperation(operation: OperationsDto){
-        //New Firebase
-        val indexToEdit = _operations.value?.indexOfFirst { it.id == operation.id } ?: throw OperationNotFoundException()
+    fun editOperation(operation: OperationsDto) {
+        val indexToEdit = _operations.value?.indexOfFirst { it.id == operation.id }
+            ?: throw OperationNotFoundException()
         if (indexToEdit != -1) {
             dbRefOperations.child(operation.id).updateChildren(operation.toMap())
-        }
-        else
+        } else
             throw OperationIdNotFoundException()
-
-        //Old RAM
-        /*val indexToEdit = operationsList.indexOfFirst { it.id == operation.id }
-        if (indexToEdit != -1) {
-            operationsList = ArrayList(operationsList)
-            operationsList[indexToEdit] = operation
-            operationsList.sortByDescending { it.date }
-            notifyChanges()
-        }
-        else
-            throw OperationIdNotFoundException()*/
     }
 
-    suspend fun addOperation(operation: OperationsDto){
-        // new Firevase version
+    suspend fun addOperation(operation: OperationsDto) {
         dbRefOperations.child(operation.id).setValue(operation.toMap())
         _operations.value?.sortedByDescending { it.date }
-        if (operation.category.targetId.isNotEmpty()){
+        if (operation.category.targetId.isNotEmpty()) {
             targetService.addOperationToTarget(operation)
         }
-
-
-        // old RAM version
-        /*operationsList.add(operation)
-        operationsList.sortByDescending { it.date }
-        if (operation.category.targetId.isNotEmpty()){
-            targetService.addOperationToTarget(operation)
-        }
-        notifyChanges()*/
     }
+
+    //Operations by period
 
     fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = _operations.value
         ?.filter { operation ->
             operation.date in startDate..endDate
         }
 
-    private fun getSumByPeriod(startDate: LocalDate, endDate: LocalDate): Int{
+    private fun getSumByPeriod(startDate: LocalDate, endDate: LocalDate): Int {
         var sum = 0
         getOperationByPeriod(startDate, endDate)
-            ?.forEach{
-//                if (it.isExpence) sum -= it.amount else sum += it.amount
+            ?.forEach {
                 if (it.isExpence) sum += it.amount
             }
         return sum
@@ -247,17 +146,20 @@ class OperationsService(
 
     fun getSumExpencesByPeriod(period: PeriodDate) =
         getOperationByPeriod(period.startDate, period.finishDate)
-            ?.filter{ it.isExpence }
+            ?.filter { it.isExpence }
             ?.sumOf { it.amount }
 
     /** возвращает список **/
     private fun getSumExpences(operations: List<OperationsDto>) =
         operations
-            .filter{ it.isExpence }
+            .filter { it.isExpence }
             .sumOf { it.amount }
 
+    // Operations by categories
     /** возвращает мапу соответствия key - categories, val - List<Operations> **/
-    fun extractOperationsByCategoryForPeriod(startDate: LocalDate, finishDate: LocalDate): Map<CategoriesDto, List<OperationsDto>> {
+    fun extractOperationsByCategoryForPeriod(
+        startDate: LocalDate, finishDate: LocalDate
+    ): Map<CategoriesDto, List<OperationsDto>> {
         val extractedOperationsByCategory = mutableMapOf<CategoriesDto, List<OperationsDto>>()
 
         // получаем операции за текущий(выбранный) период
@@ -277,7 +179,9 @@ class OperationsService(
     }
 
     /** отдает мапу ключ - категории, значение - суммарные траты по категории **/
-    fun getOperationsByCategorySumAmount(categoryMap: Map<CategoriesDto, List<OperationsDto>>): Map<CategoriesDto, Int> {
+    fun getOperationsByCategorySumAmount(
+        categoryMap: Map<CategoriesDto, List<OperationsDto>>
+    ): Map<CategoriesDto, Int> {
         val oprsByCatgsSum = mutableMapOf<CategoriesDto, Int>()
         categoryMap.forEach {
             oprsByCatgsSum[it.key] = getSumExpences(it.value)
@@ -285,30 +189,21 @@ class OperationsService(
         return oprsByCatgsSum
     }
 
-    companion object {
-//        private val CATEGORIES = CategoriesModel(CategoryDataSourseImpl()).getCategories()
-        fun CATEGORIES(categoriesService: CategoriesService) =
-            categoriesService.getCategoriesList()
-    }
-
-    /*    fun getOperationsByDay(dateOfDay: LocalDate) = operationsList
-        .filter { operation ->
-            operation.date.dayOfMonth == dateOfDay.dayOfMonth
+    // Operations by accounts
+    fun getOperationByAccounts(accounts: List<AccountDto>): Map<String, List<OperationsDto>> = mutableMapOf<String, List<OperationsDto>>()
+        .apply {
+            accounts.forEach { account ->
+                this[account.id] = _operations.value!!
+                    .filter { operation -> operation.accountId == account.id }
+            }
         }
 
-    fun getOperationsByMonth(dateOfMonth: LocalDate) = operationsList
-        .filter { operation ->
-            operation.date.month == dateOfMonth.month
+    fun getSumOfOperationsByAccounts(accounts: List<AccountDto>): Map<String, Int> = mutableMapOf<String, Int>()
+        .apply {
+            getOperationByAccounts(accounts).entries.forEach {
+                this[it.key] = it.value
+                    .filter { operation -> operation.isExpence }
+                    .sumOf { operation -> operation.amount }
+            }
         }
-
-    fun getOperationsByYear(dateOfYear: LocalDate) = operationsList
-        .filter { operation ->
-            operation.date.year == dateOfYear.year
-        }*/
-
-    fun naebka(){
-        getSumByPeriod(LocalDate.now(), LocalDate.now())
-        //removeListener {  }
-    }
-
 }

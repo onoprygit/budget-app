@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
+import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
 import com.onopry.budgetapp.model.repo.AuthRepository
@@ -72,19 +73,21 @@ class CategoriesService @Inject constructor(
         })
     }
 
-    suspend fun generateDefaultUserCategories(): MutableList<CategoriesDto> {
-        val uid = authRepository.user.value!!.uid
-        val returnedCategoryList = mutableListOf<CategoriesDto>()
+    suspend fun generateDefaultUserCategoriesAsync() = coroutineScope {
+        async {
+            val uid = authRepository.user.value!!.uid
+            val returnedCategoryList = mutableListOf<CategoriesDto>()
 //        val uid = FirebaseAuth.getInstance().currentUser?.uid
-        val defCategoriesList = CategoriesModel(CategoryDataSourseImpl()).getCategories()
-        Log.d("GENERATE_DATA_TAG", "generateDefaultUserCategories: ${defCategoriesList.size}")
-        val map = HashMap<String, Any>()
-        defCategoriesList.forEach { category ->
-            map["/${category.id}"] = category.toMap()
-            returnedCategoryList.add(category)
+            val defCategoriesList = CategoriesModel(CategoryDataSourseImpl()).getCategories()
+            Log.d("GENERATE_DATA_TAG", "generateDefaultUserCategories: ${defCategoriesList.size}")
+            val map = HashMap<String, Any>()
+            defCategoriesList.forEach { category ->
+                map["/${category.id}"] = category.toMap()
+                returnedCategoryList.add(category)
+            }
+            dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).updateChildren(map)
+            returnedCategoryList
         }
-        dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).updateChildren(map)
-        return returnedCategoryList
     }
 
     suspend fun loadSingleCategories() = mutableListOf<CategoriesDto>().apply {
@@ -96,85 +99,6 @@ class CategoriesService @Inject constructor(
 
         Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
     }
-
-/*
-//    suspend fun loadSingleCategories() = mutableListOf<CategoriesDto>().apply {
-//        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: start")
-//        val uid = authRepository.user.value!!.uid
-////        val uid = FirebaseAuth.getInstance().currentUser?.uid
-//        dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
-//            .addOnSuccessListener { categoriesSnapshot ->
-//                Log.d("COROUTINES_CATEGORY_TAG", "snapshotSize = ${categoriesSnapshot.childrenCount}")
-//                categoriesSnapshot.children.mapNotNull { category ->
-//                    Log.d("COROUTINES_CATEGORY_TAG", "Success")
-//                    this.add(CategoriesDto.parseSnapshot(category))
-//                }.let {
-//                    Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: Success! Size: ${it.size}")
-//                }
-//            }.addOnFailureListener {
-//                Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
-//            }.await()
-//        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
-//    }
-//
-//    suspend fun loadSingleCategories(): List<CategoriesDto> = coroutineScope{
-//        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: start")
-//        val list = mutableListOf<CategoriesDto>()
-//        coroutineScope {
-//            Log.d("COROUTINES_CATEGORY_TAG", "in first Scope: start")
-//
-//            val uid = authRepository.user.value!!.uid
-//
-//            launch {
-//                Log.d("COROUTINES_CATEGORY_TAG", "in run: start")
-//                val a = async{
-//                    val s = "2"
-//                    dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).setValue(s)
-//                    val v = dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
-//                        .addOnSuccessListener { categoriesSnapshot ->
-//                            Log.d("COROUTINES_CATEGORY_TAG", "in success: ${categoriesSnapshot.childrenCount}")
-//                            categoriesSnapshot.children.mapNotNull { category ->
-//                                list.add(CategoriesDto.parseSnapshot(category))
-//                            }.let {
-//                                Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: Success! Size: ${it.size}")
-//                            }
-//                        }.addOnFailureListener {
-//                            Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
-//                        }.await()
-//                }
-//                a.await()
-//                Log.d("COROUTINES_CATEGORY_TAG", "in run: end")
-//            }
-//
-//            Log.d("COROUTINES_CATEGORY_TAG", "in first Scope: end")
-//        }
-//        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
-//        list
-//    }
-//
-//    suspend fun loadSingleCategories() = coroutineScope {
-//        val uid = authRepository.user.value!!.uid
-//
-//        val list = mutableListOf<CategoriesDto>()
-//        withContext(Dispatchers.IO) {
-//            dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get()
-//                .addOnSuccessListener { categoriesSnapshot ->
-//                    categoriesSnapshot.children.mapNotNull { category ->
-//                        list.add(CategoriesDto.parseSnapshot(category))
-//                    }.let {
-//                        Log.d(
-//                            LogTags.FETCH_DATA_TAG,
-//                            "loadSingleCategories: Success! Size: ${it.size}"
-//                        )
-//                    }
-//                }.addOnFailureListener {
-//                    Log.d(LogTags.FETCH_DATA_TAG, "loadSingleCategories: ${it.message}")
-//                }
-//        }
-//        list
-//    }
-
-    */
 
     //Firebase end
 

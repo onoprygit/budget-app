@@ -1,10 +1,7 @@
 package com.onopry.budgetapp.di
 
 import com.onopry.budgetapp.model.repo.AuthRepository
-import com.onopry.budgetapp.model.services.CategoriesService
-import com.onopry.budgetapp.model.services.OperationsService
-import com.onopry.budgetapp.model.services.PeriodService
-import com.onopry.budgetapp.model.services.TargetService
+import com.onopry.budgetapp.model.services.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,8 +31,13 @@ class ServicesDi {
 
     @Provides
     @Singleton
-    fun provideOperationsService(targetService: TargetService, categoriesService: CategoriesService) =
-        OperationsService(targetService = targetService, categoriesService = categoriesService)
+    fun provideOperationsService(targetService: TargetService) =
+        OperationsService(targetService = targetService)
+
+    @Provides
+    @Singleton
+    fun provideAccountsService(authRepository: AuthRepository, operationsService: OperationsService) =
+        AccountsService(authRepository, operationsService)
 
 }
 
