@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(), MainNavigator {
 
     override fun showSingUpScreen() {
         setBottomNavVisible(false)
-        replaceFragment(signUpFragment)
+        replaceFragment(signUpFragment, true)
     }
 
     override fun showSingInScreen() {
@@ -144,7 +144,6 @@ class MainActivity : AppCompatActivity(), MainNavigator {
     // Показываем фрагмент на экране
     /** @param [isNested] Is the fragment must open only from other fragment **/
     private fun replaceFragment(fragment: Fragment, isNested: Boolean = false){
-//        currentFragment = fragment
         if (isNested){
             supportFragmentManager
                 .beginTransaction()
@@ -157,7 +156,6 @@ class MainActivity : AppCompatActivity(), MainNavigator {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
                 .commit()
         }
     }
