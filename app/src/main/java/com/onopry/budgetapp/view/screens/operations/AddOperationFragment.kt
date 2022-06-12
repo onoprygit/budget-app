@@ -64,8 +64,6 @@ class AddOperationFragment : Fragment() {
             categoryBottomSheet.dismiss()
         }
 
-
-
         // Выбор категории
         binding.addingOperationSelectCategory.setOnClickListener {
             categoryBottomSheet.show(childFragmentManager, null)

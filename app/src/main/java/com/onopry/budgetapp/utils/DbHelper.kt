@@ -64,6 +64,7 @@ object ACCOUNT {
     const val CURRENCY = "currency"
     const val ICON = "icon"
     const val COLOR = "color"
+    const val TYPE = "type"
 }
 
 

@@ -31,9 +31,9 @@ class CategoryBottomSheet(
     ): View {
         binding = CategoryBottomSheetBinding.inflate(inflater, container, false)
 
-        viewModel.categories.observe(viewLifecycleOwner, Observer {
+        viewModel.categories.observe(viewLifecycleOwner) {
             adapter.categoryList = it
-        })
+        }
         adapter = CategoryChooseAdapter(actionListener)
 
         binding.categoryRecyclerChooser.layoutManager = GridLayoutManager(context, COLUMN_NUMBER)

@@ -24,6 +24,7 @@ class CategoryDataSourseImpl: CategoriesDataSourse {
         a.push(MY_COLORS.color_category_13)
         a.push(MY_COLORS.color_category_14)
         a.push(MY_COLORS.color_category_15)
+
         a.shuffle()
 
         val categories = mutableListOf(
@@ -85,6 +86,56 @@ class CategoryDataSourseImpl: CategoriesDataSourse {
                 id = UUID.randomUUID().toString(),
                 name = "Здоровье",
                 icon = R.drawable.ic_category_health
+            )
+        )
+
+        categories.add(
+            CategoriesDto(
+                id = UUID.randomUUID().toString(),
+                name = "Зарплата",
+                icon = R.drawable.ic_income_cash,
+                color = MY_COLORS.color_category_income_main,
+                isExpence = false
+            )
+        )
+
+        categories.add(
+            CategoriesDto(
+                id = UUID.randomUUID().toString(),
+                name = "Премеия",
+                icon = R.drawable.ic_income_cash,
+                color = MY_COLORS.color_category_income_main,
+                isExpence = false
+            )
+        )
+
+        categories.add(
+            CategoriesDto(
+                id = UUID.randomUUID().toString(),
+                name = "Инвистиции",
+                icon = R.drawable.ic_income_cash,
+                color = MY_COLORS.color_category_income_main,
+                isExpence = false
+            )
+        )
+
+        categories.add(
+            CategoriesDto(
+                id = UUID.randomUUID().toString(),
+                name = "Продажа",
+                icon = R.drawable.ic_income_cash,
+                color = MY_COLORS.color_category_income_main,
+                isExpence = false
+            )
+        )
+
+        categories.add(
+            CategoriesDto(
+                id = UUID.randomUUID().toString(),
+                name = "Другое",
+                icon = R.drawable.ic_income_cash,
+                color = MY_COLORS.color_category_income_main,
+                isExpence = false
             )
         )
         return categories

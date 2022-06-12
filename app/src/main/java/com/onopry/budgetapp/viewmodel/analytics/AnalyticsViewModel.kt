@@ -19,14 +19,22 @@ import javax.inject.Inject
 class AnalyticsViewModel @Inject constructor(
     private val operationsService: OperationsService,
     private val periodService: PeriodService,
-    private val categoriesService: CategoriesService
+    private val categoriesService: CategoriesService,
+    private val accountsService: AccountsService
 ): ViewModel() {
+
+    //todo походу нужна лайвдата для состояния кнопок и всякого такого
+
+    private val _isExpencestypeSelected = MutableLiveData<Boolean>(true)
+    val isExpencestypeSelected: LiveData<Boolean> = _isExpencestypeSelected
 
     private val _period = MutableLiveData<PeriodDate>()
     val period: LiveData<PeriodDate> = _period
 
     private val _operationsByCategory = MutableLiveData<Map<CategoriesDto, List<OperationsDto>>>()
     var operationsByCategory: LiveData<Map<CategoriesDto, List<OperationsDto>>> = _operationsByCategory
+
+    val accounts = accountsService.accounts
 
 //    private val _amountByCategory = MutableLiveData<>
 

@@ -35,6 +35,9 @@ object MY_COLORS{
     val color_category_14 = Color.parseColor("#F28CB4")
     val color_category_15 = Color.parseColor("#E7EB9C")
     val color_category_other = Color.parseColor("#AEC0C3")
+
+    val color_category_income_1 = Color.parseColor("#7CF795")
+    val color_category_income_main = Color.parseColor("#DDECD9")
 }
 
 

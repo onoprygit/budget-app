@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.components.Legend
@@ -16,9 +17,11 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.onopry.budgetapp.R
+import com.onopry.budgetapp.adapters.AccountsAdapter
 import com.onopry.budgetapp.adapters.AmountByCategoryAdapter
 import com.onopry.budgetapp.databinding.AnalyticsFragmentBinding
 import com.onopry.budgetapp.utils.*
+import com.onopry.budgetapp.viewmodel.MainViewModel
 //import com.onopry.budgetapp.viewmodel.MainViewModel
 import com.onopry.budgetapp.viewmodel.analytics.AnalyticsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +34,9 @@ class AnalyticsFragment : Fragment() {
 //    private val mainViewModel: MainViewModel by activityViewModels()
 
     private lateinit var binding: AnalyticsFragmentBinding
+
     private val categoriesAdapter = AmountByCategoryAdapter()
+    private lateinit var accountsAdapter: AccountsAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -44,7 +49,22 @@ class AnalyticsFragment : Fragment() {
         val textDatePair = LocalDate.now().getTextLocalDateMY()
         binding.analyticsMainAmountDate.text = "${textDatePair.first} ${textDatePair.second}"
 
-        //инициалиация для ресайклера
+        // Инициализация для ресайклера счетов
+        accountsAdapter = AccountsAdapter{
+            navigator().toast(it.name + it.type)
+
+        }
+
+        binding.analyticsAccountsRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.analyticsAccountsRecycler.adapter = accountsAdapter
+
+//        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "ACCOUNTS size init: ${mainViewModel.accounts.value?.size}")
+        viewModel.accounts.observe(viewLifecycleOwner) {
+            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "ACCOUNTS size: ${it.size}")
+            accountsAdapter.accounts = it
+        }
+
+        //инициалиация для ресайклера категорий
         binding.afCategoryRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.afCategoryRecycler.adapter = categoriesAdapter
 
@@ -56,6 +76,18 @@ class AnalyticsFragment : Fragment() {
 //            val t = binding.analyticsMainAmountDate.tag as PeriodDate
 //            viewModel.setPeriod(LocalDate.now(), t.periodRange)
 
+        }
+
+        //Радио кнопки
+        binding.analyticsMainRadioGroup.setOnCheckedChangeListener { _, id ->
+            when(id) {
+                R.id.analyticsRadioItemIncome -> {
+                    navigator().toast("income")
+                }
+                R.id.analyticsRadioItemExpence -> {
+                    navigator().toast("expence")
+                }
+            }
         }
 
         // Следим за периодом

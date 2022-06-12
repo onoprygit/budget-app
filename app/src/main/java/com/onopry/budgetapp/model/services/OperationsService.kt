@@ -40,21 +40,32 @@ class OperationsService @Inject constructor(
 
     private suspend fun loadLocal(
         categories: List<CategoriesDto>,
-        accId: String
+        accountsid: List<String>
     ): MutableList<OperationsDto> {
+        val incomeCategories = categories.filter { !it.isExpence }
+        val expenceCategories = categories.filter { it.isExpence }
         val list = mutableListOf<OperationsDto>()
-        (1..10).map {
-            list.add(
-                OperationsDto(
+        (1..15).map {
+            list.add(OperationsDto(
                     id = UUID.randomUUID().toString(),
                     amount = Random.nextInt(100, 10000),
-                    category = categories[Random.nextInt(0, 9)],
-                    date = LocalDate.of(2022, Random.nextInt(4, 7), Random.nextInt(8, 25)),
-                    isExpence = Random.nextBoolean(),
-                    accountId = accId
-                )
-            )
+                    category = expenceCategories.random(),
+                    date = LocalDate.of(2022, Random.nextInt(5, 7), Random.nextInt(8, 18)),
+                    isExpence = true,
+                    accountId = accountsid.random()
+                ))
         }
+        (1..5).map {
+            list.add(OperationsDto(
+                id = UUID.randomUUID().toString(),
+                amount = Random.nextInt(10000, 30000),
+                category = incomeCategories.random(),
+                date = LocalDate.of(2022, Random.nextInt(5, 7), Random.nextInt(8, 18)),
+                isExpence = false,
+                accountId = accountsid.random()
+            ))
+        }
+        list.shuffle()
         list.sortByDescending { it.date }
         return list
     }
@@ -77,10 +88,10 @@ class OperationsService @Inject constructor(
     }
 
     // Operations self methods
-    suspend fun generateDefaultUserOperations(categories: List<CategoriesDto>, accId: String) =
+    suspend fun generateDefaultUserOperations(categories: List<CategoriesDto>, accounts: List<String>) =
         coroutineScope {
             var operations = mutableListOf<OperationsDto>()
-            operations = loadLocal(categories, accId)
+            operations = loadLocal(categories, accounts)
             val operationMap = mutableMapOf<String, Any>()
 
             operations.forEach {

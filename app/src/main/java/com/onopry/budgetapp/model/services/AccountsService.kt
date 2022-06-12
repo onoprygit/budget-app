@@ -39,18 +39,22 @@ class AccountsService @Inject constructor(
     suspend fun generateDefaultUserAccountAsync() = coroutineScope {
         async {
             val uid = authRepository.user.value!!.uid
-            val defAccount = AccountDto(
-                id = UUID.randomUUID().toString()
-            )
+            var list = mutableListOf<AccountDto>()
+            list.add(AccountDto(id = UUID.randomUUID().toString(), name = "ЗП", type = "CARD"))
+            list.add(AccountDto(id = UUID.randomUUID().toString(), name = "Вклад", type = "BANK"))
+            list.add(AccountDto(id = UUID.randomUUID().toString(), name = "Биткоин", type = "OTHER"))
+
             dbRefAccounts.child(uid).updateChildren(mapOf<String, Any>(
-                defAccount.id to defAccount.toMap()
+                list[0].id to list[0].toMap(),
+                list[1].id to list[1].toMap(),
+                list[2].id to list[2].toMap()
             ))
-            defAccount.id
+            list.map { it.id }
         }
     }
 
     private fun load(){
-        dbRefRoot.child(authRepository.user.value!!.uid)
+        dbRefRoot.child(FirebaseHelper.ACCOUNTS_KEY).child(authRepository.user.value!!.uid)
             .addValueEventListener( object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val list = mutableListOf<AccountDto>()
