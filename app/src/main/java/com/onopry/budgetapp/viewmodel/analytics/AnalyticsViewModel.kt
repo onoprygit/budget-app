@@ -1,8 +1,6 @@
 package com.onopry.budgetapp.viewmodel.analytics
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.github.mikephil.charting.data.PieEntry
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
@@ -25,27 +23,63 @@ class AnalyticsViewModel @Inject constructor(
 
     //todo походу нужна лайвдата для состояния кнопок и всякого такого
 
-    private val _isExpencestypeSelected = MutableLiveData<Boolean>(true)
-    val isExpencestypeSelected: LiveData<Boolean> = _isExpencestypeSelected
-
     private val _period = MutableLiveData<PeriodDate>()
     val period: LiveData<PeriodDate> = _period
 
+
+    @Deprecated("HUITA")
     private val _operationsByCategory = MutableLiveData<Map<CategoriesDto, List<OperationsDto>>>()
+    @Deprecated("HUITA")
     var operationsByCategory: LiveData<Map<CategoriesDto, List<OperationsDto>>> = _operationsByCategory
 
     val accounts = accountsService.accounts
 
 //    private val _amountByCategory = MutableLiveData<>
 
-    val operations = categoriesService.categories
+    val operations = operationsService.operations
+
+    /*todo("можно сделать одну мапу, в которую будут добавляться каатегории в кач-ве
+       ключа при проходе по списку операций. а в кач-ве значения будет список,
+       в который будем кидать операции через .add()")*/
+    val sumByCategory = operationsService.operations.map { operationsList ->
+        val categorySet = mutableSetOf<CategoriesDto>()
+        operationsList.forEach {
+            categorySet.add(it.category)
+        }
+
+        val mapCategories = mutableMapOf<CategoriesDto, List<OperationsDto>>()
+        categorySet.forEach { category ->
+            mapCategories[category] = operationsList.filter { operation ->
+                operation.category == category
+            }
+        }
+
+        mutableListOf<AmountByCategory>().apply {
+            mapCategories.forEach { entires ->
+                this.add(AmountByCategory(entires.key, entires.value.sumOf { it.amount }))
+            }
+        }.toList()
+
+
+    }
+
+    private val _typeState = MutableLiveData(true)
+    val typeState: LiveData<Boolean> = _typeState
 
     private val periodListener: PeriodListener = { _period.value = it }
+
+//    private val
+
+
 
     init {
         initPeriod()
         setOperationsByCategory()
         Log.d("L_IFECYCLE_TAG_FF", "init")
+    }
+
+    fun changeTypeState(isExpence: Boolean){
+        _typeState.value = isExpence
     }
 
     private fun initPeriod(){
@@ -74,12 +108,11 @@ class AnalyticsViewModel @Inject constructor(
 
         val categorySet = mutableSetOf<CategoriesDto>()
         val operList: List<OperationsDto>? = operationsService.getOperationByPeriod(startDate, finishDate)
-            ?.filter { it.isExpence }
-
+//            ?.filter { it.isExpence }
 
         operList?.forEach { categorySet.add(it.category) }
         categorySet.forEach { category ->
-            map[category] = operList?.filter { it.category.id == category.id && it.isExpence } ?: listOf()
+            map[category] = operList?.filter { it.category.id == category.id } ?: listOf()
         }
         Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "loadOperationsByCategory: map = ${map.size}, list = ${operList?.size}")
         return map
@@ -94,20 +127,29 @@ class AnalyticsViewModel @Inject constructor(
         return list
     }
 
-    fun getAmountByPeriod() = operationsService.getSumExpencesByPeriod(_period.value!!)
+    fun getAmountByPeriod(isExpence: Boolean) = operationsService.getSumExpencesByPeriod(_period.value!!, isExpence)
 
 
     // Pie chart methods
-    fun getPieEntriesList(): List<PieEntry>{
+    fun getPieEntriesList(isExpence: Boolean): List<PieEntry>{
         val pieEntries = mutableListOf<PieEntry>()
-        getSumAmountByCategory().forEach {
+        sumByCategory.value!!.filter { it.category.isExpence == typeState.value }
+            .forEach {
             if (it.amount > 0)
                 pieEntries.add(PieEntry(it.amount.toFloat(), it.category.name))
         }
         return pieEntries
+
+//        val pieEntries = mutableListOf<PieEntry>()
+//        getSumAmountByCategory().forEach {
+//            if (it.amount > 0)
+//                pieEntries.add(PieEntry(it.amount.toFloat(), it.category.name))
+//        }
+//        return pieEntries
     }
 
-    fun getCategoriesColors() = _operationsByCategory.value?.keys?.map { it.color }?.toList() ?: throw Exception("No colors")
+//    fun getCategoriesColors() = _operationsByCategory.value?.keys?.map { it.color }?.toList() ?: throw Exception("No colors")
+    fun getCategoriesColors() = sumByCategory.value?.map { it.category.color } ?: throw Exception("No colors")
 
     fun getPeriodFromRange(date: LocalDate, typePeriod: PeriodRange) = periodService.getPeriodFromRange(date, typePeriod)
 

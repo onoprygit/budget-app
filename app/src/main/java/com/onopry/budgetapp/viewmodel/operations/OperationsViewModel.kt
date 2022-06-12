@@ -1,10 +1,7 @@
 package com.onopry.budgetapp.viewmodel.operations
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.services.OperationsListener
 import com.onopry.budgetapp.model.dto.OperationsDto
@@ -21,9 +18,11 @@ class OperationsViewModel @Inject constructor(
     val TAG = "FRAGMENTDESTROY_TAG"
 
 //    private val _operations = MutableLiveData<List<OperationsDto>>()
-    val operations = operationsService.operations
 
-    val _operations_ = operationsService.operations
+
+    val operations = operationsService.operations.map {
+        it.sortedByDescending { it.date }
+    }
 
 /*    private val listener: OperationsListener = {
         _operations.value = it

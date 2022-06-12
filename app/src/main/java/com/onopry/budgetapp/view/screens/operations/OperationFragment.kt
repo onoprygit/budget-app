@@ -43,7 +43,7 @@ class OperationFragment : Fragment() {
             }
         })
 
-        viewModel._operations_.observe(viewLifecycleOwner) { list ->
+        viewModel.operations.observe(viewLifecycleOwner) { list ->
             adapter.operationList = list
             Log.d(LogTags.FETCH_DATA_TAG, "Fetch operations... Size: ${list.size}, IDs: ${list.map{it.id}}")
         }

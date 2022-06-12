@@ -155,12 +155,11 @@ class OperationsService @Inject constructor(
         return sum
     }
 
-    fun getSumExpencesByPeriod(period: PeriodDate) =
+    fun getSumExpencesByPeriod(period: PeriodDate, isExpence: Boolean) =
         getOperationByPeriod(period.startDate, period.finishDate)
-            ?.filter { it.isExpence }
+            ?.filter { it.isExpence == isExpence }
             ?.sumOf { it.amount }
 
-    /** возвращает список **/
     private fun getSumExpences(operations: List<OperationsDto>) =
         operations
             .filter { it.isExpence }

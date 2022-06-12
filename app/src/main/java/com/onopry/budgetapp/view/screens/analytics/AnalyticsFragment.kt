@@ -58,7 +58,6 @@ class AnalyticsFragment : Fragment() {
         binding.analyticsAccountsRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.analyticsAccountsRecycler.adapter = accountsAdapter
 
-//        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "ACCOUNTS size init: ${mainViewModel.accounts.value?.size}")
         viewModel.accounts.observe(viewLifecycleOwner) {
             Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "ACCOUNTS size: ${it.size}")
             accountsAdapter.accounts = it
@@ -75,36 +74,42 @@ class AnalyticsFragment : Fragment() {
             viewModel.setOperationsByCategory()
 //            val t = binding.analyticsMainAmountDate.tag as PeriodDate
 //            viewModel.setPeriod(LocalDate.now(), t.periodRange)
-
         }
 
+        binding.analyticsMainRadioGroup.check(R.id.analyticsRadioItemExpence)
+
         //Радио кнопки
-        binding.analyticsMainRadioGroup.setOnCheckedChangeListener { _, id ->
-            when(id) {
-                R.id.analyticsRadioItemIncome -> {
-                    navigator().toast("income")
-                }
-                R.id.analyticsRadioItemExpence -> {
-                    navigator().toast("expence")
-                }
+        binding.analyticsMainRadioGroup.setOnCheckedChangeListener { _, buttonId ->
+            when (buttonId) {
+                R.id.analyticsRadioItemExpence -> { viewModel.changeTypeState(true) }
+                R.id.analyticsRadioItemIncome -> { viewModel.changeTypeState(false) }
+            }
+        }
+
+        viewModel.typeState.observe(viewLifecycleOwner) { isExpenceState ->
+            viewModel.sumByCategory.observe(viewLifecycleOwner){ list ->
+                categoriesAdapter.categoryList = list.filter { it.category.isExpence == isExpenceState }
+                makePieChart(isExpenceState)
             }
         }
 
         // Следим за периодом
         viewModel.period.observe(viewLifecycleOwner) {
             setTextDate(it)
-            binding.analyticsMainAmount.text = "₽ " + viewModel.getAmountByPeriod()
+            binding.analyticsMainAmount.text = "₽ " + viewModel.getAmountByPeriod(viewModel.typeState.value!!)
         }
 
         Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "before observe: ${viewModel.operationsByCategory.value?.size ?: 99999}")
+
         // Следим за операциями
-        viewModel.operationsByCategory.observe(viewLifecycleOwner){
-            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "in observe: ${it.size}")
-            val temp = viewModel.getSumAmountByCategory()
-            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "operation by category size: ${temp.size}")
-            categoriesAdapter.categoryList = temp
-            makePieChart()
-        }
+
+//        viewModel.operationsByCategory.observe(viewLifecycleOwner){
+//            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "in observe: ${it.size}")
+//            val temp = viewModel.getSumAmountByCategory()
+//            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "operation by category size: ${temp.size}")
+//            categoriesAdapter.categoryList = temp
+//            makePieChart()
+//        }
 
         binding.analyticsMainAmountDate.setOnClickListener {
             showPeriodChooseMenu(it)
@@ -212,9 +217,9 @@ class AnalyticsFragment : Fragment() {
         }
     }
 
-    private fun createPie(){
+    private fun createPie(isExpence: Boolean){
         val pieData = PieData(
-            PieDataSet(viewModel.getPieEntriesList(), null).apply {
+            PieDataSet(viewModel.getPieEntriesList(isExpence), null).apply {
                 colors = viewModel.getCategoriesColors()
                 valueFormatter = PercentFormatter(binding.analCategoriesPieChart)
                 xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
@@ -227,11 +232,43 @@ class AnalyticsFragment : Fragment() {
         }
     }
 
-    private fun makePieChart(){
+    private fun makePieChart(state: Boolean){
         setupPieChart()
-        createPie()
+        createPie(state)
     }
 
+    private fun onTypeChange(){
+        binding.analyticsMainRadioGroup.setOnCheckedChangeListener { _, id ->
+            when(id) {
+                R.id.analyticsRadioItemIncome -> {
+                    navigator().toast("income")
+                    viewModel.sumByCategory.removeObservers(viewLifecycleOwner)
+                    viewModel.sumByCategory.observe(viewLifecycleOwner){
+                        val observer = it.filter {
+                            !it.category.isExpence
+                        }
+                        categoriesAdapter.categoryList = observer
+                        Log.d("LEJAT_PLUS_SOSAT_TAG", "INCOME list size = ${observer.size}}")
+                    }
+                }
+                R.id.analyticsRadioItemExpence -> {
+                    navigator().toast("expence")
+                    viewModel.sumByCategory.removeObservers(viewLifecycleOwner)
+                    viewModel.sumByCategory.observe(viewLifecycleOwner){
+//                        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "INCOME in observe: ${it.filter { !it.key.isExpence }.size}")
+                        val observer = it.filter {
+                            !it.category.isExpence
+                        }
+                        categoriesAdapter.categoryList = it.filter {
+                            it.category.isExpence
+                        }
+                        Log.d("LEJAT_PLUS_SOSAT_TAG", "EXPENCE list size = ${observer.size}}")
+//                        makePieChart()
+                    }
+                }
+            }
+        }
+    }
 
     companion object {
         fun newInstance(): AnalyticsFragment {

@@ -83,7 +83,6 @@
                     android:text="@string/adding_money_radio_expence"
                     android:textSize="20sp"
                     android:layout_marginEnd="@dimen/base_horizontal_offset"
-                    android:checked="true"
                     />
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/analyticsRadioItemIncome"
