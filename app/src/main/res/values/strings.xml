@@ -8,21 +8,6 @@
     <string name="user_name">UserName</string>
     <string name="user_mail">UserMail@mail.com</string>
     <string name="more_title_settings">Настройки</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <string-array name="categories">
-        <item>Авто</item>
-        <item>Продукты</item>
-        <item>Транпорт</item>
-        <item>Кафе</item>
-        <item>Одежда</item>
-        <item>Дом</item>
-        <item>Подарки</item>
-        <item>Питомцы</item>
-        <item>Развлечения</item>
-        <item>Здоровье</item>
-    </string-array>
 
     <!--  For AddOperationFragment  -->
     <string name="adding_money_title_appbar">Добавить операцию</string>
@@ -35,6 +20,33 @@
     <string name="adding_money_radio_expence">Расход</string>
     <string name="adding_money_radio_income">Приход</string>
 
+    <string-array name="old_parent_categories">
+        <item>Авто</item>
+        <item>Продукты</item>
+        <item>Транпорт</item>
+        <item>Кафе</item>
+        <item>Одежда</item>
+        <item>Дом</item>
+        <item>Питомцы</item>
+        <item>Развлечения</item>
+        <item>Здоровье</item>
+    </string-array>
+
+    <string-array name="parent_categories">
+        <item> Авто</item>
+        <item>Продукты</item>
+        <item>Транспорт</item>
+        <item>Кафе</item>
+        <item>Одежда</item>
+        <item>Дом</item>
+        <item>Семья</item>
+        <item>Питомцы</item>
+        <item>Хобби</item>
+        <item>Здоровье</item>
+        <item>Другое</item>
+        <item>Счета</item>
+        <item>Уход</item>
+    </string-array>
 
     <!--  For EditOperationFragment  -->
     <string name="editing_money_title_appbar">Редактировать операцию</string>
@@ -44,18 +56,204 @@
     <string name="editing_money_hint_money">Введите сумму операции</string>
     <string name="editing_money_set_wallet">Счет</string>
     <string name="editing_monet_error_validaton_input">Введите сумму</string>
-    <string name="editing_monet_error_validaton_input1">\u00A9</string>
+    <string name="editing_monet_error_validaton_input1">"\u00A9"</string>
 
-    <!--  For AnalyticsFragment  -->
+        <!--parent categories-->
+    <string name="category_car">Авто</string>
+    <string name="category_products">Продукты</string>
+    <string name="category_transport">Транспорт</string>
+    <string name="category_cafe">Кафе</string>
+    <string name="category_fashion">Одежда</string>
+    <string name="category_house">Дом</string>
+    <string name="category_family">Семья</string>
+    <string name="category_pets">Питомцы</string>
+    <string name="category_hobby">Хобби</string>
+    <string name="category_health">Здоровье</string>
+    <string name="category_other">Другое</string>
+    <string name="category_bills">Счета</string>
+    <string name="category_beauty">Уход</string>
+
+        <!--child categories-->
+
+    <!--car-->
+    <string name="category_car_fuel">Топливо</string>
+    <string name="category_car_parking">Парковка</string>
+    <string name="category_car_insurance">Страховка</string>
+    <string name="category_car_wash">Мойка</string>
+    <string name="category_car_maintenance">Обслуживание</string>
+    <string name="category_car_other">Другое</string>
+
+    <string-array name="category_car">
+        <item>Топливо</item>
+        <item>Парковка</item>
+        <item>Страховка</item>
+        <item>Мойка</item>
+        <item>Обслуживание</item>
+        <item>Другое</item>
+    </string-array>
 
 
-    <!--  For BudgetAndDebtsFragment  -->
+    <!--products-->
+    <string name="category_products_drinks">Напитки</string>
+    <string name="category_products_food">Еда</string>
+    <string name="category_products_cofe">Кофе</string>
+    <string name="category_products_other">Другое</string>
+
+    <string-array name="category_products">
+        <item>Напитки</item>
+        <item>Еда</item>
+        <item>Кофе</item>
+        <item>Другое</item>
+    </string-array>
 
 
-    <!--  For MoreFragment  -->
+    <!--transport-->
+    <string name="category_transport_public">Общественный транспорт</string>
+    <string name="category_transport_taxi">Такси</string>
+    <string name="category_transport_airplane">Самолет</string>
+    <string name="category_transport_carsharing">Каршеринг</string>
+    <string name="category_transport_other">Другое</string>
+
+    <string-array name="category_transport">
+        <item>Общественный транспорт</item>
+        <item>Такси</item>
+        <item>Самолет</item>
+        <item>Каршеринг</item>
+        <item>Другое</item>
+    </string-array>
 
 
-    <!--  For TransactionFragment  -->
+    <!--cafe-->
+    <string name="category_cafe_cafe">Кафе</string>
+    <string name="category_cafe_bar">Бар</string>
+    <string name="category_cafe_restaurant">Ресторан</string>
+    <string name="category_cafe_other">Другое</string>
+
+    <string-array name="category_cafe">
+        <item>Кафе</item>
+        <item>Бар</item>
+        <item>Ресторан</item>
+        <item>Другое</item>
+    </string-array>
+
+    <!--fashion-->
+    <string name="category_fashion_clothes">Одежда</string>
+    <string name="category_fashion_accessories">Аксессуары</string>
+    <string name="category_fashion_underwear">Нижнее белье</string>
+    <string name="category_fashion_other">Другое</string>
+
+    <string-array name="category_fashion">
+        <item>Одежда</item>
+        <item>Аксессуары</item>
+        <item>Нижнее белье</item>
+        <item>Другое</item>
+    </string-array>
+    <!--house-->
+    <string name="category_house_rent">Аренда</string>
+    <string name="category_house_furniture">Мебель</string>
+    <string name="category_house_appliances">Бытовая техника</string>
+    <string name="category_house_other">Другое</string>
+
+    <string-array name="category_house">
+        <item>Аренда</item>
+        <item>Мебель</item>
+        <item>Бытовая техника</item>
+        <item>Другое</item>
+    </string-array>
+
+    <!--family-->
+    <string name="category_family_mom">Мама</string>
+    <string name="category_family_dad">Папа</string>
+    <string name="category_family_children">Дети</string>
+    <string name="category_family_friends">Друзья</string>
+    <string name="category_family_other">Другое</string>
+
+    <string-array name="category_family">
+        <item>Мама</item>
+        <item>Папа</item>
+        <item>Дети</item>
+        <item>Друзья</item>
+        <item>Другое</item>
+    </string-array>
+    <!--pets-->
+    <string name="category_pets_feed">Корм</string>
+    <string name="category_pets_toilet">Туалет</string>
+    <string name="category_pets_veterinarian">Ветеринар</string>
+    <string name="category_pets_other">Другое</string>
+
+    <string-array name="category_pets">
+        <item>Корм</item>
+        <item>Туалет</item>
+        <item>Ветеринар</item>
+        <item>Другое</item>
+    </string-array>
+    <!--hobby-->
+    <string name="category_hobby_sport">Спорт</string>
+    <string name="category_hobby_travel">Путешествия</string>
+    <string name="category_hobby_movie">Кино</string>
+    <string name="category_hobby_games">Игры</string>
+    <string name="category_hobby_books">Книги</string>
+    <string name="category_hobby_music">Музыка</string>
+    <string name="category_hobby_other">Другое</string>
+
+    <string-array name="category_hobby">
+        <item>Спорт</item>
+        <item>Путешествия</item>
+        <item>Кино</item>
+        <item>Игры</item>
+        <item>Книги</item>
+        <item>Музыка</item>
+        <item>Другое</item>
+    </string-array>
+    <!--health-->
+    <string name="category_health_hospital">Больница</string>
+    <string name="category_health_insurance">Страховка</string>
+    <string name="category_health_medicines">Лекарства</string>
+    <string name="category_health_other">Другое</string>
+
+    <string-array name="category_health">
+        <item>Больница</item>
+        <item>Страховка</item>
+        <item>Лекарства</item>
+        <item>Другое</item>
+    </string-array>
+
+    <!--other-->
+    <string name="category_other_emergency">Форс-мажор</string>
+    <string name="category_other_other">Другое</string>
+
+    <string-array name="category_other">
+        <item>Форс-мажор</item>
+        <item>Другое</item>
+
+    </string-array>
+
+    <!--bills-->
+    <string name="category_bills_electricity">Электричество</string>
+    <string name="category_bills_water">Вода</string>
+    <string name="category_bills_internet">Интернет</string>
+    <string name="category_bills_phone">Связь</string>
+    <string name="category_bills_other">Другое</string>
+
+    <string-array name="category_bills">
+        <item>Электричество</item>
+        <item>Вода</item>
+        <item>Интернет</item>
+        <item>Связь</item>
+        <item>Другое</item>
+    </string-array>
+
+    <!--beauty-->
+    <string name="category_beauty_haircut">Стрижка</string>
+    <string name="category_beauty_cosmetics">Косметика</string>
+    <string name="category_beauty_other">Другое</string>
+
+    <string-array name="category_beauty">
+        <item>Стрижка</item>
+        <item>Косметика</item>
+        <item>Другое</item>
+    </string-array>
+
 
 
 </resources>

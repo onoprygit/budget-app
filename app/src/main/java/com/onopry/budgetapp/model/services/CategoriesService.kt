@@ -1,4 +1,5 @@
 package com.onopry.budgetapp.model.services
+import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -18,6 +19,7 @@ import com.onopry.budgetapp.utils.LogTags
 import com.onopry.budgetapp.utils.MY_COLORS
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
+import java.security.AccessControlContext
 import java.util.*
 import javax.inject.Inject
 
@@ -91,13 +93,8 @@ class CategoriesService @Inject constructor(
     }
 
     suspend fun loadSingleCategories() = mutableListOf<CategoriesDto>().apply {
-        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: start")
         val uid = authRepository.user.value!!.uid
-//        val uid = FirebaseAuth.getInstance().currentUser?.uid
         val ds = dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid!!).get().await()
-        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: ${ds.childrenCount}")
-
-        Log.d("COROUTINES_CATEGORY_TAG", "loadSingleCategories: end")
     }
 
     //Firebase end
@@ -142,18 +139,6 @@ class CategoriesService @Inject constructor(
         notifyChanges()
     }
 
-    fun getExpencesCategories() = categoriesList.filter { it.isExpence }
-
-    fun getIncomesCategories() = categoriesList.filter { !it.isExpence }
-
-
-    fun addListener(listener: CategoriesListener){
-        listeners.add(listener)
-        listener.invoke(categoriesList)
-    }
-
-    fun removeListener(listener: CategoriesListener){ listeners.remove(listener) }
-
     private fun notifyChanges(){ listeners.forEach { it.invoke(categoriesList) } }
 
     fun getCategoryByTargetId(id: String) = _categories.value?.find { it.targetId == id }
@@ -180,82 +165,73 @@ class CategoriesService @Inject constructor(
         return colorsStack
     }
 
-    private fun loadCategoriesLocal(){
+    private fun loadCategoriesLocal(context: Context){
         val categoryColorsStack = getCategoriesColors()
-        categoriesList = mutableListOf(
+         val categories = mutableListOf(
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = "Авто",
+                name = context.getString(R.string.category_car),
                 icon = R.drawable.ic_category_car,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = "Продукты",
+                name = context.getString(R.string.category_products),
                 icon = R.drawable.ic_category_food,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = "Транпорт",
+                name = context.getString(R.string.category_transport),
                 icon = R.drawable.ic_category_transport,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = "Кафе",
+                name = context.getString(R.string.category_cafe),
                 icon = R.drawable.ic_category_cafe,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = "Одежда",
+                name = context.getString(R.string.category_fashion),
                 icon = R.drawable.ic_category_clothes,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = "Дом",
+                name = context.getString(R.string.category_house),
                 icon = R.drawable.ic_category_home,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = "Подарки",
-                icon = R.drawable.ic_category_gift,
-                color = categoryColorsStack.pop()
-            ),
-            CategoriesDto(
-                id = UUID.randomUUID().toString(),
-                name = "Питомцы",
+                name = context.getString(R.string.category_pets),
                 icon = R.drawable.ic_category_pets,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = "Развлечения",
+                name = context.getString(R.string.category_hobby),
                 icon = R.drawable.ic_category_entertainment,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = "Здоровье",
+                name = context.getString(R.string.category_health),
                 icon = R.drawable.ic_category_health
-            ),
-            CategoriesDto(
-                id = UUID.randomUUID().toString(),
-                name = "На машинк",
-                icon = R.drawable.ic_category_placeholder,
-                color = Color.parseColor("#809A6F"),
-                targetId = "720cb4c2-46e6-48e6-8098-87625b866802",
-            ),
-            CategoriesDto(
-                id = UUID.randomUUID().toString(),
-                name = "На гараж",
-                icon = R.drawable.ic_category_placeholder,
-                color = Color.parseColor("#809A6F"),
-                targetId = "f5ced627-5fab-41ef-88d8-19599fae79ef",
             )
         )
+
+//        categories.apply {
+//            val a = mutableSetOf<CategoriesDto>()
+//            this.forEach {
+//                val parentId = it.id
+//                a.add(it)
+//
+//            }
+//        }
+
+        categoriesList = categories
     }
 }
