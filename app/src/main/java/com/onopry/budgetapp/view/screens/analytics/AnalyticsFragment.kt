@@ -69,15 +69,6 @@ class AnalyticsFragment : Fragment() {
 
         Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "operations = ${viewModel.operations.value?.size} ")
 
-        viewModel.operations.observe(viewLifecycleOwner) {
-            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "operations observe = ${viewModel.operations.value?.size} ")
-            viewModel.setOperationsByCategory()
-//            val t = binding.analyticsMainAmountDate.tag as PeriodDate
-//            viewModel.setPeriod(LocalDate.now(), t.periodRange)
-        }
-
-        binding.analyticsMainRadioGroup.check(R.id.analyticsRadioItemExpence)
-
         //Радио кнопки
         binding.analyticsMainRadioGroup.setOnCheckedChangeListener { _, buttonId ->
             when (buttonId) {
@@ -86,30 +77,27 @@ class AnalyticsFragment : Fragment() {
             }
         }
 
+        //ЛУЧШЕЕ РЕШЕНИЕ В ЖИЗНИ НАХУЙ
+        //todo можно в медиатор добавить лавйдату typeState чтобы вообще было красиво
         viewModel.typeState.observe(viewLifecycleOwner) { isExpenceState ->
-            viewModel.sumByCategory.observe(viewLifecycleOwner){ list ->
-                categoriesAdapter.categoryList = list.filter { it.category.isExpence == isExpenceState }
+            viewModel.mediatorLiveData.observe(viewLifecycleOwner){ list ->
+                val newList = ArrayList(list.filter { it.category.isExpence == isExpenceState }).toList()
+                categoriesAdapter.categoryList = newList
+                setTextDate(viewModel.period.value!!)
+                binding.analyticsMainAmount.text = "₽ ${newList.sumOf { it.amount }}"
                 makePieChart(isExpenceState)
-            }
-        }
 
-        // Следим за периодом
-        viewModel.period.observe(viewLifecycleOwner) {
-            setTextDate(it)
-            binding.analyticsMainAmount.text = "₽ " + viewModel.getAmountByPeriod(viewModel.typeState.value!!)
+
+
+                binding.analyticsAmountSumTv.text = getTotalBalance(list).also {
+                    if (it < 0) binding.analyticsAmountSumTv.setTextColor(R.color.red)
+                    else binding.analyticsAmountSumTv.setTextColor(R.color.green)
+                }.toString()
+            }
         }
 
         Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "before observe: ${viewModel.operationsByCategory.value?.size ?: 99999}")
 
-        // Следим за операциями
-
-//        viewModel.operationsByCategory.observe(viewLifecycleOwner){
-//            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "in observe: ${it.size}")
-//            val temp = viewModel.getSumAmountByCategory()
-//            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "operation by category size: ${temp.size}")
-//            categoriesAdapter.categoryList = temp
-//            makePieChart()
-//        }
 
         binding.analyticsMainAmountDate.setOnClickListener {
             showPeriodChooseMenu(it)
@@ -268,6 +256,12 @@ class AnalyticsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun getTotalBalance(list: List<AmountByCategory>) = let {
+        val totalExpences = list.filter { it.category.isExpence }.sumOf { it.amount }
+        val totalIncomes = list.filter { !it.category.isExpence }.sumOf { it.amount }
+        totalIncomes - totalExpences
     }
 
     companion object {

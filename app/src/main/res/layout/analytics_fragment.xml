@@ -83,6 +83,7 @@
                     android:text="@string/adding_money_radio_expence"
                     android:textSize="20sp"
                     android:layout_marginEnd="@dimen/base_horizontal_offset"
+                    android:checked="true"
                     />
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/analyticsRadioItemIncome"
@@ -94,12 +95,37 @@
                     />
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/analyticsAmountTitleTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/analyticsMainRadioGroup"
+                app:layout_constraintStart_toStartOf="@id/analytics_guide_start"
+                android:gravity="center"
+                android:text="Ваш итоговый баланс:"
+                android:textSize="18sp"
+                android:textColor="@color/analytics_text"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                />
+
+            <TextView
+                android:id="@+id/analyticsAmountSumTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/analyticsAmountTitleTv"
+                app:layout_constraintTop_toTopOf="@+id/analyticsAmountTitleTv"
+                app:layout_constraintBottom_toBottomOf="@+id/analyticsAmountTitleTv"
+                android:layout_marginStart="20dp"
+                android:textColor="@color/analytics_text"
+                android:textSize="24sp"
+                tools:text="19578"
+                />
 
             <TextView
                 android:id="@+id/analytics_toolbar_title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/analyticsMainRadioGroup"
+                app:layout_constraintTop_toBottomOf="@id/analyticsAmountSumTv"
                 app:layout_constraintStart_toStartOf="@id/analytics_guide_start"
                 app:layout_constraintEnd_toEndOf="@id/analytics_guide_end"
                 app:layout_constraintBottom_toTopOf="@id/analytics_main_amount_date"
@@ -168,11 +194,13 @@
                 app:cardElevation="8dp"
                 app:cardCornerRadius="20dp"
                 >
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp">
 
-                    <RadioGroup
+                    <!--<RadioGroup
                         android:id="@+id/categoriesPie_radio_group"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -199,7 +227,7 @@
                             android:textSize="20sp"
                             android:layout_marginStart="@dimen/base_horizontal_offset"
                             />
-                    </RadioGroup>
+                    </RadioGroup>-->
 
                     <FrameLayout
                         android:id="@+id/analyticsCategoriesPieChartContainer"
@@ -208,7 +236,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/categoriesPie_radio_group"
+                        app:layout_constraintTop_toTopOf="parent"
                         >
 
                         <com.github.mikephil.charting.charts.PieChart
@@ -258,7 +286,7 @@
                     android:layout_height="wrap_content"
                     >
 
-                    <RadioGroup
+                    <!--<RadioGroup
                         android:id="@+id/categoriesSpendCard_radio_group"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -285,7 +313,7 @@
                             android:textSize="20sp"
                             android:layout_marginStart="@dimen/base_horizontal_offset"
                             />
-                    </RadioGroup>
+                    </RadioGroup>-->
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/af_category_recycler"
@@ -293,7 +321,7 @@
                         android:layout_height="wrap_content"
                         tools:listitem="@layout/item_amount_by_category"
                         android:nestedScrollingEnabled="false"
-                        app:layout_constraintTop_toBottomOf="@id/categoriesSpendCard_radio_group"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

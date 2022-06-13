@@ -38,10 +38,13 @@ class AnalyticsViewModel @Inject constructor(
 
     val operations = operationsService.operations
 
+
+
     /*todo("можно сделать одну мапу, в которую будут добавляться каатегории в кач-ве
        ключа при проходе по списку операций. а в кач-ве значения будет список,
        в который будем кидать операции через .add()")*/
-    val sumByCategory = operationsService.operations.map { operationsList ->
+    val sumByCategory = operationsService.operations.map {
+        val operationsList = it.filter { it.date in period.value!!.startDate..period.value!!.finishDate }
         val categorySet = mutableSetOf<CategoriesDto>()
         operationsList.forEach {
             categorySet.add(it.category)
@@ -53,29 +56,60 @@ class AnalyticsViewModel @Inject constructor(
                 operation.category == category
             }
         }
-
-        mutableListOf<AmountByCategory>().apply {
-            mapCategories.forEach { entires ->
-                this.add(AmountByCategory(entires.key, entires.value.sumOf { it.amount }))
-            }
-        }.toList()
-
-
+                mutableListOf<AmountByCategory>().apply {
+                    mapCategories.forEach { entires ->
+                        this.add(AmountByCategory(entires.key, entires.value.sumOf { it.amount }))
+                    }
+                }.toList()
     }
 
     private val _typeState = MutableLiveData(true)
     val typeState: LiveData<Boolean> = _typeState
 
+    val mediatorLiveData = MediatorLiveData<List<AmountByCategory>>()
+
     private val periodListener: PeriodListener = { _period.value = it }
 
-//    private val
 
 
 
     init {
         initPeriod()
+        initMediatorLiveDataInit()
         setOperationsByCategory()
         Log.d("L_IFECYCLE_TAG_FF", "init")
+    }
+
+    private fun initMediatorLiveDataInit() {
+        mediatorLiveData.addSource(period) { period ->
+            period!!.let {
+                val operationsList = operations.value!!
+                    .filter { it.date in period.startDate..period.finishDate }
+
+                val categorySet = mutableSetOf<CategoriesDto>()
+
+                operationsList.forEach {
+                    categorySet.add(it.category)
+                }
+
+                val mapCategories = mutableMapOf<CategoriesDto, List<OperationsDto>>()
+                categorySet.forEach { category ->
+                    mapCategories[category] = operationsList.filter { operation ->
+                        operation.category == category
+                    }
+                }
+
+                mediatorLiveData.value = mutableListOf<AmountByCategory>().apply {
+                    mapCategories.forEach { entires ->
+                        this.add(AmountByCategory(entires.key, entires.value.sumOf { it.amount }))
+                    }
+                }
+            }
+        }
+//        mediatorLiveData.addSource(typeState) { state ->
+
+
+        Log.d("ROT_TOGO_EBAL_TAG", "initMediatorLiveDataInit: ${mediatorLiveData.value?.size}")
     }
 
     fun changeTypeState(isExpence: Boolean){
@@ -133,7 +167,7 @@ class AnalyticsViewModel @Inject constructor(
     // Pie chart methods
     fun getPieEntriesList(isExpence: Boolean): List<PieEntry>{
         val pieEntries = mutableListOf<PieEntry>()
-        sumByCategory.value!!.filter { it.category.isExpence == typeState.value }
+        mediatorLiveData.value!!.filter { it.category.isExpence == typeState.value }
             .forEach {
             if (it.amount > 0)
                 pieEntries.add(PieEntry(it.amount.toFloat(), it.category.name))
@@ -149,7 +183,7 @@ class AnalyticsViewModel @Inject constructor(
     }
 
 //    fun getCategoriesColors() = _operationsByCategory.value?.keys?.map { it.color }?.toList() ?: throw Exception("No colors")
-    fun getCategoriesColors() = sumByCategory.value?.map { it.category.color } ?: throw Exception("No colors")
+    fun getCategoriesColors() = mediatorLiveData.value?.map { it.category.color } ?: throw Exception("No colors")
 
     fun getPeriodFromRange(date: LocalDate, typePeriod: PeriodRange) = periodService.getPeriodFromRange(date, typePeriod)
 

@@ -141,24 +141,27 @@ class OperationsService @Inject constructor(
 
     //Operations by period
 
-    fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = _operations.value
-        ?.filter { operation ->
-            operation.date in startDate..endDate
-        }
+    fun getOperationByPeriod(startDate: LocalDate, endDate: LocalDate) = _operations.value!!
+        .filter { operation -> operation.date in startDate..endDate }
 
     private fun getSumByPeriod(startDate: LocalDate, endDate: LocalDate): Int {
         var sum = 0
         getOperationByPeriod(startDate, endDate)
-            ?.forEach {
+            .forEach {
                 if (it.isExpence) sum += it.amount
             }
         return sum
     }
 
-    fun getSumExpencesByPeriod(period: PeriodDate, isExpence: Boolean) =
-        getOperationByPeriod(period.startDate, period.finishDate)
-            ?.filter { it.isExpence == isExpence }
-            ?.sumOf { it.amount }
+//    fun getSumExpencesByPeriod(period: PeriodDate, isExpence: Boolean) =
+//        getOperationByPeriod(period.startDate, period.finishDate)
+//            .filter { it.isExpence == isExpence }
+//            .sumOf { it.amount }
+
+    fun getSumExpencesByPeriod(period: PeriodDate, isExpence: Boolean) = _operations.value!!
+        .filter { it.date in period.startDate..period.finishDate }
+        .filter { it.isExpence == isExpence }
+        .sumOf { it.amount }
 
     private fun getSumExpences(operations: List<OperationsDto>) =
         operations
