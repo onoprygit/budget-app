@@ -9,11 +9,9 @@ import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
 import com.onopry.budgetapp.model.repo.AuthRepository
 import com.onopry.budgetapp.model.repo.FirebaseHelper
-import com.onopry.budgetapp.utils.CategoryNotFoundException
 import com.onopry.budgetapp.utils.FIREBASE
 import com.onopry.budgetapp.utils.LogTags
 import kotlinx.coroutines.*
-import kotlinx.coroutines.tasks.await
 import java.util.*
 import javax.inject.Inject
 
@@ -31,12 +29,18 @@ class CategoriesService @Inject constructor(
     private val _categories = MutableLiveData<List<CategoriesDto>>()
     val categories:LiveData<List<CategoriesDto>> = _categories
 
+    private val _parentCategories = MutableLiveData<List<CategoriesDto>>()
+    val parentCategories:LiveData<List<CategoriesDto>> = _parentCategories
+
+    private val _childCategories = MutableLiveData<List<CategoriesDto>>()
+    val childCategories:LiveData<List<CategoriesDto>> = _childCategories
+
     init {
         Log.d(LogTags.DI_INSTANCES_TAG, "CategoriesService init")
-        load()
+        loadCategories()
         }
 
-    private fun load(){
+    private fun loadCategories(){
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
         dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid)
             .addValueEventListener(object : ValueEventListener {
@@ -54,7 +58,9 @@ class CategoriesService @Inject constructor(
             }
 
         })
+        dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid)
     }
+
 
     suspend fun generateDefaultUserCategoriesAsync() = coroutineScope {
         async {
@@ -73,4 +79,6 @@ class CategoriesService @Inject constructor(
     }
 
     fun getCategoryByTargetId(id: String) = _categories.value?.find { it.targetId == id }
+
+    fun getParentCategoryByParentId(parentId: String) = _categories.value?.find { it.id == parentId && it.isParent }
 }

@@ -12,14 +12,16 @@ data class OperationsDto(
     var date: LocalDate = LocalDate.of(2022,1,1),
     var isExpence: Boolean = true,
     var category: CategoriesDto,
-    val accountId: String = ""
+    val accountId: String = "",
+    val description: String = "",
 ): Serializable {
     fun toMap() = mapOf<String, Any>(
         OPERATION.AMOUNT to amount,
         OPERATION.CATEGORY to category.toMapOperation(),
         OPERATION.DATE to date.toString(),
         OPERATION.IS_EXPENCE to isExpence,
-        OPERATION.ACCOUNT_ID to accountId
+        OPERATION.ACCOUNT_ID to accountId,
+        OPERATION.DESCRIPTION to description
     )
 
     companion object {
@@ -30,7 +32,8 @@ data class OperationsDto(
                 date = LocalDate.parse((snapshot.child(OPERATION.DATE).value as String)),
                 isExpence = snapshot.child(CATEGORY.IS_EXPENCE).value as Boolean,
                 category = CategoriesDto.parseSnapshotOperations(snapshot.child(OPERATION.CATEGORY)),
-                accountId = snapshot.child(OPERATION.ACCOUNT_ID).value as String
+                accountId = snapshot.child(OPERATION.ACCOUNT_ID).value as String,
+                description = snapshot.child(OPERATION.DESCRIPTION).value as String,
             )
     }
 }

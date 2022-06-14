@@ -47,5 +47,13 @@ data class TargetDTO(
                 description = snapshot.child(TARGET.DESCRIPTION).value as String,
                 isDone = snapshot.child(TARGET.IS_DONE).value as Boolean,
             )
+
+        fun errorTarget() = TargetDTO(
+            id = "",
+            title = "Error",
+            cost = 0,
+            currentAmount = -99,
+            date = LocalDate.now()
+        )
     }
 }

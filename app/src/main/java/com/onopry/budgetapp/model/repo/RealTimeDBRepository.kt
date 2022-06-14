@@ -33,6 +33,10 @@ object FirebaseHelper {
     const val TARGETS_KEY = "user-targets"
     const val ACCOUNTS_KEY = "user-accounts"
     const val DEBTS_KET = "user-debts"
+    const val CHILD_CATEGORIES_KEY = "user-child-categories"
+    const val PARENT_CATEGORIES_KEY = "user-parent-categories"
+
+
 }
 
 /*suspend fun initNewUserOperations(){

@@ -36,19 +36,15 @@ class BudgetAndDebtsViewModel @Inject constructor(
 
     private fun loadTargets(){ targetService.addListener(listener) }
 
-    fun getTargetById(id: String?): TargetDTO? {
-        if (id != null) {
-            return targetService.getTargetById(id)
-        } else
-            return null
-    }
+    fun getTargetById(id: String) = targetService.getTargetById(id)
+
 
     fun saveTarget(target: TargetDTO){
         if (targetService.isTargetExist(target))
             viewModelScope.launch {
                 targetService.editTarget(target)
             }
-        else {
+/*        else {
             targetService.addTarget(target)
             categoryService.addCategory(
                 CategoriesDto(
@@ -58,7 +54,7 @@ class BudgetAndDebtsViewModel @Inject constructor(
                     targetId = target.id
                 )
             )
-        }
+        }*/
     }
 
     override fun onCleared() {

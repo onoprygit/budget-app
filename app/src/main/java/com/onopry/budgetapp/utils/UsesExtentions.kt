@@ -1,6 +1,7 @@
 package com.onopry.budgetapp.utils
 
 import android.content.res.Resources
+import android.view.View
 import java.time.LocalDate
 import java.time.Month
 import kotlin.math.roundToInt
@@ -71,3 +72,15 @@ fun LocalDate.getTextMonth(case: Boolean): String {
 
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density).roundToInt()
+
+fun View.show(){
+    this.visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    this.visibility = View.INVISIBLE
+}
+
+fun View.remove(){
+    this.visibility = View.GONE
+}

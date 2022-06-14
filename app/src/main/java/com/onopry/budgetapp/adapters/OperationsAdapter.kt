@@ -1,6 +1,7 @@
 package com.onopry.budgetapp.adapters
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,13 @@ import com.onopry.budgetapp.databinding.ItemTransactionBinding
 import com.onopry.budgetapp.model.services.CategoriesService
 import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.dto.OperationsDto
+import com.onopry.budgetapp.model.repo.AuthRepository
 import com.onopry.budgetapp.utils.getTextLocalDateDMY
+import com.onopry.budgetapp.utils.hide
+import com.onopry.budgetapp.utils.remove
+import com.onopry.budgetapp.utils.show
 import java.time.LocalDate
+import javax.inject.Inject
 
 interface OperationActionListener{
     fun onOperationDelete(operation: OperationsDto)
@@ -38,6 +44,8 @@ class OperationsAdapter(
     private val actionListener: OperationActionListener
 ): RecyclerView.Adapter<OperationsAdapter.CategoriesViewHolder>(), View.OnClickListener
  {
+//     @Inject lateinit var categoriesService: CategoriesService
+
     var operationList: List<OperationsDto> = emptyList()
         set(newValue){
             val diffCAll = OperationsDuffCallback(field, newValue)
@@ -63,18 +71,25 @@ class OperationsAdapter(
         with(holder.binding){
             transactionDeleteImg.tag = operation
             transactionEditImg.tag = operation
-
             transactionCategoryText.text = operation.category.name
+//            transactionCategoryText.text = operation.category.name
+
             transactionCategoryImage.setImageResource(operation.category.icon)
-//            transactionCategoryText.text = operationsService.getCategoryById(operation.categoryId).name
-//            transactionCategoryImage.setImageResource(operationsService.getCategoryById(operation.categoryId).icon)
             transactionDeleteImg.setImageResource(R.drawable.ic_delete_transaction)
             transactionDate.text = getTextFromDate(operation.date)
 
-            transactionCategoryImage.setBackgroundColor(operation.category.color)
-//            transactionCategoryImage.setBackgroundColor(operationsService.getCategoryById(operation.categoryId).color)
 
-            toolsOperationId.text = operation.id.substring(0..15)
+            transactionCategoryImage.apply {
+                setBackgroundColor(this.resources.getColor(operation.category.color))
+            }
+
+            if (operation.description.isNotEmpty()) {
+                transactionDescriptionIv.show()
+                transactionDescriptionSpace.show()
+            } else {
+                transactionDescriptionIv.remove()
+                transactionDescriptionSpace.remove()
+            }
 
             transactionAmountMoney.text = operation.amount.toString()
             if (operation.isExpence)

@@ -99,8 +99,7 @@ class TargetService @Inject constructor(
 
     fun getTargetById(id: String): TargetDTO{
         val index = _targets.value?.indexOfFirst { it.id == id } ?: throw TargetNotFoundException()
-        if (index == -1 )
-            throw TargetNotFoundException()
+        if (index == -1 ) throw TargetNotFoundException()
         return _targets.value?.get(index)!!
     }
 
@@ -147,19 +146,6 @@ class TargetService @Inject constructor(
             dbRef.updateChildren(mapToAdd).await()
         }
     }
-
-        // old RAM
-        /*val index = targetList.indexOfFirst { it.id == target.id }
-        if (index != -1){
-            with(targetList[index]){
-                title = target.title
-                cost = target.cost
-                currentAmount = target.currentAmount
-                date = target.date
-                description = target.description
-            }
-        }
-        notifyChanges()*/
 
     fun isTargetExist(target: TargetDTO) =
         _targets.value?.indexOfFirst { target.id == it.id } != -1

@@ -205,10 +205,14 @@ class AnalyticsFragment : Fragment() {
         }
     }
 
+    private fun getCategoriesColors() = viewModel.mediatorLiveData.value!!.map {
+        resources.getColor(it.category.color)
+    }
+//    fun getCategoriesColors() = mediatorLiveData.value?.map { it.category.color } ?: throw Exception("No colors")
     private fun createPie(isExpence: Boolean){
         val pieData = PieData(
             PieDataSet(viewModel.getPieEntriesList(isExpence), null).apply {
-                colors = viewModel.getCategoriesColors()
+                colors = getCategoriesColors()
                 valueFormatter = PercentFormatter(binding.analCategoriesPieChart)
                 xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
                 yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE

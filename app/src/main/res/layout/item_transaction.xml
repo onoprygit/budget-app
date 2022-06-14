@@ -8,6 +8,7 @@
     android:layout_marginVertical="2dp"
     android:layout_marginHorizontal="8dp"
     android:elevation="8dp"
+    android:paddingVertical="4dp"
     >
 
     <TextView
@@ -21,9 +22,9 @@
         android:layout_marginStart="@dimen/base_horizontal_offset"
         android:layout_marginEnd="@dimen/base_horizontal_offset"
         tools:text="@tools:sample/us_zipcodes"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:gravity="center_vertical|end"
-        android:textStyle="bold"
+
         android:textColor="@color/red"
         />
 
@@ -32,28 +33,55 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/transaction_category_image"
-        app:layout_constraintBottom_toBottomOf="@id/transaction_category_image"
+        app:layout_constraintBottom_toTopOf="@+id/transaction_date"
         app:layout_constraintStart_toEndOf="@id/transaction_category_image"
         app:layout_constraintEnd_toStartOf="@id/transaction_amount_money"
         tools:text="@tools:sample/cities"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:layout_marginStart="8dp"
+        android:textColor="@color/analytics_text"
+        android:ellipsize="end"
+        android:maxLines="1"
         />
 
     <TextView
         android:id="@+id/transaction_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/transaction_category_text"
-        app:layout_constraintStart_toStartOf="@id/transaction_category_text"
-        tools:text="25 май 2022"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/transactionDescriptionSpace"
+        tools:text="25 мая 2022"
         android:textColor="#333232"
-        android:textSize="14sp"
+        android:textSize="10sp"
         android:textStyle="italic"
         />
+    <!--todo добавить их в группу лучше-->
+    <ImageView
+        android:id="@+id/transactionDescriptionIv"
+        android:layout_width="18dp"
+        android:layout_height="14dp"
+        app:layout_constraintStart_toStartOf="@id/transaction_category_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/transactionDescriptionSpace"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_descriprion"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+    <Space
+        android:id="@+id/transactionDescriptionSpace"
+        android:layout_width="4dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/transactionDescriptionIv"
+        app:layout_constraintStart_toEndOf="@id/transactionDescriptionIv"
+        app:layout_constraintEnd_toStartOf="@id/transaction_date"
+        app:layout_constraintBottom_toBottomOf="@id/transactionDescriptionIv"
+        android:visibility="gone"
 
-    <TextView
+        />
+    <!--todo добавить их в группу лучше-->
+
+<!--    <TextView
         android:id="@+id/tools_operation_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,9 +92,9 @@
         tools:text="123123123123123"
         android:textSize="12sp"
         android:textColor="@color/red"
-        />
+        />-->
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/transaction_category_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -74,6 +102,21 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:src="@tools:sample/avatars"
         android:layout_marginTop="6dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/background_category_ic"
+        />-->
+
+    <com.google.android.material.imageview.ShapeableImageView
+        app:contentPadding="6dp"
+        android:id="@+id/transaction_category_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@tools:sample/avatars"
+
         android:layout_marginStart="8dp"
         android:background="@drawable/background_category_ic"
         />

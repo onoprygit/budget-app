@@ -39,6 +39,7 @@ object OPERATION {
     const val DATE = "date"
     const val IS_EXPENCE = "isExpence"
     const val ACCOUNT_ID = "accountId"
+    const val DESCRIPTION = "description"
 }
 
 object TARGET {

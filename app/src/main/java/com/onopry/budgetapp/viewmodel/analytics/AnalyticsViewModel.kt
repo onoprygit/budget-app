@@ -89,6 +89,7 @@ class AnalyticsViewModel @Inject constructor(
                 val categorySet = mutableSetOf<CategoriesDto>()
 
                 operationsList.forEach {
+//                    val parentCategory = categoriesService.getParentCategoryByParentId(it.category.parentId)
                     categorySet.add(it.category)
                 }
 
@@ -173,17 +174,8 @@ class AnalyticsViewModel @Inject constructor(
                 pieEntries.add(PieEntry(it.amount.toFloat(), it.category.name))
         }
         return pieEntries
-
-//        val pieEntries = mutableListOf<PieEntry>()
-//        getSumAmountByCategory().forEach {
-//            if (it.amount > 0)
-//                pieEntries.add(PieEntry(it.amount.toFloat(), it.category.name))
-//        }
-//        return pieEntries
     }
 
-//    fun getCategoriesColors() = _operationsByCategory.value?.keys?.map { it.color }?.toList() ?: throw Exception("No colors")
-    fun getCategoriesColors() = mediatorLiveData.value?.map { it.category.color } ?: throw Exception("No colors")
 
     fun getPeriodFromRange(date: LocalDate, typePeriod: PeriodRange) = periodService.getPeriodFromRange(date, typePeriod)
 
