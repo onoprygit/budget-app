@@ -165,72 +165,63 @@ class CategoriesService @Inject constructor(
         return colorsStack
     }
 
-    private fun loadCategoriesLocal(context: Context){
+    private fun loadCategoriesLocal(){
         val categoryColorsStack = getCategoriesColors()
          val categories = mutableListOf(
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = context.getString(R.string.category_car),
+                name = "Авто",
                 icon = R.drawable.ic_category_car,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = context.getString(R.string.category_products),
+                name = "Продукты",
                 icon = R.drawable.ic_category_food,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = context.getString(R.string.category_transport),
+                name = "Транспорт",
                 icon = R.drawable.ic_category_transport,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = context.getString(R.string.category_cafe),
+                name = "Кафе",
                 icon = R.drawable.ic_category_cafe,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = context.getString(R.string.category_fashion),
+                name = "Одежда",
                 icon = R.drawable.ic_category_clothes,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = context.getString(R.string.category_house),
+                name = "Дом",
                 icon = R.drawable.ic_category_home,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = context.getString(R.string.category_pets),
+                name = "Питомцы",
                 icon = R.drawable.ic_category_pets,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = context.getString(R.string.category_hobby),
+                name = "Хобби",
                 icon = R.drawable.ic_category_entertainment,
                 color = categoryColorsStack.pop()
             ),
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
-                name = context.getString(R.string.category_health),
+                name = "Здоровье",
                 icon = R.drawable.ic_category_health
             )
         )
-
-//        categories.apply {
-//            val a = mutableSetOf<CategoriesDto>()
-//            this.forEach {
-//                val parentId = it.id
-//                a.add(it)
-//
-//            }
-//        }
 
         categoriesList = categories
     }

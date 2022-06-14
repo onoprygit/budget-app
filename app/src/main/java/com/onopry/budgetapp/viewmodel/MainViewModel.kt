@@ -27,4 +27,6 @@ class MainViewModel @Inject constructor(
             operationsService.generateDefaultUserOperations(cats.await(), accId.await())
         }
     }
+
+
 }
