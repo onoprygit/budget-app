@@ -41,9 +41,8 @@ class AddOperationFragment : Fragment() {
 
     ): View {
         binding = AddOperationFragmentBinding.inflate(inflater, container, false)
-//        Log.d(CONSTANTS.ADDING_MONEY_FRAGMENT_TAG, "savedInstanceState is empty? BUNDLE IS ${savedInstanceState?.isEmpty}")
-//        Log.d(CONSTANTS.ADDING_MONEY_FRAGMENT_TAG, (arguments?.getSerializable("toEdit") as TransactionsDto?)?.id ?: "nonono")
 
+//        binding.addingOperationEditText.set
         binding.addingOperationDatePick.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         binding.addingOperationDatePick.tag = LocalDate.now()
         binding.addingOperationEmptyCategoryIc.tag = CategoriesDto(
@@ -51,6 +50,7 @@ class AddOperationFragment : Fragment() {
             name = "[Нет категории]",
             icon = R.drawable.ic_category_placeholder
         )
+
 
         binding.addingOperationCurrencyIc.setImageResource(R.drawable.ic_ruble)
 
@@ -73,14 +73,14 @@ class AddOperationFragment : Fragment() {
         binding.addingOperationAddButton.setOnClickListener {
 //            //todo: Add validation money input
             with(binding) {
-                val operation = OperationsDto(
-                    id = "",
+                viewModel.addOperation(
                     amount = addingOperationEditText.text.toString().toInt(),
-                    category = (addingOperationEmptyCategoryIc.tag as CategoriesDto),
+                    childCategory = addingOperationEmptyCategoryIc.tag as CategoriesDto,
                     isExpence = operationRadioExpence.isChecked,
-                    date = addingOperationDatePick.tag as LocalDate
+                    date = addingOperationDatePick.tag as LocalDate,
+                    accountId = null,
+                    description = null
                 )
-                viewModel.addOperation(operation)
             }
         }
 

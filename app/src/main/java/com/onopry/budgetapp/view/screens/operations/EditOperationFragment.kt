@@ -13,10 +13,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.onopry.budgetapp.databinding.EditOperationFragmentBinding
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
-import com.onopry.budgetapp.utils.OperationCategoryNotFoundException
 import com.onopry.budgetapp.utils.navigator
 import com.onopry.budgetapp.viewmodel.operations.EditOperationViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
 
 @AndroidEntryPoint
 class EditOperationFragment : Fragment() {
@@ -41,16 +41,15 @@ class EditOperationFragment : Fragment() {
 
         //put current operation category in 'tag' for get it for new operation when it will create
         binding.editingOperationTitle.text = viewModel.operation.value?.id ?: "NONE"
-        binding.editingOperationEmptyCategoryIc.tag = viewModel.operation.value?.category
-//        binding.editingOperationEmptyCategoryIc.tag = viewModel.getCategoryById(viewModel.operation.value?.categoryId ?: throw OperationCategoryNotFoundException())
+        binding.editingOperationEmptyCategoryIc.tag = viewModel.operation.value?.categories!!.second
 
         //get actual live data and setting it to view's of this fragment
         viewModel.operation.observe(viewLifecycleOwner, {
             binding.editingOperationEditText.setText(it.amount.toString())
-            binding.editingOperationEmptyCategoryIc.setImageResource(viewModel.operation.value?.category?.icon!!)
-            binding.editingOperationSelectCategory.text = viewModel.operation.value?.category!!.name
-            binding.editingOperationSelectCategory.setBackgroundColor(viewModel.operation.value?.category!!.color)
-            binding.editingOperationEmptyCategoryIc.setBackgroundColor(viewModel.operation.value?.category!!.color)
+            binding.editingOperationEmptyCategoryIc.setImageResource(viewModel.operation.value!!.categories.second.icon)
+            binding.editingOperationSelectCategory.text = viewModel.operation.value!!.categories.second.name
+            binding.editingOperationSelectCategory.setBackgroundColor(viewModel.operation.value!!.categories.second.color)
+            binding.editingOperationEmptyCategoryIc.setBackgroundColor(viewModel.operation.value!!.categories.second.color)
         })
 
         // Start bottom sheet to choose category
@@ -71,14 +70,14 @@ class EditOperationFragment : Fragment() {
 
         binding.editingOperationSaveButton.setOnClickListener {
             with(binding){
-                val operation = OperationsDto(
-                    id = "",
-//                    id = viewModel.operation.value!!.id,
+                viewModel.editOperation(
                     amount = editingOperationEditText.text.toString().toInt(),
-                    category = binding.editingOperationEmptyCategoryIc.tag as CategoriesDto
-//                    date
+                    category = binding.editingOperationEmptyCategoryIc.tag as CategoriesDto,
+                    isExpence = true,
+                    date = LocalDate.now(),
+                    accountId = null,
+                    description = null
                 )
-                viewModel.editOperation(operation)
             }
             navigator().goBack()
         }

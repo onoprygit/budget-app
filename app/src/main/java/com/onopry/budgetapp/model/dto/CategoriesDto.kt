@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.utils.CATEGORY
 import com.onopry.budgetapp.utils.CATEGORIES_COLORS
+import com.onopry.budgetapp.utils.OPERATION
 import java.io.Serializable
 
 data class CategoriesDto(
@@ -38,6 +39,12 @@ data class CategoriesDto(
     )
 
     companion object {
+        fun getEmptyCategory() = CategoriesDto(
+            "",
+            name = "empty",
+            icon = R.drawable.ic_category_placeholder
+        )
+
         fun parseSnapshot(snapshot: DataSnapshot) =
             CategoriesDto(
                 id = snapshot.key as String,
@@ -62,8 +69,27 @@ data class CategoriesDto(
                 targetId = snapshot.child(CATEGORY.TARGET_ID).value as String,
             )
 
+        /*fun parseSnapshotPair(snapshot: DataSnapshot) = Pair(
+            this.parseSnapshot(snapshot.child(OPERATION.CATEGORIES)),
+            this.parseSnapshot(snapshot.child(OPERATION.CATEGORIES))
+        )*/
+
+        fun parseSnapshotPair(snapshot: DataSnapshot): Pair<CategoriesDto, CategoriesDto>{
+            val list = snapshot.children.map { this.parseSnapshotOperations(it) }
+            return Pair(list[0], list[1])
+        }
     }
-
-
 }
+
+/**
+ * @param first parent
+ * @param second child
+ **/
+fun Pair<CategoriesDto, CategoriesDto>.toMap() = mutableMapOf<String, Any>(
+    OPERATION.CATEGORY_CHILD to second.toMapOperation(),
+    OPERATION.CATEGORY_PARENT to first.toMapOperation()
+)
+
+fun Pair<CategoriesDto, CategoriesDto>.getParentCategory() = second
+fun Pair<CategoriesDto, CategoriesDto>.getChildCategory() = first
 

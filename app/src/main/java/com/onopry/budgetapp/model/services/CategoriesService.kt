@@ -29,11 +29,13 @@ class CategoriesService @Inject constructor(
     private val _categories = MutableLiveData<List<CategoriesDto>>()
     val categories:LiveData<List<CategoriesDto>> = _categories
 
-    private val _parentCategories = MutableLiveData<List<CategoriesDto>>()
+/*    private val _parentCategories = MutableLiveData<List<CategoriesDto>>()
     val parentCategories:LiveData<List<CategoriesDto>> = _parentCategories
 
     private val _childCategories = MutableLiveData<List<CategoriesDto>>()
-    val childCategories:LiveData<List<CategoriesDto>> = _childCategories
+    val childCategories:LiveData<List<CategoriesDto>> = _childCategories*/
+
+    private val generateCategories = CategoriesModel(CategoryDataSourseImpl()).getCategories()
 
     init {
         Log.d(LogTags.DI_INSTANCES_TAG, "CategoriesService init")
@@ -66,7 +68,7 @@ class CategoriesService @Inject constructor(
         async {
             val uid = authRepository.user.value!!.uid
             val returnedCategoryList = mutableListOf<CategoriesDto>()
-            val defCategoriesList = CategoriesModel(CategoryDataSourseImpl()).getCategories()
+            val defCategoriesList = generateCategories
             Log.d("GENERATE_DATA_TAG", "generateDefaultUserCategories: ${defCategoriesList.size}")
             val map = HashMap<String, Any>()
             defCategoriesList.forEach { category ->
@@ -78,7 +80,50 @@ class CategoriesService @Inject constructor(
         }
     }
 
+/*    suspend fun generateDefaultUserParentCategoriesAsync() = coroutineScope {
+        async {
+            val uid = authRepository.user.value!!.uid
+            val returnedCategoryList = mutableListOf<CategoriesDto>()
+            val defCategoriesList = generateCategories.filter { it.isParent }
+            Log.d("GENERATE_DATA_TAG", "generateDefaultUserParentCategoriesAsync: ${defCategoriesList.size}")
+            val map = HashMap<String, Any>()
+            defCategoriesList.forEach { category ->
+                map["/${category.id}"] = category.toMap()
+                returnedCategoryList.add(category)
+            }
+            dbRef.child(FirebaseHelper.PARENT_CATEGORIES_KEY).child(uid).updateChildren(map)
+            returnedCategoryList
+        }
+    }
+
+    suspend fun generateDefaultUserChildCategoriesAsync() = coroutineScope {
+        async {
+            val uid = authRepository.user.value!!.uid
+            val returnedCategoryList = mutableListOf<CategoriesDto>()
+            val defCategoriesList = generateCategories.filter { !it.isParent }
+            Log.d("GENERATE_DATA_TAG", "generateDefaultUserChildCategoriesAsync: ${defCategoriesList.size}")
+            val map = HashMap<String, Any>()
+            defCategoriesList.forEach { category ->
+                map["/${category.id}"] = category.toMap()
+                returnedCategoryList.add(category)
+            }
+            dbRef.child(FirebaseHelper.CHILD_CATEGORIES_KEY).child(uid).updateChildren(map)
+            returnedCategoryList
+        }
+    }*/
+
     fun getCategoryByTargetId(id: String) = _categories.value?.find { it.targetId == id }
 
     fun getParentCategoryByParentId(parentId: String) = _categories.value?.find { it.id == parentId && it.isParent }
+
+    fun getParentCategoryByParentId(parentId: String, categories: List<CategoriesDto>): CategoriesDto? {
+        val cat = categories.find { it.id == parentId && it.isParent }
+        return cat
+    }
+
+//    fun getParentCategoryByParentIdInit(parentId: String) = _categories.value?.find { it.id == parentId && it.isParent }
+
+//    fun getParentCategoryByParentIdInit(parentId: String, categories: List<CategoriesDto>) = categories.find { it.id == parentId && it.isParent }
+
+
 }

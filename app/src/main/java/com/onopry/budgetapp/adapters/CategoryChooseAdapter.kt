@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.onopry.budgetapp.databinding.ItemCategoryBinding
 import com.onopry.budgetapp.model.dto.CategoriesDto
 
-typealias CategoryActionListener = (category:CategoriesDto) -> Unit
+typealias CategoryActionListener = (category: CategoriesDto) -> Unit
 
 class CategoryChooseAdapter(
     private val actionListener: CategoryActionListener

@@ -74,6 +74,7 @@
                 app:layout_constraintStart_toStartOf="@id/analytics_guide_start"
                 app:layout_constraintEnd_toEndOf="@id/analytics_guide_end"
                 android:layout_marginTop="8dp"
+
                 >
 
                 <androidx.appcompat.widget.AppCompatRadioButton
@@ -344,5 +345,6 @@
         android:src="@drawable/ic_fab"
         android:clickable="true"
         android:focusable="true"
+        android:backgroundTint="@color/main_accient"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

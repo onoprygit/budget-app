@@ -30,18 +30,31 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="@string/adding_money_title_appbar"
-        android:textColor="#27872A"
-        android:textSize="24sp"
+        android:textColor="@color/analytics_text"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
         app:layout_constraintStart_toStartOf="@id/adding_operation_guide_start"
         app:layout_constraintTop_toTopOf="parent"
 
         />
 
+<!--    <TextView
+        android:id="@+id/adding_operation_currency_ic"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        app:layout_constraintStart_toStartOf="@id/adding_operation_guide_start"
+        app:layout_constraintEnd_toStartOf="@id/adding_operation_edit_text"
+        app:layout_constraintBottom_toBottomOf="@id/adding_operation_edit_text"
+        app:layout_constraintTop_toTopOf="@id/adding_operation_edit_text"
+        android:text="₽"
+        android:textSize="32sp"
+        />-->
+
     <ImageView
         android:id="@+id/adding_operation_currency_ic"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintStart_toStartOf="@id/adding_operation_guide_start"
         app:layout_constraintEnd_toStartOf="@id/adding_operation_edit_text"
         app:layout_constraintBottom_toBottomOf="@id/adding_operation_edit_text"
@@ -49,10 +62,12 @@
         tools:src="@drawable/ic_ruble"
         />
 
+
+
     <EditText
         android:id="@+id/adding_operation_edit_text"
         android:layout_width="0dp"
-        android:layout_height="96dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/operation_radio_group"
         app:layout_constraintStart_toEndOf="@id/adding_operation_currency_ic"
         app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
@@ -61,23 +76,22 @@
         android:inputType="number"
         android:autoSizeTextType="uniform"
         android:textSize="26sp"
-
         />
 
     <ImageView
         android:id="@+id/adding_operation_empty_category_ic"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintStart_toStartOf="@id/adding_operation_guide_start"
-        app:layout_constraintTop_toBottomOf="@id/adding_operation_edit_text"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintTop_toTopOf="@+id/adding_operation_select_category"
+        android:layout_marginTop="4dp"
         android:src="@drawable/ic_category_placeholder"
         />
 
-    <Button
+    <!--<Button
         android:id="@+id/adding_operation_select_category"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="32dp"
         android:text="@string/adding_money_set_category"
         app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
         app:layout_constraintStart_toEndOf="@id/adding_operation_empty_category_ic"
@@ -86,19 +100,37 @@
         android:backgroundTint="#D6D6D6"
         android:textColor="#757575"
         android:textStyle="bold"
+        android:textSize="10sp"
+        />-->
+
+    <TextView
+        android:id="@+id/adding_operation_select_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Категория > категория"
+        app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
+        app:layout_constraintStart_toEndOf="@id/adding_operation_empty_category_ic"
+        app:layout_constraintTop_toBottomOf="@+id/adding_operation_edit_text"
+        app:layout_constraintBottom_toBottomOf="@id/adding_operation_empty_category_ic"
+        android:textColor="@color/analytics_text"
+        android:textSize="16sp"
+        android:background="?android:editTextBackground"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:layout_marginTop="4dp"
         />
 
     <Button
         android:id="@+id/adding_operation_add_button"
         android:layout_width="256dp"
-        android:layout_height="48dp"
+        android:layout_height="40dp"
         android:text="@string/adding_money_add_button"
+        android:textColor="@color/analytics_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/adding_operation_date_ic"
+        app:layout_constraintTop_toBottomOf="@id/analyticsDescriptionEt"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:backgroundTint="@color/green"
+        android:backgroundTint="@color/teal_200"
         />
 
     <RadioGroup
@@ -117,7 +149,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/adding_money_radio_expence"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_marginEnd="@dimen/base_horizontal_offset"
             android:checked="true"
             />
@@ -126,7 +158,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/adding_money_radio_income"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:layout_marginStart="@dimen/base_horizontal_offset"
             />
     </RadioGroup>
@@ -143,35 +175,37 @@
 <!--        android:layout_height="wrap_content"-->
 <!--        app:layout_constraintTop_toBottomOf="@+id/adding_operation_add_button"-->
 <!--        app:layout_constraintStart_toStartOf="@id/adding_operation_guide_start"/>-->
-
+    
 
     <ImageView
         android:id="@+id/adding_operation_date_ic"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintStart_toStartOf="@id/adding_operation_guide_start"
-        app:layout_constraintTop_toBottomOf="@id/adding_operation_empty_category_ic"
+        app:layout_constraintTop_toTopOf="@+id/adding_operation_date_pick"
         app:layout_constraintEnd_toStartOf="@id/adding_operation_date_pick"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginTop="4dp"
         android:src="@drawable/ic_calendar"
         />
-    <Button
+    <TextView
         android:id="@+id/adding_operation_date_pick"
-        android:layout_width="160dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/adding_operation_date_ic"
-        app:layout_constraintTop_toTopOf="@id/adding_operation_date_ic"
+        app:layout_constraintTop_toBottomOf="@+id/adding_operation_select_category"
         app:layout_constraintBottom_toBottomOf="@id/adding_operation_date_ic"
+        app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
         android:layout_marginStart="0dp"
         android:text="Сегодня"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        android:background="#00000000"
+        android:textSize="16sp"
+        android:background="?android:editTextBackground"
         android:foreground="?android:attr/selectableItemBackgroundBorderless"
         android:gravity="start"
+        android:layout_marginTop="4dp"
         />
 
-    <TextView
+<!--    <TextView
         android:id="@+id/adding_operation_rec_yesterday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -192,14 +226,35 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/adding_operation_date_ic"
         app:layout_constraintBottom_toBottomOf="@id/adding_operation_date_ic"
-
         app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
         android:background="@drawable/background_oval"
         android:text="Позавчера"
         android:textSize="12sp"
         android:paddingHorizontal="4dp"
         android:paddingVertical="2dp"
+        />-->
+    
+    <ImageView
+        android:id="@+id/addOperDescriptionIc"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintStart_toStartOf="@id/adding_operation_guide_start"
+        app:layout_constraintTop_toTopOf="@+id/analyticsDescriptionEt"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_descriprion"
         />
+
+        <EditText
+            android:id="@+id/analyticsDescriptionEt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/addOperDescriptionIc"
+            app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
+            app:layout_constraintTop_toBottomOf="@+id/adding_operation_date_pick"
+            android:layout_marginTop="8dp"
+            android:inputType="textMultiLine"
+            android:textSize="16sp"
+            />
 
 
 

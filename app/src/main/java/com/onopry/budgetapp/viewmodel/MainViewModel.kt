@@ -23,8 +23,10 @@ class MainViewModel @Inject constructor(
     fun generateDefaultUserData(){
         viewModelScope.launch(Dispatchers.IO) {
             val accId = accountsService.generateDefaultUserAccountAsync()
-            val cats = categoriesService.generateDefaultUserCategoriesAsync()
-            operationsService.generateDefaultUserOperations(cats.await(), accId.await())
+            val categories = categoriesService.generateDefaultUserCategoriesAsync()
+            /*val parentCategories = categoriesService.generateDefaultUserParentCategoriesAsync()
+            val childCategoriesService = categoriesService.generateDefaultUserChildCategoriesAsync()*/
+            operationsService.generateDefaultUserOperations(categories.await(), accId.await())
         }
     }
 

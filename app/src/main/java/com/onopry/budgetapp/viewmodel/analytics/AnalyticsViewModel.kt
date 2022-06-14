@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import com.github.mikephil.charting.data.PieEntry
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
+import com.onopry.budgetapp.model.dto.getParentCategory
 import com.onopry.budgetapp.model.services.*
 import com.onopry.budgetapp.utils.AmountByCategory
 import com.onopry.budgetapp.utils.LogTags
@@ -27,10 +28,10 @@ class AnalyticsViewModel @Inject constructor(
     val period: LiveData<PeriodDate> = _period
 
 
-    @Deprecated("HUITA")
+    /*@Deprecated("HUITA")
     private val _operationsByCategory = MutableLiveData<Map<CategoriesDto, List<OperationsDto>>>()
     @Deprecated("HUITA")
-    var operationsByCategory: LiveData<Map<CategoriesDto, List<OperationsDto>>> = _operationsByCategory
+    var operationsByCategory: LiveData<Map<CategoriesDto, List<OperationsDto>>> = _operationsByCategory*/
 
     val accounts = accountsService.accounts
 
@@ -47,13 +48,13 @@ class AnalyticsViewModel @Inject constructor(
         val operationsList = it.filter { it.date in period.value!!.startDate..period.value!!.finishDate }
         val categorySet = mutableSetOf<CategoriesDto>()
         operationsList.forEach {
-            categorySet.add(it.category)
+            categorySet.add(it.categories.getParentCategory())
         }
 
         val mapCategories = mutableMapOf<CategoriesDto, List<OperationsDto>>()
         categorySet.forEach { category ->
             mapCategories[category] = operationsList.filter { operation ->
-                operation.category == category
+                operation.categories.getParentCategory().id == category.id
             }
         }
                 mutableListOf<AmountByCategory>().apply {
@@ -76,7 +77,7 @@ class AnalyticsViewModel @Inject constructor(
     init {
         initPeriod()
         initMediatorLiveDataInit()
-        setOperationsByCategory()
+//        setOperationsByCategory()
         Log.d("L_IFECYCLE_TAG_FF", "init")
     }
 
@@ -90,15 +91,17 @@ class AnalyticsViewModel @Inject constructor(
 
                 operationsList.forEach {
 //                    val parentCategory = categoriesService.getParentCategoryByParentId(it.category.parentId)
-                    categorySet.add(it.category)
+                    categorySet.add(it.categories.getParentCategory())
                 }
 
                 val mapCategories = mutableMapOf<CategoriesDto, List<OperationsDto>>()
                 categorySet.forEach { category ->
                     mapCategories[category] = operationsList.filter { operation ->
-                        operation.category == category
+                        operation.categories.getParentCategory().id == category.id
                     }
                 }
+
+                val a = 32
 
                 mediatorLiveData.value = mutableListOf<AmountByCategory>().apply {
                     mapCategories.forEach { entires ->
@@ -128,15 +131,15 @@ class AnalyticsViewModel @Inject constructor(
 
     fun setPeriod(date: LocalDate, typePeriod: PeriodRange){
         periodService.setPeriod(date, typePeriod)
-        setOperationsByCategory()
+//        setOperationsByCategory()
         Log.d("ChooseButtonTAG", "viewModel setPeriod(): date = $date, period = $typePeriod")
     }
 
     // Operations by category
-    fun setOperationsByCategory(){
+    /*private fun setOperationsByCategory(){
         _operationsByCategory.value = loadOperationsByCategory(_period.value!!.startDate, _period.value!!.finishDate)
         Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "setOperationsByCategory: ${(_operationsByCategory.value as MutableMap<CategoriesDto, List<OperationsDto>>).size}")
-    }
+    }*/
 
     private fun loadOperationsByCategory(startDate: LocalDate, finishDate: LocalDate): MutableMap<CategoriesDto, List<OperationsDto>> {
         val map = mutableMapOf<CategoriesDto, List<OperationsDto>>()
@@ -145,22 +148,22 @@ class AnalyticsViewModel @Inject constructor(
         val operList: List<OperationsDto>? = operationsService.getOperationByPeriod(startDate, finishDate)
 //            ?.filter { it.isExpence }
 
-        operList?.forEach { categorySet.add(it.category) }
+        operList?.forEach { categorySet.add(it.categories.getParentCategory()) }
         categorySet.forEach { category ->
-            map[category] = operList?.filter { it.category.id == category.id } ?: listOf()
+            map[category] = operList?.filter { it.categories.getParentCategory().id == category.id } ?: listOf()
         }
         Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "loadOperationsByCategory: map = ${map.size}, list = ${operList?.size}")
         return map
     }
 
-    fun getSumAmountByCategory(): List<AmountByCategory>{
+/*    fun getSumAmountByCategory(): List<AmountByCategory>{
         val list: MutableList<AmountByCategory> = mutableListOf()
         operationsService.getOperationsByCategorySumAmount(_operationsByCategory.value!!)
             .forEach { list.add(AmountByCategory(it.key, it.value)) }
         list.filter { it.amount > 0 }
         list.sortByDescending { it.amount }
         return list
-    }
+    }*/
 
     fun getAmountByPeriod(isExpence: Boolean) = operationsService.getSumExpencesByPeriod(_period.value!!, isExpence)
 

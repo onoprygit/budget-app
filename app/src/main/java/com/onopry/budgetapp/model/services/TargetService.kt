@@ -11,6 +11,7 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.dto.TargetDTO
+import com.onopry.budgetapp.model.dto.getChildCategory
 import com.onopry.budgetapp.model.repo.AuthRepository
 import com.onopry.budgetapp.model.repo.FirebaseHelper
 import com.onopry.budgetapp.utils.FIREBASE
@@ -160,7 +161,7 @@ class TargetService @Inject constructor(
 
     fun addOperationToTarget(operation: OperationsDto){
         //New Fire
-        val id = operation.category.targetId
+        val id = operation.categories.getChildCategory().targetId
         if (id.isNotEmpty()) {
             val currTarget = getTargetById(id)
             val newTarget = currTarget.copy(currentAmount = currTarget.currentAmount + operation.amount)
@@ -170,15 +171,6 @@ class TargetService @Inject constructor(
                 setTargetCompleted(newTarget)
         }
 
-        //old RAM
-        /*val id = operation.category.targetId
-        if (id.isNotEmpty()){
-            val target = getTargetById(id)
-            target.currentAmount += operation.amount
-
-            if (hasTargetDone(target))
-                setDoneTarget(target)
-        }*/
     }
 
     private fun hasTargetDone(target: TargetDTO) = target.cost <= target.currentAmount

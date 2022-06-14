@@ -44,6 +44,8 @@ class BudgetAndDebtsViewModel @Inject constructor(
             viewModelScope.launch {
                 targetService.editTarget(target)
             }
+
+
 /*        else {
             targetService.addTarget(target)
             categoryService.addCategory(
@@ -55,6 +57,10 @@ class BudgetAndDebtsViewModel @Inject constructor(
                 )
             )
         }*/
+    }
+
+    fun saveTarget_1(target: TargetDTO){
+
     }
 
     override fun onCleared() {

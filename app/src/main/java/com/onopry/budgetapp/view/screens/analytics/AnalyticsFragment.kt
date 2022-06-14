@@ -96,7 +96,7 @@ class AnalyticsFragment : Fragment() {
             }
         }
 
-        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "before observe: ${viewModel.operationsByCategory.value?.size ?: 99999}")
+//        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "before observe: ${viewModel.operationsByCategory.value?.size ?: 99999}")
 
 
         binding.analyticsMainAmountDate.setOnClickListener {

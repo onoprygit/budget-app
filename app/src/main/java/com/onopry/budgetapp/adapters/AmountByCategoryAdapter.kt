@@ -47,7 +47,7 @@ class AmountByCategoryAdapter: RecyclerView.Adapter<AmountByCategoryAdapter.Amou
         with(holder.binding){
             amountByCategoryCategoryImage.setImageResource(elCategory.category.icon)
             amountByCategoryCategoryName.text = elCategory.category.name
-            amountByCategoryCategoryAmount.text = "₽ ${elCategory.amount}"
+            amountByCategoryCategoryAmount.text = "${elCategory.amount}₽"
         }
     }
 

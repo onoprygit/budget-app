@@ -32,8 +32,8 @@ class ServicesDi {
 
     @Provides
     @Singleton
-    fun provideOperationsService(targetService: TargetService) =
-        OperationsService(targetService = targetService)
+    fun provideOperationsService(targetService: TargetService, categoriesService: CategoriesService) =
+        OperationsService(targetService = targetService, categoriesService = categoriesService)
 
     @Provides
     @Singleton

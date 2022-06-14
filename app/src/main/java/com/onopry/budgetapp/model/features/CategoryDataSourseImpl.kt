@@ -33,6 +33,14 @@ class CategoryDataSourseImpl: CategoriesDataSourse {
             CategoriesDto(id = UUID.randomUUID().toString(), name = "Другое",       icon = R.drawable.ic_income_cash, color = R.color.color_category_income, isExpence = false)
         )
 
+        val childCategoriesIncome = mutableListOf<CategoriesDto>()
+        childCategoriesIncome.apply {
+            parentCategoriesIncome.forEach {
+                val copyChild = it.copy(parentId = it.id, isParent = false)
+                this.add(copyChild)
+            }
+        }
+
         val childCategoriesExpence = mutableListOf(
             //parentBeauty
             CategoriesDto(id = UUID.randomUUID().toString(), name = "Стрижка",                  icon = parentBeauty.icon,   color = parentBeauty.color,      isParent = false, parentId = parentBeauty.id),
@@ -91,7 +99,7 @@ class CategoryDataSourseImpl: CategoriesDataSourse {
             //parentHouse
             CategoriesDto(id = UUID.randomUUID().toString(), name = "Аренда",                   icon = parentHouse.icon,    color = parentHouse.color,       isParent = false, parentId = parentHouse.id),
             CategoriesDto(id = UUID.randomUUID().toString(), name = "Мебель",                   icon = parentHouse.icon,    color = parentHouse.color,       isParent = false, parentId = parentHouse.id),
-            CategoriesDto(id = UUID.randomUUID().toString(), name = "Бытовая техника",          icon = parentHouse.icon,    color = parentHouse.color,       isParent = false, parentId = parentHouse.id),
+            CategoriesDto(id = UUID.randomUUID().toString(), name = "Электроника",              icon = parentHouse.icon,    color = parentHouse.color,       isParent = false, parentId = parentHouse.id),
             CategoriesDto(id = UUID.randomUUID().toString(), name = "Другое",                   icon = parentHouse.icon,    color = parentHouse.color,       isParent = false, parentId = parentHouse.id),
 
             //parentOther
@@ -118,7 +126,7 @@ class CategoryDataSourseImpl: CategoriesDataSourse {
             CategoriesDto(id = UUID.randomUUID().toString(), name = "Другое",                   icon = parentTransport.icon,color = parentTransport.color,   isParent = false, parentId = parentTransport.id),
         )
 
-        val finalList = parentCategoriesExpence + parentCategoriesIncome + childCategoriesExpence
+        val finalList = parentCategoriesExpence + parentCategoriesIncome + childCategoriesExpence + childCategoriesIncome
 
         return finalList
     }

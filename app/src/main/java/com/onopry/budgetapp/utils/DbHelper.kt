@@ -35,7 +35,9 @@ object CATEGORY {
 object OPERATION {
     const val ID = "id"
     const val AMOUNT = "amount"
-    const val CATEGORY = "category"
+    const val CATEGORY_PARENT = "parent"
+    const val CATEGORY_CHILD = "child"
+    const val CATEGORIES = "categories"
     const val DATE = "date"
     const val IS_EXPENCE = "isExpence"
     const val ACCOUNT_ID = "accountId"

@@ -2,9 +2,12 @@ package com.onopry.budgetapp.utils
 
 import android.content.res.Resources
 import android.view.View
+import com.onopry.budgetapp.model.dto.CategoriesDto
+import com.onopry.budgetapp.model.repo.FirebaseHelper
 import java.time.LocalDate
 import java.time.Month
 import kotlin.math.roundToInt
+
 
 /** extension func returns day, month, year
  * @param first day

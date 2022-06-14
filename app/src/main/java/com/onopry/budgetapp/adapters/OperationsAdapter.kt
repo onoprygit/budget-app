@@ -1,7 +1,6 @@
 package com.onopry.budgetapp.adapters
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +8,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.ItemTransactionBinding
-import com.onopry.budgetapp.model.services.CategoriesService
-import com.onopry.budgetapp.model.services.OperationsService
 import com.onopry.budgetapp.model.dto.OperationsDto
-import com.onopry.budgetapp.model.repo.AuthRepository
+import com.onopry.budgetapp.model.dto.getChildCategory
+import com.onopry.budgetapp.model.dto.getParentCategory
 import com.onopry.budgetapp.utils.getTextLocalDateDMY
-import com.onopry.budgetapp.utils.hide
 import com.onopry.budgetapp.utils.remove
 import com.onopry.budgetapp.utils.show
 import java.time.LocalDate
-import javax.inject.Inject
 
 interface OperationActionListener{
     fun onOperationDelete(operation: OperationsDto)
@@ -59,8 +55,9 @@ class OperationsAdapter(
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemTransactionBinding.inflate(inflater, parent, false)
 
-        binding.transactionEditImg.setOnClickListener(this)
+//        binding.transactionEditImg.setOnClickListener(this)
         binding.transactionDeleteImg.setOnClickListener(this)
+        binding.root.setOnClickListener(this)
 
         return CategoriesViewHolder(binding)
     }
@@ -70,18 +67,28 @@ class OperationsAdapter(
         val operation = operationList[position]
         with(holder.binding){
             transactionDeleteImg.tag = operation
-            transactionEditImg.tag = operation
-            transactionCategoryText.text = operation.category.name
+//            transactionEditImg.tag = operation
+            this.root.tag = operation
+
+            val parentCategory = operation.categories.getParentCategory()
+            val childCategory = operation.categories.getChildCategory()
+            if (childCategory.isExpence) {
+                transactionCategoryText.text = "${parentCategory.name} > ${childCategory.name}"
+            } else {
+                transactionCategoryText.text = "Доход > ${childCategory.name}"
+            }
 //            transactionCategoryText.text = operation.category.name
 
-            transactionCategoryImage.setImageResource(operation.category.icon)
-            transactionDeleteImg.setImageResource(R.drawable.ic_delete_transaction)
+            transactionCategoryImage.setImageResource(operation.categories.getChildCategory().icon)
+//            transactionDeleteImg.setImageResource(R.drawable.ic_delete_transaction)
             transactionDate.text = getTextFromDate(operation.date)
 
 
             transactionCategoryImage.apply {
-                setBackgroundColor(this.resources.getColor(operation.category.color))
+                setBackgroundColor(this.resources.getColor(operation.categories.getChildCategory().color))
             }
+
+
 
             if (operation.description.isNotEmpty()) {
                 transactionDescriptionIv.show()
@@ -116,7 +123,7 @@ class OperationsAdapter(
          val operation = v?.tag as OperationsDto
          when(v.id){
              R.id.transaction_delete_img -> actionListener.onOperationDelete(operation)
-             R.id.transaction_edit_img -> actionListener.onOperationEdit(operation)
+             R.id.transactionItemContainer -> actionListener.onOperationEdit(operation)
          }
      }
  }
