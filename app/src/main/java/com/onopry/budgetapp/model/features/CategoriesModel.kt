@@ -4,5 +4,5 @@ package com.onopry.budgetapp.model.features
 class CategoriesModel(
     private val categoriesDataSourse: CategoriesDataSourse
 ) {
-    fun getCategories() = categoriesDataSourse.getCategoryes()
+    fun getCategories() = categoriesDataSourse.getCategories()
 }

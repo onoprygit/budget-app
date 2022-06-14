@@ -8,7 +8,7 @@ import java.util.*
 class CategoryDataSourseImpl: CategoriesDataSourse {
     //https://tablericons.com/
 
-    override fun getCategoryes(): MutableList<CategoriesDto> {
+    override fun getCategories(): List<CategoriesDto> {
         val parentBeauty =      CategoriesDto(id = UUID.randomUUID().toString(), name = "Уход",       icon = R.drawable.ic_category_beauty,       color = R.color.color_category_beauty)
         val parentBills =       CategoriesDto(id = UUID.randomUUID().toString(), name = "Счета",      icon = R.drawable.ic_category_bills,        color = R.color.color_category_bills)
         val parentCafe =        CategoriesDto(id = UUID.randomUUID().toString(), name = "Кафе",       icon = R.drawable.ic_category_cafe,         color = R.color.color_category_cafe)
@@ -120,6 +120,6 @@ class CategoryDataSourseImpl: CategoriesDataSourse {
 
         val finalList = parentCategoriesExpence + parentCategoriesIncome + childCategoriesExpence
 
-        return finalList.toMutableList()
+        return finalList
     }
 }
