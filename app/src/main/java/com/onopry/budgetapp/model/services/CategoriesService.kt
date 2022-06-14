@@ -1,14 +1,10 @@
 package com.onopry.budgetapp.model.services
-import android.content.Context
-import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
-import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
 import com.onopry.budgetapp.model.repo.AuthRepository
@@ -16,10 +12,8 @@ import com.onopry.budgetapp.model.repo.FirebaseHelper
 import com.onopry.budgetapp.utils.CategoryNotFoundException
 import com.onopry.budgetapp.utils.FIREBASE
 import com.onopry.budgetapp.utils.LogTags
-import com.onopry.budgetapp.utils.MY_COLORS
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import java.security.AccessControlContext
 import java.util.*
 import javax.inject.Inject
 
@@ -144,11 +138,11 @@ class CategoriesService @Inject constructor(
     fun getCategoryByTargetId(id: String) = _categories.value?.find { it.targetId == id }
 
     //hardcode hell
-    private fun getCategoriesColors(): Stack<Int>{
+/*    private fun getCategoriesColorsLocal(): Stack<Int>{
         val colorsStack: Stack<Int> = Stack()
         colorsStack.push(MY_COLORS.color_category_1)
         colorsStack.push(MY_COLORS.color_category_2)
-//        colorsStack.push(MY_COLORS.color_category_3)
+        colorsStack.push(MY_COLORS.color_category_3)
         colorsStack.push(MY_COLORS.color_category_4)
         colorsStack.push(MY_COLORS.color_category_5)
         colorsStack.push(MY_COLORS.color_category_6)
@@ -156,17 +150,16 @@ class CategoriesService @Inject constructor(
         colorsStack.push(MY_COLORS.color_category_8)
         colorsStack.push(MY_COLORS.color_category_9)
         colorsStack.push(MY_COLORS.color_category_10)
-//        colorsStack.push(MY_COLORS.color_category_11)
+        colorsStack.push(MY_COLORS.color_category_11)
         colorsStack.push(MY_COLORS.color_category_12)
         colorsStack.push(MY_COLORS.color_category_13)
         colorsStack.push(MY_COLORS.color_category_14)
         colorsStack.push(MY_COLORS.color_category_15)
-        colorsStack.shuffle()
         return colorsStack
     }
 
     private fun loadCategoriesLocal(){
-        val categoryColorsStack = getCategoriesColors()
+        val categoryColorsStack = getCategoriesColorsLocal()
          val categories = mutableListOf(
             CategoriesDto(
                 id = UUID.randomUUID().toString(),
@@ -224,5 +217,7 @@ class CategoriesService @Inject constructor(
         )
 
         categoriesList = categories
-    }
+    }*/
+
+    private fun loadCategoriesLocal() = CategoriesModel(CategoryDataSourseImpl()).getCategories()
 }

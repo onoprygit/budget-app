@@ -14,22 +14,6 @@
     <color name="analytics_text">#2C2646</color>
     <color name="transparent">#00000000</color>
 
-    //categories colors
-    <color name="category_1">#EDA297</color>
-    <color name="category_2">#A7D7A2</color>
-    <color name="category_4">#CE97DB</color>
-<!--    <color name="category_5">#9CAFD0</color>-->
-<!--    <color name="category_6">#83CAC2</color>-->
-    <color name="category_7">#8FC5F8</color>
-    <color name="category_8">#FAE285</color>
-<!--    <color name="category_9">#F9FC95</color>-->
-    <color name="category_10">#F8A693</color>
-<!--    <color name="category_11">#B998DA</color>-->
-    <color name="category_12">#B89AD5</color>
-    <color name="category_13">#FFCB7C</color>
-    <color name="category_14">#F28CB4</color>
-<!--    <color name="category_15">#E7EB9C</color>-->
-    <color name="category_other">#AEC0C3</color>
     <color name="light_blue_400">#FF29B6F6</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="gray_400">#FFBDBDBD</color>
@@ -37,4 +21,23 @@
 
     //acc choose background
     <color name="acc_selected">#E9E7F9</color>
+
+
+    <!--Categories-->
+    <color name="color_category_car">#ff9d9a</color>
+    <color name="color_category_products">#A0CBE8</color>
+    <color name="color_category_transport">#F28E2B</color>
+    <color name="color_category_cafe">#FFBE7D</color>
+    <color name="color_category_fashion">#ff9d9a</color>
+    <color name="color_category_house">#b6992d</color>
+    <color name="color_category_family">#f1ce63</color>
+    <color name="color_category_pets">#499894</color>
+    <color name="color_category_hobby">#86bcb6</color>
+    <color name="color_category_health">#e15759</color>
+    <color name="color_category_other">#AEC0C3</color>
+    <color name="color_category_bills">#bab0ac</color>
+    <color name="color_category_beauty">#d37295</color>
+    <color name="color_category_income">#59A14F</color>
+
+    <color name="color_category_14">#d4a6c8</color>
 </resources>

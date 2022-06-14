@@ -33,11 +33,11 @@
     </string-array>
 
     <string-array name="parent_categories">
-        <item> Авто</item>
+        <item>Авто</item>
         <item>Продукты</item>
         <item>Транспорт</item>
         <item>Кафе</item>
-        <item>Одежда</item>
+        <item>Стиль</item>
         <item>Дом</item>
         <item>Семья</item>
         <item>Питомцы</item>
@@ -63,7 +63,7 @@
     <string name="category_products">Продукты</string>
     <string name="category_transport">Транспорт</string>
     <string name="category_cafe">Кафе</string>
-    <string name="category_fashion">Одежда</string>
+    <string name="category_fashion">Стиль</string>
     <string name="category_house">Дом</string>
     <string name="category_family">Семья</string>
     <string name="category_pets">Питомцы</string>
