@@ -86,16 +86,34 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <!--
+        <Button
+        android:id="@+id/registration_btnRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/registration_cardView"
+        app:layout_constraintStart_toStartOf="@id/registration_cardView"
+        app:layout_constraintEnd_toEndOf="@id/registration_cardView"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="Зарегестрироваться"
+        android:backgroundTint="@color/teal_200"
+        android:textColor="@color/analytics_text"
+        />
+    -->
+
     <Button
         android:id="@+id/auth_btnAuth"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         app:layout_constraintTop_toBottomOf="@id/auth_cardView"
         app:layout_constraintStart_toStartOf="@id/auth_cardView"
         app:layout_constraintEnd_toEndOf="@id/auth_cardView"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
         android:text="Войти"
+        android:backgroundTint="@color/teal_200"
+        android:textColor="@color/analytics_text"
         />
 
     <TextView

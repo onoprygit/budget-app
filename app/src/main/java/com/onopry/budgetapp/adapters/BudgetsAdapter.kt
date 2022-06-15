@@ -7,16 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.onopry.budgetapp.databinding.ItemTargetBinding
-import com.onopry.budgetapp.model.dto.CategoriesDto
-import com.onopry.budgetapp.model.dto.TargetDTO
-import com.onopry.budgetapp.utils.AmountByCategory
-import com.onopry.budgetapp.utils.getTextLocalDateDMY
+import com.onopry.budgetapp.model.dto.TargetDto
 
-typealias TargetsActionListener = (target: TargetDTO) -> Unit
+typealias TargetsActionListener = (target: TargetDto) -> Unit
 
 class BudgetDuffCallback(
-    private val oldList: List<TargetDTO>,
-    private val newList: List<TargetDTO>
+    private val oldList: List<TargetDto>,
+    private val newList: List<TargetDto>
 ): DiffUtil.Callback() {
     override fun getOldListSize() = oldList.size
 
@@ -33,7 +30,7 @@ class BudgetsAdapter(
 
 ): RecyclerView.Adapter<BudgetsAdapter.BudgetsViewHolder>(), View.OnClickListener {
 
-    var targetList: List<TargetDTO> = emptyList()
+    var targetList: List<TargetDto> = emptyList()
         set(newValue) {
             val diffCAll = BudgetDuffCallback(field, newValue)
             val diffResult = DiffUtil.calculateDiff(diffCAll)

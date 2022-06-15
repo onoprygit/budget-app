@@ -27,23 +27,11 @@ class AnalyticsViewModel @Inject constructor(
     private val _period = MutableLiveData<PeriodDate>()
     val period: LiveData<PeriodDate> = _period
 
-
-    /*@Deprecated("HUITA")
-    private val _operationsByCategory = MutableLiveData<Map<CategoriesDto, List<OperationsDto>>>()
-    @Deprecated("HUITA")
-    var operationsByCategory: LiveData<Map<CategoriesDto, List<OperationsDto>>> = _operationsByCategory*/
-
     val accounts = accountsService.accounts
-
-//    private val _amountByCategory = MutableLiveData<>
 
     val operations = operationsService.operations
 
-
-
-    /*todo("можно сделать одну мапу, в которую будут добавляться каатегории в кач-ве
-       ключа при проходе по списку операций. а в кач-ве значения будет список,
-       в который будем кидать операции через .add()")*/
+    //самое важное
     val sumByCategory = operationsService.operations.map {
         val operationsList = it.filter { it.date in period.value!!.startDate..period.value!!.finishDate }
         val categorySet = mutableSetOf<CategoriesDto>()
@@ -64,10 +52,16 @@ class AnalyticsViewModel @Inject constructor(
                 }.toList()
     }
 
+    private val maxSumsOfOperations = operationsService.operations.map {
+        val operationsList = it
+            .filter { it.date in period.value!!.startDate..period.value!!.finishDate }
+    }
+
     private val _typeState = MutableLiveData(true)
     val typeState: LiveData<Boolean> = _typeState
 
-    val mediatorLiveData = MediatorLiveData<List<AmountByCategory>>()
+    val mediatorSumByCategory = MediatorLiveData<List<AmountByCategory>>()
+    val mediatormaxSumsOfOperations = MediatorLiveData<List<OperationsDto>>()
 
     private val periodListener: PeriodListener = { _period.value = it }
 
@@ -76,13 +70,12 @@ class AnalyticsViewModel @Inject constructor(
 
     init {
         initPeriod()
-        initMediatorLiveDataInit()
-//        setOperationsByCategory()
-        Log.d("L_IFECYCLE_TAG_FF", "init")
+        initMediatorSumByCategory()
+        initMediatormaxSumsOfOperations()
     }
 
-    private fun initMediatorLiveDataInit() {
-        mediatorLiveData.addSource(period) { period ->
+    private fun initMediatorSumByCategory() {
+        mediatorSumByCategory.addSource(period) { period ->
             period!!.let {
                 val operationsList = operations.value!!
                     .filter { it.date in period.startDate..period.finishDate }
@@ -103,7 +96,7 @@ class AnalyticsViewModel @Inject constructor(
 
                 val a = 32
 
-                mediatorLiveData.value = mutableListOf<AmountByCategory>().apply {
+                mediatorSumByCategory.value = mutableListOf<AmountByCategory>().apply {
                     mapCategories.forEach { entires ->
                         this.add(AmountByCategory(entires.key, entires.value.sumOf { it.amount }))
                     }
@@ -113,7 +106,19 @@ class AnalyticsViewModel @Inject constructor(
 //        mediatorLiveData.addSource(typeState) { state ->
 
 
-        Log.d("ROT_TOGO_EBAL_TAG", "initMediatorLiveDataInit: ${mediatorLiveData.value?.size}")
+        Log.d("ROT_TOGO_EBAL_TAG", "initMediatorLiveDataInit: ${mediatorSumByCategory.value?.size}")
+    }
+
+    private fun initMediatormaxSumsOfOperations() {
+        mediatormaxSumsOfOperations.addSource(period) { period ->
+            period!!.let {
+                val operationsList = operations.value!!
+                    .filter { it.date in period.startDate..period.finishDate }
+                mediatormaxSumsOfOperations.value = operationsList
+            }
+        }
+
+        Log.d("ROT_TOGO_EBAL_TAG", "initMediatorLiveDataInit: ${mediatorSumByCategory.value?.size}")
     }
 
     fun changeTypeState(isExpence: Boolean){
@@ -171,7 +176,7 @@ class AnalyticsViewModel @Inject constructor(
     // Pie chart methods
     fun getPieEntriesList(isExpence: Boolean): List<PieEntry>{
         val pieEntries = mutableListOf<PieEntry>()
-        mediatorLiveData.value!!.filter { it.category.isExpence == typeState.value }
+        mediatorSumByCategory.value!!.filter { it.category.isExpence == typeState.value }
             .forEach {
             if (it.amount > 0)
                 pieEntries.add(PieEntry(it.amount.toFloat(), it.category.name))

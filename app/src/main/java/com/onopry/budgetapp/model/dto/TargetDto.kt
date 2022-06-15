@@ -1,15 +1,12 @@
 package com.onopry.budgetapp.model.dto
 
 import com.google.firebase.database.DataSnapshot
-import com.onopry.budgetapp.utils.CATEGORY
-import com.onopry.budgetapp.utils.OPERATION
 import com.onopry.budgetapp.utils.TARGET
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
-import kotlin.time.Duration.Companion.days
 
-data class TargetDTO(
+data class TargetDto(
     val id: String,
     var title: String,
     var cost: Int,
@@ -38,7 +35,7 @@ data class TargetDTO(
 
     companion object {
         fun parseSnapshot(snapshot: DataSnapshot) =
-            TargetDTO(
+            TargetDto(
                 id = snapshot.key as String,
                 title = snapshot.child(TARGET.TITLE).value as String,
                 cost = (snapshot.child(TARGET.COST).value as Long).toInt(),
@@ -48,7 +45,7 @@ data class TargetDTO(
                 isDone = snapshot.child(TARGET.IS_DONE).value as Boolean,
             )
 
-        fun errorTarget() = TargetDTO(
+        fun errorTarget() = TargetDto(
             id = "",
             title = "Error",
             cost = 0,

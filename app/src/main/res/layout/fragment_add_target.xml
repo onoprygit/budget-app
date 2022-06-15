@@ -32,94 +32,156 @@
         app:layout_constraintStart_toStartOf="@id/addTarget_guide_start"
         app:layout_constraintEnd_toEndOf="@id/addTarget_guide_end"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="24sp"
-        android:textColor="@color/black"
+        android:layout_marginTop="12dp"
+        android:textSize="16sp"
+        android:textColor="@color/analytics_text"
+        android:textStyle="bold"
         />
+
+    <ImageView
+        android:id="@+id/addTarget_name_ic"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_head_snowflake_outline"
+        app:layout_constraintStart_toStartOf="@id/addTarget_guide_start"
+        app:layout_constraintBottom_toBottomOf="@id/addTarget_name"
+        android:layout_marginBottom="4dp"
+        />
+
 
     <EditText
         android:id="@+id/addTarget_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/addTarget_guide_start"
+        app:layout_constraintStart_toEndOf="@id/addTarget_name_ic"
         app:layout_constraintEnd_toEndOf="@id/addTarget_guide_end"
         app:layout_constraintTop_toBottomOf="@id/addTarget_title"
         android:hint="Коплю деньги на:"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
         />
 
-    <TextView
-        android:id="@+id/addTarget_amount_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Сумма"
+    <ImageView
+        android:id="@+id/addTarget_amount_ic"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="4dp"
+        android:src="@drawable/ic_wallet_1"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@id/addTarget_guide_start"
-        app:layout_constraintTop_toTopOf="@id/addTarget_needMoney"
-        app:layout_constraintBottom_toBottomOf="@+id/addTarget_hasMoney"
-        android:layout_marginTop="10dp"
-        />
+        app:layout_constraintBottom_toBottomOf="@+id/addTarget_needMoney"
+        app:layout_constraintStart_toStartOf="@id/addTarget_guide_start" />
 
     <EditText
         android:id="@+id/addTarget_needMoney"
-        android:layout_width="0dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/addTarget_name"
-        app:layout_constraintEnd_toEndOf="@id/addTarget_guide_end"
-        app:layout_constraintStart_toEndOf="@id/addTarget_amount_tv"
-        app:layout_constraintBottom_toTopOf="@id/addTarget_hasMoney"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toEndOf="@id/addTarget_amount_ic"
+        android:layout_marginTop="8dp"
         android:hint="Нужно всего"
         android:inputType="number"
-        android:textSize="20sp"
+        android:textSize="16sp"
         />
 
     <EditText
         android:id="@+id/addTarget_hasMoney"
-        android:layout_width="0dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/addTarget_needMoney"
+        app:layout_constraintTop_toBottomOf="@id/addTarget_name"
         app:layout_constraintEnd_toEndOf="@id/addTarget_guide_end"
-        app:layout_constraintStart_toEndOf="@id/addTarget_amount_tv"
-        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toEndOf="@id/addTarget_needMoney"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:hint="Есть сейчас"
         android:inputType="number"
-        android:textSize="20sp"
+        android:textSize="16sp"
         />
+
+
+
+
 
     <ImageView
         android:id="@+id/addTarget_date_ic"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         app:layout_constraintStart_toStartOf="@id/addTarget_guide_start"
-        app:layout_constraintTop_toBottomOf="@id/addTarget_hasMoney"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintBottom_toBottomOf="@id/addTarget_date_pick"
+        android:layout_marginBottom="4dp"
         android:src="@drawable/ic_calendar"
         />
-    <Button
-        android:id="@+id/addTarget_date_pick"
-        android:layout_width="wrap_content"
+
+    <!--
+        <TextView
+        android:id="@+id/adding_operation_date_pick"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/addTarget_date_ic"
-        app:layout_constraintBottom_toBottomOf="@id/addTarget_date_ic"
-        app:layout_constraintStart_toEndOf="@id/addTarget_date_ic"
-        android:layout_marginStart="20dp"
-        android:text="Выберите дату"
+        app:layout_constraintStart_toEndOf="@id/adding_operation_date_ic"
+        app:layout_constraintTop_toBottomOf="@+id/adding_operation_select_category"
+        app:layout_constraintBottom_toBottomOf="@id/adding_operation_date_ic"
+        app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
+        android:layout_marginStart="0dp"
+        android:text="Сегодня"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        android:background="#00000000"
+        android:textSize="16sp"
+        android:background="?android:editTextBackground"
         android:foreground="?android:attr/selectableItemBackgroundBorderless"
         android:gravity="start"
+        android:layout_marginTop="4dp"
+        />
+    -->
+
+
+    <TextView
+        android:id="@+id/addTarget_date_pick"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/addTarget_needMoney"
+        app:layout_constraintStart_toEndOf="@id/addTarget_date_ic"
+        app:layout_constraintEnd_toEndOf="@id/addTarget_guide_end"
+        android:text="Выберите дату"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:background="?android:editTextBackground"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:gravity="start"
+        android:layout_marginTop="8dp"
+        />
+
+    <ImageView
+        android:id="@+id/addTargetDescriptionIc"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintStart_toStartOf="@id/addTarget_guide_start"
+        app:layout_constraintTop_toTopOf="@id/addTargetDescriptionEt"
+        app:layout_constraintBottom_toBottomOf="@id/addTargetDescriptionEt"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_descriprion"
+        />
+
+    <EditText
+        android:id="@+id/addTargetDescriptionEt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/addTargetDescriptionIc"
+        app:layout_constraintEnd_toEndOf="@id/addTarget_guide_end"
+        app:layout_constraintTop_toBottomOf="@+id/addTarget_date_pick"
+        android:layout_marginTop="8dp"
+        android:inputType="textMultiLine"
+        android:textSize="16sp"
         />
 
     <Button
         android:id="@+id/addTarget_saveBnt"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="256dp"
+        android:layout_height="40dp"
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="@id/addTarget_guide_start"
         app:layout_constraintEnd_toEndOf="@id/addTarget_guide_end"
-        app:layout_constraintTop_toBottomOf="@id/addTarget_date_pick"
+        app:layout_constraintTop_toBottomOf="@id/addTargetDescriptionEt"
         android:text="Добавить"
+        android:backgroundTint="@color/teal_200"
+        android:textColor="@color/analytics_text"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

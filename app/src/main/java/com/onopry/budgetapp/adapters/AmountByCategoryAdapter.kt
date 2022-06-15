@@ -46,6 +46,7 @@ class AmountByCategoryAdapter: RecyclerView.Adapter<AmountByCategoryAdapter.Amou
         val elCategory = categoryList[position]
         with(holder.binding){
             amountByCategoryCategoryImage.setImageResource(elCategory.category.icon)
+            amountByCategoryCategoryImage.setBackgroundColor(this.root.resources.getColor(elCategory.category.color))
             amountByCategoryCategoryName.text = elCategory.category.name
             amountByCategoryCategoryAmount.text = "${elCategory.amount}₽"
         }

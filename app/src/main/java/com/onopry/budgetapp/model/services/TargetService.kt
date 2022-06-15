@@ -10,7 +10,7 @@ import com.google.firebase.database.ValueEventListener
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
-import com.onopry.budgetapp.model.dto.TargetDTO
+import com.onopry.budgetapp.model.dto.TargetDto
 import com.onopry.budgetapp.model.dto.getChildCategory
 import com.onopry.budgetapp.model.repo.AuthRepository
 import com.onopry.budgetapp.model.repo.FirebaseHelper
@@ -23,17 +23,17 @@ import java.time.LocalDate
 import java.util.*
 import javax.inject.Inject
 
-typealias TargetListener = (target: List<TargetDTO>) -> Unit
+typealias TargetListener = (target: List<TargetDto>) -> Unit
 
 class TargetService @Inject constructor(
     private val authRepository: AuthRepository,
     private val categoriesService: CategoriesService
 ) {
-    private var targetList = mutableListOf<TargetDTO>()
+    private var targetList = mutableListOf<TargetDto>()
     private val listeners = mutableSetOf<TargetListener>()
 
-    private val _targets = MutableLiveData<List<TargetDTO>>()
-    val targets: LiveData<List<TargetDTO>> = _targets
+    private val _targets = MutableLiveData<List<TargetDto>>()
+    val targets: LiveData<List<TargetDto>> = _targets
 
     private val dbRef = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
     private val dbRefTargets = dbRef.child(FirebaseHelper.TARGETS_KEY).child(authRepository.user.value!!.uid)
@@ -49,10 +49,10 @@ class TargetService @Inject constructor(
         dbRef.child(FirebaseHelper.TARGETS_KEY).child(uid!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val list = mutableListOf<TargetDTO>()
+                    val list = mutableListOf<TargetDto>()
                     snapshot.children.mapNotNull { targetSnapshot ->
                         Log.d(LogTags.FIREBASE_DATA_LISTENER_TAG, "target listener: id = ${targetSnapshot.key} [title]=${targetSnapshot.child(TARGET.TITLE).value} [cost] = ${targetSnapshot.child(TARGET.COST).value}")
-                        list.add(TargetDTO.parseSnapshot(targetSnapshot))
+                        list.add(TargetDto.parseSnapshot(targetSnapshot))
                     }
                     _targets.postValue(list)
                 }
@@ -82,14 +82,14 @@ class TargetService @Inject constructor(
 
     private fun loadTargets(){
         targetList = mutableListOf(
-            TargetDTO(
+            TargetDto(
                 id = "720cb4c2-46e6-48e6-8098-87625b866802",
                 title = "На машину",
                 cost = 700000,
                 currentAmount = 0,
                 date = LocalDate.of(2022, 6, 20)
             ),
-            TargetDTO(
+            TargetDto(
                 id = "f5ced627-5fab-41ef-88d8-19599fae79ef",
                 title = "На гараж",
                 cost = 80000,
@@ -98,13 +98,13 @@ class TargetService @Inject constructor(
             ))
     }
 
-    fun getTargetById(id: String): TargetDTO{
+    fun getTargetById(id: String): TargetDto{
         val index = _targets.value?.indexOfFirst { it.id == id } ?: throw TargetNotFoundException()
         if (index == -1 ) throw TargetNotFoundException()
         return _targets.value?.get(index)!!
     }
 
-    fun addTarget(target: TargetDTO){
+    fun addTarget(target: TargetDto){
 //        if (!isTargetExist(target)) {
 //            targetList.add(target)
 //        }
@@ -123,7 +123,7 @@ class TargetService @Inject constructor(
         dbRef.updateChildren(mapToAdd)
     }
 
-    suspend fun editTarget(target: TargetDTO){
+    suspend fun editTarget(target: TargetDto){
         //new Fire
         val index = _targets.value?.indexOfFirst { it.id == target.id } ?: throw TargetNotFoundException()
         if (index != -1) {
@@ -148,7 +148,7 @@ class TargetService @Inject constructor(
         }
     }
 
-    fun isTargetExist(target: TargetDTO) =
+    fun isTargetExist(target: TargetDto) =
         _targets.value?.indexOfFirst { target.id == it.id } != -1
         // Old RAM
         /*targetList.indexOfFirst { target.id == it.id } != -1*/
@@ -173,9 +173,9 @@ class TargetService @Inject constructor(
 
     }
 
-    private fun hasTargetDone(target: TargetDTO) = target.cost <= target.currentAmount
+    private fun hasTargetDone(target: TargetDto) = target.cost <= target.currentAmount
 
-    private fun setTargetCompleted(target: TargetDTO){
+    private fun setTargetCompleted(target: TargetDto){
         val uid = authRepository.user.value!!.uid
         target.isDone = true
         val doneTarget = target.copy(isDone = true)
@@ -190,7 +190,7 @@ class TargetService @Inject constructor(
         dbRef.updateChildren(mapToUpdate)
     }
 
-    fun removeTarget(target: TargetDTO){
+    fun removeTarget(target: TargetDto){
         if (!target.isDone) {
             val uid = authRepository.user.value!!.uid
             val mapToUpdate = mutableMapOf<String, Any?>()

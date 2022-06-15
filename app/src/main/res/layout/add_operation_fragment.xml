@@ -110,7 +110,7 @@
         android:text="Категория > категория"
         app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
         app:layout_constraintStart_toEndOf="@id/adding_operation_empty_category_ic"
-        app:layout_constraintTop_toBottomOf="@+id/adding_operation_edit_text"
+        app:layout_constraintTop_toBottomOf="@+id/adding_operation_account_tv"
         app:layout_constraintBottom_toBottomOf="@id/adding_operation_empty_category_ic"
         android:textColor="@color/analytics_text"
         android:textSize="16sp"
@@ -125,8 +125,8 @@
         android:layout_height="40dp"
         android:text="@string/adding_money_add_button"
         android:textColor="@color/analytics_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/adding_operation_guide_start"
+        app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
         app:layout_constraintTop_toBottomOf="@id/analyticsDescriptionEt"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
@@ -193,7 +193,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/adding_operation_date_ic"
         app:layout_constraintTop_toBottomOf="@+id/adding_operation_select_category"
-        app:layout_constraintBottom_toBottomOf="@id/adding_operation_date_ic"
         app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
         android:layout_marginStart="0dp"
         android:text="Сегодня"
@@ -203,6 +202,32 @@
         android:foreground="?android:attr/selectableItemBackgroundBorderless"
         android:gravity="start"
         android:layout_marginTop="4dp"
+        />
+
+    <ImageView
+        android:id="@+id/adding_operation_account_ic"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_cash_multiple"
+        app:layout_constraintStart_toStartOf="@id/adding_operation_guide_start"
+        app:layout_constraintBottom_toBottomOf="@id/adding_operation_account_tv"
+        android:layout_marginBottom="4dp"
+        />
+
+    <TextView
+        android:id="@+id/adding_operation_account_tv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/adding_operation_edit_text"
+        app:layout_constraintStart_toEndOf="@id/adding_operation_currency_ic"
+        app:layout_constraintEnd_toEndOf="@id/adding_operation_guide_end"
+        android:text="Карта"
+        android:layout_marginTop="8dp"
+        android:autoSizeTextType="uniform"
+        android:textColor="@color/analytics_text"
+        android:textSize="16sp"
+        android:background="?android:editTextBackground"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
         />
 
 <!--    <TextView

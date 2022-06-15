@@ -46,31 +46,34 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@id/analytics_guide_start"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="Ваши счета:"
+                android:text="Текущий счет"
                 android:textColor="@color/analytics_text"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/analyticsAccountsRecycler"
+            <TextView
+                android:id="@+id/analyticsAccountsMenuTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/analyticsAccountsTitleTv"
-                app:layout_constraintStart_toStartOf="parent"
-                android:paddingHorizontal="16dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="true"
+                app:layout_constraintStart_toStartOf="@id/analytics_guide_start"
+                android:text="Все счета"
+                android:textColor="@color/analytics_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:drawableEndCompat="@drawable/ic_arrow_down"
                 />
+
+
 
             <RadioGroup
                 android:id="@+id/analyticsMainRadioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/analyticsAccountsRecycler"
+                app:layout_constraintTop_toBottomOf="@id/analyticsAccountsMenuTv"
                 app:layout_constraintStart_toStartOf="@id/analytics_guide_start"
                 app:layout_constraintEnd_toEndOf="@id/analytics_guide_end"
                 android:layout_marginTop="8dp"
@@ -118,7 +121,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/analyticsAmountTitleTv"
                 android:layout_marginStart="20dp"
                 android:textColor="@color/analytics_text"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 tools:text="19578"
                 />
 
@@ -163,7 +166,7 @@
                 app:layout_constraintEnd_toEndOf="@id/analytics_guide_end"
                 app:layout_constraintTop_toBottomOf="@id/analytics_main_amount_date"
                 tools:text="456654"
-                android:textSize="48sp"
+                android:textSize="36sp"
                 android:textColor="@color/analytics_text"
                 android:textStyle="bold"
                 android:textFontWeight="700"
@@ -190,7 +193,6 @@
                 app:layout_constraintStart_toStartOf="@id/analytics_guide_start"
                 app:layout_constraintEnd_toEndOf="@id/analytics_guide_end"
                 app:layout_constraintTop_toBottomOf="@id/analytics_category_spend_card"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginVertical="36dp"
                 app:cardElevation="8dp"
                 app:cardCornerRadius="20dp"
@@ -200,36 +202,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp">
-
-                    <!--<RadioGroup
-                        android:id="@+id/categoriesPie_radio_group"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        >
-
-                        <androidx.appcompat.widget.AppCompatRadioButton
-                            android:id="@+id/categoriesPie_radio_expence"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/adding_money_radio_expence"
-                            android:textSize="20sp"
-                            android:layout_marginEnd="@dimen/base_horizontal_offset"
-                            android:checked="true"
-                            />
-                        <androidx.appcompat.widget.AppCompatRadioButton
-                            android:id="@+id/categoriesPie_radio_income"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/adding_money_radio_income"
-                            android:textSize="20sp"
-                            android:layout_marginStart="@dimen/base_horizontal_offset"
-                            />
-                    </RadioGroup>-->
-
                     <FrameLayout
                         android:id="@+id/analyticsCategoriesPieChartContainer"
                         android:layout_width="match_parent"
@@ -253,19 +225,6 @@
             </androidx.cardview.widget.CardView>
 
 
-            <TextView
-                android:id="@+id/analyticsCategorySpendCardTitleTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/analytics_category_spend_card"
-                app:layout_constraintEnd_toEndOf="@id/analytics_guide_end"
-                android:textSize="18sp"
-                android:textColor="@color/analytics_text"
-                android:text="Сумма трат по категориям"
-                android:layout_marginBottom="4dp"
-                />
-
-
             <androidx.cardview.widget.CardView
                 android:id="@+id/analytics_category_spend_card"
                 android:layout_width="0dp"
@@ -286,41 +245,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >
-
-                    <!--<RadioGroup
-                        android:id="@+id/categoriesSpendCard_radio_group"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        >
-
-                        <androidx.appcompat.widget.AppCompatRadioButton
-                            android:id="@+id/categoriesSpendCard_radio_expence"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/adding_money_radio_expence"
-                            android:textSize="20sp"
-                            android:layout_marginEnd="@dimen/base_horizontal_offset"
-                            android:checked="true"
-                            />
-                        <androidx.appcompat.widget.AppCompatRadioButton
-                            android:id="@+id/categoriesSpendCard_radio_income"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/adding_money_radio_income"
-                            android:textSize="20sp"
-                            android:layout_marginStart="@dimen/base_horizontal_offset"
-                            />
-                    </RadioGroup>-->
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/af_category_recycler"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         tools:listitem="@layout/item_amount_by_category"
+                        tools:itemCount="2"
                         android:nestedScrollingEnabled="false"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -330,6 +260,67 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/analyticsMostValuebleOperationsTitleTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/analyticsMostValuebleOperationsCv"
+                app:layout_constraintBottom_toTopOf="@+id/analyticsMostValuebleOperationsCv"
+                android:textSize="18sp"
+                android:textColor="@color/analytics_text"
+                android:text="Последние 10 самых крупных трат"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="8dp"
+                />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/analyticsMostValuebleOperationsCv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/analytics_category_piechart_card"
+                app:layout_constraintStart_toStartOf="@id/analytics_guide_start"
+                app:layout_constraintEnd_toEndOf="@id/analytics_guide_end"
+                android:layout_marginTop="36dp"
+                app:contentPaddingBottom="20dp"
+                app:contentPaddingLeft="20dp"
+                app:contentPaddingRight="20dp"
+                app:cardCornerRadius="20dp"
+                android:backgroundTint="@color/white"
+                >
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/analyticsMostValuebleOperationsRecycler"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/analyticsCategorySpendCardTitleTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/analytics_category_spend_card"
+                app:layout_constraintEnd_toEndOf="@id/analytics_guide_end"
+                android:textSize="18sp"
+                android:textColor="@color/analytics_text"
+                android:text="Сумма трат по категориям"
+                android:layout_marginBottom="4dp"
+                />
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

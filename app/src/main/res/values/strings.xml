@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">BudgetApp</string>
     <string name="title_analytics">Аналитика</string>
-    <string name="title_budget_and_debts">Бюджет и долги</string>
-    <string name="title_transactions">Транзакции</string>
+    <string name="title_budget_and_debts">Накопления</string>
+    <string name="title_transactions">Операции</string>
 
     <string name="title_more">Еще</string>
     <string name="user_name">UserName</string>

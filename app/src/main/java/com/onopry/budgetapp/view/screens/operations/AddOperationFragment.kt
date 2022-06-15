@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
@@ -14,7 +15,7 @@ import com.onopry.budgetapp.R
 import com.onopry.budgetapp.databinding.AddOperationFragmentBinding
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
-import com.onopry.budgetapp.view.screens.DatePickerFragment
+import com.onopry.budgetapp.view.screens.others.DatePickerFragment
 import com.onopry.budgetapp.viewmodel.operations.AddingMoneyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
@@ -123,6 +124,14 @@ class AddOperationFragment : Fragment() {
         }
 
         fun newInstance() = AddOperationFragment()
+
+        private const val ARG_OPERATION_ID = "ARG_OPERATION_ID"
+
+        fun newInstance(key: String, operationId: String) = AddOperationFragment().apply {
+            arguments = Bundle().apply {
+                putString(key, operationId)
+            }
+        }
     }
 
     private fun isToday(year: Int, month: Int, day: Int): Int {

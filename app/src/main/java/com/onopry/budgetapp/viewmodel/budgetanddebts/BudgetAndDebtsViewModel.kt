@@ -4,15 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.onopry.budgetapp.R
-import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.services.TargetListener
 import com.onopry.budgetapp.model.services.TargetService
-import com.onopry.budgetapp.model.dto.TargetDTO
+import com.onopry.budgetapp.model.dto.TargetDto
 import com.onopry.budgetapp.model.services.CategoriesService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,8 +18,8 @@ class BudgetAndDebtsViewModel @Inject constructor(
     private val categoryService: CategoriesService
 ): ViewModel() {
 
-    private val _targets = MutableLiveData<List<TargetDTO>>()
-    val targets: LiveData<List<TargetDTO>> = _targets
+    private val _targets = MutableLiveData<List<TargetDto>>()
+    val targets: LiveData<List<TargetDto>> = _targets
 
     val tars = targetService.targets
 
@@ -39,7 +36,7 @@ class BudgetAndDebtsViewModel @Inject constructor(
     fun getTargetById(id: String) = targetService.getTargetById(id)
 
 
-    fun saveTarget(target: TargetDTO){
+    fun saveTarget(target: TargetDto){
         if (targetService.isTargetExist(target))
             viewModelScope.launch {
                 targetService.editTarget(target)
@@ -59,7 +56,7 @@ class BudgetAndDebtsViewModel @Inject constructor(
         }*/
     }
 
-    fun saveTarget_1(target: TargetDTO){
+    fun saveTarget_1(target: TargetDto){
 
     }
 

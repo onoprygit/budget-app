@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.components.Legend
@@ -19,14 +18,16 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import com.onopry.budgetapp.R
 import com.onopry.budgetapp.adapters.AccountsAdapter
 import com.onopry.budgetapp.adapters.AmountByCategoryAdapter
+import com.onopry.budgetapp.adapters.MaxAmountOfOperationsAdapter
 import com.onopry.budgetapp.databinding.AnalyticsFragmentBinding
+import com.onopry.budgetapp.model.dto.getChildCategory
 import com.onopry.budgetapp.utils.*
-import com.onopry.budgetapp.viewmodel.MainViewModel
 //import com.onopry.budgetapp.viewmodel.MainViewModel
 import com.onopry.budgetapp.viewmodel.analytics.AnalyticsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 
+const val MAX_OPERATIONS_LIST_SIZE = 10
 @AndroidEntryPoint
 class AnalyticsFragment : Fragment() {
 
@@ -36,7 +37,9 @@ class AnalyticsFragment : Fragment() {
     private lateinit var binding: AnalyticsFragmentBinding
 
     private val categoriesAdapter = AmountByCategoryAdapter()
-    private lateinit var accountsAdapter: AccountsAdapter
+    private lateinit var operationsAdapter: MaxAmountOfOperationsAdapter
+
+//    private lateinit var accountsAdapter: AccountsAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -46,28 +49,10 @@ class AnalyticsFragment : Fragment() {
     ): View {
         binding = AnalyticsFragmentBinding.inflate(inflater, container, false)
 
+        operationsAdapter = MaxAmountOfOperationsAdapter()
+
         val textDatePair = LocalDate.now().getTextLocalDateMY()
         binding.analyticsMainAmountDate.text = "${textDatePair.first} ${textDatePair.second}"
-
-        // Инициализация для ресайклера счетов
-        accountsAdapter = AccountsAdapter{
-            navigator().toast(it.name + it.type)
-
-        }
-
-        binding.analyticsAccountsRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.analyticsAccountsRecycler.adapter = accountsAdapter
-
-        viewModel.accounts.observe(viewLifecycleOwner) {
-            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "ACCOUNTS size: ${it.size}")
-            accountsAdapter.accounts = it
-        }
-
-        //инициалиация для ресайклера категорий
-        binding.afCategoryRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.afCategoryRecycler.adapter = categoriesAdapter
-
-        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "operations = ${viewModel.operations.value?.size} ")
 
         //Радио кнопки
         binding.analyticsMainRadioGroup.setOnCheckedChangeListener { _, buttonId ->
@@ -77,24 +62,70 @@ class AnalyticsFragment : Fragment() {
             }
         }
 
+
+
+
+        //// -------- инициалиация для ресайклера счетов
+        /*
+        binding.analyticsAccountsRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.analyticsAccountsRecycler.adapter = accountsAdapter
+
+        accountsAdapter = AccountsAdapter{
+            navigator().toast(it.name + it.type)
+        }
+
+        viewModel.accounts.observe(viewLifecycleOwner) {
+            Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "ACCOUNTS size: ${it.size}")
+            accountsAdapter.accounts = it
+        }*/
+
+
+
+
         //ЛУЧШЕЕ РЕШЕНИЕ В ЖИЗНИ НАХУЙ
         //todo можно в медиатор добавить лавйдату typeState чтобы вообще было красиво
         viewModel.typeState.observe(viewLifecycleOwner) { isExpenceState ->
-            viewModel.mediatorLiveData.observe(viewLifecycleOwner){ list ->
+            viewModel.mediatorSumByCategory.observe(viewLifecycleOwner){ list ->
                 val newList = ArrayList(list.filter { it.category.isExpence == isExpenceState }).toList()
                 categoriesAdapter.categoryList = newList
                 setTextDate(viewModel.period.value!!)
                 binding.analyticsMainAmount.text = "₽ ${newList.sumOf { it.amount }}"
                 makePieChart(isExpenceState)
 
-
-
                 binding.analyticsAmountSumTv.text = getTotalBalance(list).also {
-                    if (it < 0) binding.analyticsAmountSumTv.setTextColor(R.color.red)
-                    else binding.analyticsAmountSumTv.setTextColor(R.color.green)
-                }.toString()
+                    if (it < 0) binding.analyticsAmountSumTv.setTextColor(resources.getColor(R.color.red))
+                    else binding.analyticsAmountSumTv.setTextColor(resources.getColor(R.color.green))
+                }.toString() + " ₽"
             }
         }
+
+        //третья карточка
+        viewModel.typeState.observe(viewLifecycleOwner) { isExpenceState ->
+            viewModel.mediatormaxSumsOfOperations.observe(viewLifecycleOwner){ list ->
+                Log.d("mediatormaxSumsOfOperations_TAG", "before. list size: = ${list.size}")
+                val newList = ArrayList(list.filter { it.categories.getChildCategory().isExpence == isExpenceState }).toList()
+                Log.d("mediatormaxSumsOfOperations_TAG", "after. list size: = ${newList.size}")
+
+                if (newList.size >= MAX_OPERATIONS_LIST_SIZE) {
+                    operationsAdapter.operationsList = newList.slice(0..MAX_OPERATIONS_LIST_SIZE)
+                }
+                else {
+//                    val maxIndex = newList.size - 1
+                    operationsAdapter.operationsList = newList//.slice(0..maxIndex)
+                }
+            }
+        }
+
+        // -------- инициалиация для ресайклера операций
+        binding.analyticsMostValuebleOperationsTitleTv.text = "Последние самые крупные операции"
+        binding.analyticsMostValuebleOperationsRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.analyticsMostValuebleOperationsRecycler.adapter = operationsAdapter
+
+        // -------- инициалиация для ресайклера категорий
+        binding.afCategoryRecycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.afCategoryRecycler.adapter = categoriesAdapter
+
+        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "operations = ${viewModel.operations.value?.size} ")
 
 //        Log.d(LogTags.ANALYTICS_FRAGMENT_TAG, "before observe: ${viewModel.operationsByCategory.value?.size ?: 99999}")
 
@@ -109,6 +140,11 @@ class AnalyticsFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
     }
 
     private fun showPeriodChooseMenu(v: View) {
@@ -128,12 +164,12 @@ class AnalyticsFragment : Fragment() {
                     navigator().toast("Год")
                     true
                 }
-                R.id.period_week -> {
+/*                R.id.period_week -> {
                     Log.d("ChooseButtonTAG", "listener showPeriodChooseMenu = WEEK")
 //                    viewModel.setPeriod(getMonthPeriodFromNow(LocalDate.now()))
                     navigator().toast("ПОПРАВИТЬ, не реализовано")
                     true
-                }
+                }*/
                 R.id.period_other -> {
                     Log.d("ChooseButtonTAG", "listener showPeriodChooseMenu = OTHER")
 //                    viewModel.setPeriod(LocalDate.now(), PeriodRange.OTHER)
@@ -182,12 +218,12 @@ class AnalyticsFragment : Fragment() {
         with(binding.analCategoriesPieChart){
             isDrawHoleEnabled = true
             setUsePercentValues(true)
-            setEntryLabelTextSize(10f)
-            setDrawEntryLabels(false)
+            setEntryLabelTextSize(12f)
+            setDrawEntryLabels(true)
 
-            setEntryLabelColor(Color.BLACK)
-            centerText = "Spending by Category"
-            setCenterTextSize(24f)
+            setEntryLabelColor(resources.getColor(R.color.analytics_text))
+            centerText = "Траты по категориям"
+            setCenterTextSize(16f)
             description.isEnabled = false
             extraBottomOffset = 20f
             extraLeftOffset = 20f
@@ -196,16 +232,16 @@ class AnalyticsFragment : Fragment() {
 
             with(legend){
                 verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-                orientation = Legend.LegendOrientation.VERTICAL
-                setDrawInside(false)
+                horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+                orientation = Legend.LegendOrientation.HORIZONTAL
+                setDrawInside(true)
                 isEnabled = true
                 isWordWrapEnabled = true
             }
         }
     }
 
-    private fun getCategoriesColors() = viewModel.mediatorLiveData.value!!.map {
+    private fun getCategoriesColors() = viewModel.mediatorSumByCategory.value!!.map {
         resources.getColor(it.category.color)
     }
 //    fun getCategoriesColors() = mediatorLiveData.value?.map { it.category.color } ?: throw Exception("No colors")
@@ -229,7 +265,7 @@ class AnalyticsFragment : Fragment() {
         createPie(state)
     }
 
-    private fun onTypeChange(){
+/*    private fun onTypeChange(){
         binding.analyticsMainRadioGroup.setOnCheckedChangeListener { _, id ->
             when(id) {
                 R.id.analyticsRadioItemIncome -> {
@@ -260,7 +296,7 @@ class AnalyticsFragment : Fragment() {
                 }
             }
         }
-    }
+    }*/
 
     private fun getTotalBalance(list: List<AmountByCategory>) = let {
         val totalExpences = list.filter { it.category.isExpence }.sumOf { it.amount }

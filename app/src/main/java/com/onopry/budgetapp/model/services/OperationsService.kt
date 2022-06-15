@@ -96,6 +96,7 @@ class OperationsService @Inject constructor(
                 snapshot.children.mapNotNull {
                     operations.add(OperationsDto.parseSnapshot(it))
                 }
+                operations.sortByDescending { it.amount }
                 _operations.postValue(operations)
             }
 

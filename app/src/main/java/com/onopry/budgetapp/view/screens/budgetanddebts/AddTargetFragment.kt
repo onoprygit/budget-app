@@ -7,17 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.onopry.budgetapp.databinding.FragmentAddTargetBinding
-import com.onopry.budgetapp.model.dto.TargetDTO
-import com.onopry.budgetapp.view.screens.DatePickerFragment
+import com.onopry.budgetapp.model.dto.TargetDto
+import com.onopry.budgetapp.view.screens.others.DatePickerFragment
 import com.onopry.budgetapp.viewmodel.budgetanddebts.BudgetAndDebtsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
-import java.util.*
 
 @AndroidEntryPoint
 class AddTargetFragment : BottomSheetDialogFragment(){
 
-    private lateinit var target: TargetDTO
+    private lateinit var target: TargetDto
     private lateinit var binding: FragmentAddTargetBinding
 
     private val viewModel: BudgetAndDebtsViewModel by viewModels()
@@ -28,7 +27,7 @@ class AddTargetFragment : BottomSheetDialogFragment(){
         target = if (arguments != null) {
             val id = arguments!!.getString("targetID")
             viewModel.getTargetById(id!!)
-        } else TargetDTO.errorTarget()
+        } else TargetDto.errorTarget()
 
     }
 
@@ -42,7 +41,7 @@ class AddTargetFragment : BottomSheetDialogFragment(){
             addTargetName.setText(target.title)
             addTargetNeedMoney.setText(target.cost.toString())
             addTargetHasMoney.setText(target.currentAmount.toString())
-            addTargetDatePick.text = target.date.toString()
+            addTargetDatePick.text = "Сегодня"
         }
 
         binding.addTargetSaveBnt.setOnClickListener {
@@ -66,8 +65,8 @@ class AddTargetFragment : BottomSheetDialogFragment(){
     }
 
     //todo сделать нормально, с val полями.
-    private fun setTargetData(target: TargetDTO?){
-        val newTarget: TargetDTO
+    private fun setTargetData(target: TargetDto?){
+        val newTarget: TargetDto
         with(binding){
 //            if (target == null) {
 //                newTarget = TargetDTO(
