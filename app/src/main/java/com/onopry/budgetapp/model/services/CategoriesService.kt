@@ -8,7 +8,7 @@ import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.features.CategoriesModel
 import com.onopry.budgetapp.model.features.CategoryDataSourseImpl
 import com.onopry.budgetapp.model.repo.AuthRepository
-import com.onopry.budgetapp.model.repo.FirebaseHelper
+import com.onopry.budgetapp.utils.CATEGORY
 import com.onopry.budgetapp.utils.FIREBASE
 import com.onopry.budgetapp.utils.LogTags
 import kotlinx.coroutines.*
@@ -44,7 +44,7 @@ class CategoriesService @Inject constructor(
 
     private fun loadCategories(){
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
-        dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid)
+        dbRef.child(CATEGORY.NODE).child(uid)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val list = mutableListOf<CategoriesDto>()
@@ -60,7 +60,7 @@ class CategoriesService @Inject constructor(
             }
 
         })
-        dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid)
+        dbRef.child(CATEGORY.NODE).child(uid)
     }
 
 
@@ -75,7 +75,7 @@ class CategoriesService @Inject constructor(
                 map["/${category.id}"] = category.toMap()
                 returnedCategoryList.add(category)
             }
-            dbRef.child(FirebaseHelper.CATEGORIES_KEY).child(uid).updateChildren(map)
+            dbRef.child(CATEGORY.NODE).child(uid).updateChildren(map)
             returnedCategoryList
         }
     }

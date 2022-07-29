@@ -2,8 +2,8 @@ package com.onopry.budgetapp.utils
 
 import android.content.res.Resources
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.onopry.budgetapp.model.dto.CategoriesDto
-import com.onopry.budgetapp.model.repo.FirebaseHelper
 import java.time.LocalDate
 import java.time.Month
 import kotlin.math.roundToInt
@@ -72,6 +72,8 @@ fun LocalDate.getTextMonth(case: Boolean): String {
     }
     return monthName
 }
+
+fun Fragment.navigator() = requireActivity() as MainNavigator
 
 val Int.dp: Int
     get() = (this * Resources.getSystem().displayMetrics.density).roundToInt()

@@ -1,6 +1,7 @@
 package com.onopry.budgetapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity(), MainNavigator {
 
         showSingInScreen()
 
-/*        authViewModel.user.observe(this) {
+        authViewModel.user.observe(this) {
             if (it != null) {
                 Log.d(TAG, (true).toString())
                 replaceFragment(signInFragment)
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity(), MainNavigator {
                 Log.d(TAG, false.toString())
                 replaceFragment(analyticsFragment)
             }
-        }*/
+        }
 
 //        replaceFragment(currentFragment)
 

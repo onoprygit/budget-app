@@ -11,17 +11,8 @@ lateinit var REF_DB_ROOT:DatabaseReference
 
 /*FirebaseDatabase.getInstance("https://budget-app-a4a96-default-rtdb.europe-west1.firebasedatabase.app")*/
 
-const val DB_USERS = "users"
-
-const val NODE_OPERATIONS = "operations"
-
-const val CHILD_ID = "id"
-const val CHILD_AMOUNT = "amount"
-const val CHILD_CATEGORY = "category"
-const val CHILD_DATE = "date"
-const val CHILD_IS_EXPENCE = "isExpence"
-
 object CATEGORY {
+    const val NODE = "user-categories"
     const val ID = "id"
     const val NAME = "name"
     const val ICON = "icon"
@@ -33,6 +24,7 @@ object CATEGORY {
 }
 
 object OPERATION {
+    const val NODE = "user-operations"
     const val ID = "id"
     const val AMOUNT = "amount"
     const val CATEGORY_PARENT = "parent"
@@ -45,6 +37,8 @@ object OPERATION {
 }
 
 object TARGET {
+    const val NODE = "user-targets"
+    const val COMPLETED_NODE = "user-targets-completed"
     const val ID = "id"
     const val TITLE = "title"
     const val COST = "cost"
@@ -55,6 +49,7 @@ object TARGET {
 }
 
 object USER {
+    const val NODE = "users"
     const val ID = "id"
     const val MAIL = "mail"
     const val NAME = "name"
@@ -62,6 +57,7 @@ object USER {
 }
 
 object ACCOUNT {
+    const val NODE = "user-accounts"
     const val ID = "id"
     const val NAME = "name"
     const val CURRENCY = "currency"

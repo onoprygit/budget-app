@@ -13,11 +13,7 @@ import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.dto.TargetDto
 import com.onopry.budgetapp.model.dto.getChildCategory
 import com.onopry.budgetapp.model.repo.AuthRepository
-import com.onopry.budgetapp.model.repo.FirebaseHelper
-import com.onopry.budgetapp.utils.FIREBASE
-import com.onopry.budgetapp.utils.LogTags
-import com.onopry.budgetapp.utils.TARGET
-import com.onopry.budgetapp.utils.TargetNotFoundException
+import com.onopry.budgetapp.utils.*
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
 import java.util.*
@@ -36,8 +32,8 @@ class TargetService @Inject constructor(
     val targets: LiveData<List<TargetDto>> = _targets
 
     private val dbRef = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
-    private val dbRefTargets = dbRef.child(FirebaseHelper.TARGETS_KEY).child(authRepository.user.value!!.uid)
-    private val dbRefTargetsCompleted = dbRef.child(FirebaseHelper.COMPLETED_TARGETS_KEY)
+    private val dbRefTargets = dbRef.child(TARGET.NODE).child(authRepository.user.value!!.uid)
+    private val dbRefTargetsCompleted = dbRef.child(TARGET.COMPLETED_NODE)
 
     init {
         //loadTargets()
@@ -46,7 +42,7 @@ class TargetService @Inject constructor(
 
     private fun loadFirebase(){
         val uid = authRepository.user.value?.uid
-        dbRef.child(FirebaseHelper.TARGETS_KEY).child(uid!!)
+        dbRef.child(TARGET.NODE).child(uid!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val list = mutableListOf<TargetDto>()
@@ -74,7 +70,7 @@ class TargetService @Inject constructor(
             icon = R.drawable.ic_category_placeholder,
             targetId = target.id
         )
-        mapToAdd["/${FirebaseHelper.TARGETS_KEY}/${uid}/${target.id}"] = target.toMap()
+        mapToAdd["/${TARGET.NODE}/${uid}/${target.id}"] = target.toMap()
         mapToAdd["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${newCategory.id}"] = newCategory.toMap()
 
         dbRef.updateChildren(mapToAdd)
@@ -117,8 +113,8 @@ class TargetService @Inject constructor(
             icon = R.drawable.ic_category_placeholder,
             targetId = target.id
         )
-        mapToAdd["/${FirebaseHelper.TARGETS_KEY}/${uid}/${target.id}"] = target.toMap()
-        mapToAdd["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${newCategory.id}"] = newCategory.toMap()
+        mapToAdd["/${TARGET.NODE}/${uid}/${target.id}"] = target.toMap()
+        mapToAdd["/${CATEGORY.NODE}/${uid}/${newCategory.id}"] = newCategory.toMap()
 
         dbRef.updateChildren(mapToAdd)
     }
@@ -141,8 +137,8 @@ class TargetService @Inject constructor(
             val newCategory = categoriesService.getCategoryByTargetId(editedTarget!!.id)
                 ?.copy(name = editedTarget.title)!!
 
-            mapToAdd["/${FirebaseHelper.TARGETS_KEY}/${uid}/${target.id}"] = target.toMap()
-            mapToAdd["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${newCategory.id}"] = newCategory.toMap()
+            mapToAdd["/${TARGET.NODE}/${uid}/${target.id}"] = target.toMap()
+            mapToAdd["/${CATEGORY.NODE}/${uid}/${newCategory.id}"] = newCategory.toMap()
 
             dbRef.updateChildren(mapToAdd).await()
         }
@@ -183,9 +179,9 @@ class TargetService @Inject constructor(
 
         val mapToUpdate = mutableMapOf<String, Any?>()
 
-        mapToUpdate["/${FirebaseHelper.TARGETS_KEY}/${uid}/${doneTarget.id}"] = null
-        mapToUpdate["/${FirebaseHelper.COMPLETED_TARGETS_KEY}/${uid}/${doneTarget.id}"] = doneTarget.toMap()
-        mapToUpdate["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${category.id}"] = null
+        mapToUpdate["/${TARGET.NODE}/${uid}/${doneTarget.id}"] = null
+        mapToUpdate["/${TARGET.COMPLETED_NODE}/${uid}/${doneTarget.id}"] = doneTarget.toMap()
+        mapToUpdate["/${CATEGORY.NODE}/${uid}/${category.id}"] = null
 
         dbRef.updateChildren(mapToUpdate)
     }
@@ -195,8 +191,8 @@ class TargetService @Inject constructor(
             val uid = authRepository.user.value!!.uid
             val mapToUpdate = mutableMapOf<String, Any?>()
             val category = categoriesService.getCategoryByTargetId(target.id)!!
-            mapToUpdate["/${FirebaseHelper.TARGETS_KEY}/${uid}/${target.id}"] = null
-            mapToUpdate["/${FirebaseHelper.CATEGORIES_KEY}/${uid}/${category.id}"] = null
+            mapToUpdate["/${TARGET.NODE}/${uid}/${target.id}"] = null
+            mapToUpdate["/${CATEGORY.NODE}/${uid}/${category.id}"] = null
 
             dbRef.updateChildren(mapToUpdate)
         } else

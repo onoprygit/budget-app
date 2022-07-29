@@ -9,7 +9,6 @@ import com.onopry.budgetapp.model.dto.AccountDto
 import com.onopry.budgetapp.model.dto.CategoriesDto
 import com.onopry.budgetapp.model.dto.OperationsDto
 import com.onopry.budgetapp.model.dto.getChildCategory
-import com.onopry.budgetapp.model.repo.FirebaseHelper
 import com.onopry.budgetapp.utils.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
@@ -28,7 +27,7 @@ class OperationsService @Inject constructor(
 ) {
     private val uid: String = FirebaseAuth.getInstance().currentUser?.uid!!
     private val dbRefRoot = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
-    private val dbRefOperations = dbRefRoot.child(FirebaseHelper.OPERATIONS_KEY).child(uid).ref
+    private val dbRefOperations = dbRefRoot.child(OPERATION.NODE).child(uid).ref
 
     private val _operations = MutableLiveData<List<OperationsDto>>()
     val operations: LiveData<List<OperationsDto>> = _operations

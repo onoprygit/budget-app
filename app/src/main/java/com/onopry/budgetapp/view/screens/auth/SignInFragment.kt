@@ -57,6 +57,10 @@ class SignInFragment : Fragment() {
                 authViewModel.signIn(email, password)
             else
                 navigator().toast("Вы ввели что то не так")
+
+            if (authViewModel.isEmailCorrect(email)) {}
+
+
         }
 
         return binding.root

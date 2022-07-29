@@ -31,7 +31,7 @@ class CategoryChooseAdapter(
             holder.itemView.tag = category
             transactionCategoryText.text = category.name
             transactionCategoryImage.setImageResource(category.icon)
-            transactionCategoryImage.setBackgroundColor(category.color)
+            transactionCategoryImage.setBackgroundColor(root.resources.getColor(category.color))
         }
     }
 

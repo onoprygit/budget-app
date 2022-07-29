@@ -11,7 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.onopry.budgetapp.model.dto.AccountDto
 import com.onopry.budgetapp.model.repo.AuthRepository
-import com.onopry.budgetapp.model.repo.FirebaseHelper
+import com.onopry.budgetapp.utils.ACCOUNT
 import com.onopry.budgetapp.utils.FIREBASE
 import com.onopry.budgetapp.utils.LogTags
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +27,7 @@ class AccountsService @Inject constructor(
 
     private val uid: String = FirebaseAuth.getInstance().currentUser?.uid!!
     private val dbRefRoot = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
-    private val dbRefAccounts = dbRefRoot.child(FirebaseHelper.ACCOUNTS_KEY)
+    private val dbRefAccounts = dbRefRoot.child(ACCOUNT.NODE)
 
     private val _accounts = MutableLiveData<List<AccountDto>>(listOf())
     val accounts: LiveData<List<AccountDto>> = _accounts
@@ -54,7 +54,7 @@ class AccountsService @Inject constructor(
     }
 
     private fun load(){
-        dbRefRoot.child(FirebaseHelper.ACCOUNTS_KEY).child(authRepository.user.value!!.uid)
+        dbRefRoot.child(ACCOUNT.NODE).child(authRepository.user.value!!.uid)
             .addValueEventListener( object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val list = mutableListOf<AccountDto>()
