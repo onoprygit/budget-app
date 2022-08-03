@@ -3,6 +3,7 @@ package com.onopry.budgetapp.model.services
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -25,6 +26,8 @@ class TargetService @Inject constructor(
     private val authRepository: AuthRepository,
     private val categoriesService: CategoriesService
 ) {
+
+    //private val uid: String = FirebaseAuth.getInstance().currentUser?.uid!!
     private var targetList = mutableListOf<TargetDto>()
     private val listeners = mutableSetOf<TargetListener>()
 
@@ -32,7 +35,7 @@ class TargetService @Inject constructor(
     val targets: LiveData<List<TargetDto>> = _targets
 
     private val dbRef = FirebaseDatabase.getInstance(FIREBASE.DATABASE_URL).reference
-    private val dbRefTargets = dbRef.child(TARGET.NODE).child(authRepository.user.value!!.uid)
+    private val dbRefTargets = dbRef.child(TARGET.NODE).child(authRepository.user.value!!.uid).ref
     private val dbRefTargetsCompleted = dbRef.child(TARGET.COMPLETED_NODE)
 
     init {

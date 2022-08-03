@@ -44,16 +44,20 @@ class MainActivity : AppCompatActivity(), MainNavigator {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        showSingInScreen()
+        //showSingInScreen()
 
         authViewModel.user.observe(this) {
             if (it != null) {
                 Log.d(TAG, (true).toString())
-                replaceFragment(signInFragment)
+//                replaceFragment(signInFragment)
+//                showSingInScreen()
+                showOperationsListScreen()
             }
             else {
                 Log.d(TAG, false.toString())
-                replaceFragment(analyticsFragment)
+//                showAnalyticsScreen()
+                showSingInScreen()
+//                replaceFragment(analyticsFragment)
             }
         }
 
@@ -147,14 +151,17 @@ class MainActivity : AppCompatActivity(), MainNavigator {
     private fun replaceFragment(fragment: Fragment, isNested: Boolean = false){
 //        currentFragment = fragment
         if (isNested){
+            Log.d(TAG, "replaceFragment: isNested true")
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit()
         } else {
+            Log.d(TAG, "replaceFragment: isNested false")
             if (supportFragmentManager.backStackEntryCount > 0)
                 supportFragmentManager.popBackStack()
+
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)

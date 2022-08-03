@@ -36,7 +36,6 @@ class AuthViewModel @Inject constructor(
 
     init {
         Log.d(LogTags.DI_INSTANCES_TAG, "AuthViewModel init")
-
     }
 
     fun isUserLogged() = authRepository.isUserAuth()
